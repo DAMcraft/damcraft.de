@@ -1,0 +1,18 @@
+<meta http-equiv="refresh" content="{{refresh_every}}">
+<style>
+    html {
+        overflow: hidden;
+        width: fit-content;
+    }
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    pre {
+        margin: 0;
+        padding: 0;
+        background-color: #000000;
+        width: 11ch
+    }
+</style>
+{% if discord_status != None %}<table><pre><span id="discord_status"><span style="color: #747f8d;">[ </span>{% if discord_status == "online" %}<span style="color: #43b581;">Online</span>{% elif discord_status == "idle" %}<span style="color: #faa61a;">Idle</span>{% elif discord_status == "dnd" %}<span style="color: #f04747;">DND</span>{% elif discord_status == "offline" %}<span style="color: #747f8d;">Offline</span>{% endif %}</span><span style="color: #747f8d;"> ]</span></pre></table>{% endif %}
