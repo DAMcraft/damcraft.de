@@ -86,19 +86,6 @@ def robots_txt():
     return send_from_directory(".", "robots.txt")
 
 
-last_ip_request = {}
-@app.route('/rate_limit_test')
-def rate_limit_test():
-    ip = request.headers.get("CF-Connecting-IP")
-    if not ip:
-        ip = request.remote_addr
-    if ip in last_ip_request:
-        if time.time() - last_ip_request[ip] < 10:
-            return "Rate limited", 429
-    last_ip_request[ip] = time.time()
-    return "OK"
-
-
 @app.route("/delta_ip")
 def delta_ip():
     ip = request.headers.get("X-Client-IP")
