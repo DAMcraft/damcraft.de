@@ -86,6 +86,13 @@ def robots_txt():
     return send_from_directory(".", "robots.txt")
 
 
+@app.route('/parrot', methods=["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"])
+def parrot():
+    # Return the raw request
+    resp = (request.method + " " + request.url + "\n" + str(request.headers) + "\n\n" + request.get_data(as_text=True))
+    return Response(resp, mimetype="text/plain")
+
+
 @app.route("/delta_ip")
 def delta_ip():
     ip = request.headers.get("X-Client-IP")
