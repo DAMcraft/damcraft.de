@@ -81,6 +81,18 @@ def security_txt():
     return send_from_directory(".", "security.txt")
 
 
+@app.route('/.well-known/button')
+def button():
+    if not request.args.get("format") == "json":
+        return send_from_directory("88x31", "dam.gif")
+    return {
+        "id": "damcraft.de",
+        "uri": "https://damcraft.de/88x31/dam.gif",
+        "link": "https://damcraft.de",
+        "sha256": sha256(open("88x31/dam.gif", "rb").read()).hexdigest()
+    }
+
+
 @app.route('/robots.txt')
 def robots_txt():
     return send_from_directory(".", "robots.txt")
