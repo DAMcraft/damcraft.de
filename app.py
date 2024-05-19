@@ -1,3 +1,4 @@
+import json
 import os
 import random
 from datetime import datetime
@@ -85,12 +86,12 @@ def security_txt():
 def button():
     if not request.args.get("format") == "json":
         return send_from_directory("88x31", "dam.gif")
-    return {
+    return json.dumps([{
         "id": "damcraft.de",
         "uri": "https://damcraft.de/88x31/dam.gif",
         "link": "https://damcraft.de",
         "sha256": sha256(open("88x31/dam.gif", "rb").read()).hexdigest()
-    }
+    }], indent=4)
 
 
 @app.route('/robots.txt')
