@@ -3,8 +3,6 @@ import time
 
 
 def dino_game():
-    # Generate something similar to the chrome dino game, but in the terminal.
-    # The game is 40 characters wide and 10 characters tall.
     columns = []
     last_cacti = 0
     dino_height = 0
@@ -20,7 +18,6 @@ def dino_game():
 
         rendered = "\033[2J\033[H"  # Clear the screen
 
-        # Add the dino
         # Check if the third column has a cacti
         if columns[4][0] == "X" or dino_height > 0:
             if dino_height == 0:

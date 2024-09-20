@@ -9,8 +9,18 @@ import requests
 
 
 def get_ip_info(ip: str):
+    empty = {
+        "country": "",
+        "region": "",
+        "city": "",
+        "loc": "0,0",
+        "org": "AS1 TEST",
+        "postal": "",
+        "timezone": "UTC/UTC",
+    }
     req = requests.get(f"https://ipinfo.io/{ip}?token={os.environ.get('IPINFO_API_KEY')}")
-    return req.json()
+    empty.update(req.json())  # Ensure that all keys are present
+    return empty
 
 
 def render():
