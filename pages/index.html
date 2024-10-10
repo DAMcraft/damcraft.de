@@ -39,7 +39,7 @@
         }
 
         body {
-            background-color: #181818;
+            background-color: #000000;
             color: #ffffff;
             font-size: 20px;
             font-family: sans-serif;
@@ -65,19 +65,20 @@
         }
 
         .terminal {
-            background-color: black;
+            background-color: #090909;
             color: white;
             font-size: medium;
             font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
             border-radius: 5px;
             border: 1px solid #ffffff;
+            box-shadow: 0 0 10px gray;
         }
         .terminal .content {
             padding: 0 10px 10px;
         }
 
         .terminal pre {
-            background-color: black;
+            {#background-color: #191919;#}
             color: white;
             font-size: medium;
             font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
@@ -379,6 +380,12 @@
                 display: none;
             }
         }
+        .monospace {
+            font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+        }
+        .white {
+            color: #ffffff;
+        }
 
     </style>
 </head>
@@ -569,10 +576,10 @@ AfnY+xdN8hTBYFURagTJlhqN4x8=
         <a href="https://www.thomasricci.dev"><img src="/88x31/thomasricci.png" alt="Thomas Ricci"></a>
     </section>
     <section>
-        <p>
-            <a href="https://ring.ssi.fyi/previous?host=damcraft.de">←</a>
-            <a href="https://ring.ssi.fyi/">ssi webring</a>
-            <a href="https://ring.ssi.fyi/next?host=damcraft.de">→</a>
+        <p class="monospace white">
+            <a href="https://ring.ssi.fyi/previous?host=damcraft.de" class="white">←</a>
+            <a href="https://ring.ssi.fyi/" class="white">ssi webring</a>
+            <a href="https://ring.ssi.fyi/next?host=damcraft.de" class="white">→</a>
         </p>
     </section>
 </body>
