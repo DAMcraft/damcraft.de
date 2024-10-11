@@ -406,6 +406,7 @@
             animation: glitch 0.3s infinite linear alternate-reverse;
         }
         .glitch-hover:hover::before {
+            content: attr(aria-description) attr(aria-label);
             left: 4px;
             text-shadow: -2px 0 red;
             color: #ff0000;
@@ -649,7 +650,7 @@ AfnY+xdN8hTBYFURagTJlhqN4x8=
             <a
                     href="https://ring.ssi.fyi/"
                     class="glitch-hover"
-                    aria-label="SSI webring">ssi webring</a>
+                    aria-label="ssi/webring" aria-description="ssi-webring">ssi webring</a>
             <a
                     href="https://ring.ssi.fyi/next?host=damcraft.de"
                     class="glitch-hover"
