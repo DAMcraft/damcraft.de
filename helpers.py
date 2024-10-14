@@ -12,26 +12,14 @@ def get_discord_status():
         return None
 
 
-def get_server_count():
+def get_discord_invite():
     try:
-        server_count = requests.get("https://api.serverseeker.net/stats").json().get("server_count")
-        return round(server_count / 10000) * 10000
+        widget = (requests.get(
+            f"https://discord.com/api/v9/guilds/{os.environ.get('SERVER_ID')}/widget.json"
+        ).json())
+        return widget.get("instant_invite")
     except requests.exceptions.RequestException:
         return None
-
-
-def get_member_count_and_invite():
-    try:
-        member_count = requests.get(
-            "https://discord.com/api/v9/guilds/1087081486747971705?with_counts=true",
-            headers={"Authorization": "Bot " + os.environ.get("DISCORD_TOKEN")}
-        ).json().get("approximate_member_count", 0)
-        widget = (requests.get(
-            "https://discord.com/api/v9/guilds/1087081486747971705/widget.json"
-        ).json())
-        return {"member_count": f"{member_count:,}", "instant_invite": widget.get("instant_invite")}
-    except requests.exceptions.RequestException:
-        return {"member_count": None, "instant_invite": None}
 
 
 def get_age():

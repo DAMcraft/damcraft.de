@@ -10,7 +10,7 @@ import dotenv
 
 import jammingen
 from dino import dino_game
-from helpers import get_discord_status, get_server_count, get_member_count_and_invite, get_age
+from helpers import get_discord_status, get_discord_invite, get_age
 
 # Disable werkzeug logging
 import logging
@@ -32,8 +32,7 @@ def index():
     return render_template(
         'index.html',
         discord_status=discord_status,
-        server_count=ss_server_count,
-        discord_info=discord_info,
+        discord_invite=discord_invite,
         age=get_age(),
         theme=theme,
         is_tor=request.headers.get("Host", "").endswith(".onion")
@@ -117,19 +116,14 @@ def after_request(response):
 
 
 discord_status = ""
-ss_server_count = ""
-discord_info = {"member_count": None, "instant_invite": None}
+discord_invite = None
 
 
 def stats_updater():
-    global ss_server_count, discord_status
+    global discord_status, discord_invite
     while True:
         discord_status = get_discord_status()
-        server_count = get_server_count()
-        if server_count is not None:
-            ss_server_count = f"{server_count:,}"
-        member_count_and_invite = get_member_count_and_invite()
-        discord_info.update(member_count_and_invite)
+        discord_invite = get_discord_invite()
 
         time.sleep(10)
 
