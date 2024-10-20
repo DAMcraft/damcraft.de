@@ -96,6 +96,11 @@ def jammin():
     return jammingen.render()
 
 
+@app.route('/88x31/<filename>')
+def button88x31(filename):
+    return redirect(f"/assets/88x31/{filename}", code=301)
+
+
 @app.route('/dam.png')
 def damdotpng():
     return send_from_directory(".", "dam.png")
