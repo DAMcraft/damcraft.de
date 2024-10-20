@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blogs Overview - dam's blog</title>
+    <style>
+        p {
+            margin: 0;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        body {
+            background-color: black;
+            color: white;
+            font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+            padding: 0;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .blog-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .blog-header h1 {
+            font-size: 32px;
+            margin: 0;
+        }
+
+
+        .blog-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Aligns the arrow and title vertically */
+            color: white;
+            margin: 0;
+        }
+
+        .blog-link h1 {
+            margin: 0;
+            font-size: 24px; /* Adjust as needed */
+        }
+
+        .blog-link span {
+            font-size: 24px; /* Same size as the title to align it */
+            margin-left: 10px;
+            margin-right: 5px;
+        }
+
+        .blog-summary {
+            font-size: 16px;
+            font-style: italic;
+            margin: 0;
+        }
+
+        .short-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-style: italic;
+            color: #808080;
+        }
+
+        .blog-overview {
+            margin-bottom: 30px;
+        }
+
+        .blog-post {
+            margin-bottom: 20px;
+        }
+
+        .blog-title {
+            margin: 0;
+        }
+
+        .blog-image {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: 150px;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        .blog-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-fade {
+            position: relative;
+            display: block;
+        }
+
+        .image-fade::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 1) 100%);
+            pointer-events: none;
+        }
+
+        .divider {
+            border-bottom: 1px solid #333; /* Line between posts */
+            margin: 5px 0;
+        }
+
+        footer {
+            border-top: 1px solid #333;
+            padding-top: 4px;
+            text-align: center;
+        }
+        .footer-links {
+            color: #808080;
+            padding: 0 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .footer-text {
+            font-size: 14px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <header class="blog-header">
+                <h1>dam's blog</h1>
+                <p>welcome to my blog! this is my little place to ramble and rant on the internet</p>
+            </header>
+
+            <div class="blog-overview">
+                {% for blog in blogs %}
+                    <article class="blog-post">
+                        <div class="blog-title">
+                            <a href="{{ blog.url_name }}" class="blog-link">
+                                <h1>{{ blog.title }}</h1>
+                                <span>→</span>
+                            </a>
+                        </div>
+                        <div class="short-info">
+                            <p><i>{{ blog.date }}</i></p>
+                        </div>
+                        <section class="blog-summary">
+                            <p>{{ blog.summary }}</p>
+                        </section>
+
+                        {% if blog.image %}
+                            <figure class="blog-image image-fade">
+                                <a href="{{ blog.url_name }}">
+                                    <img src="{{ blog.image }}" alt="{{ blog.title }}">
+                                </a>
+                            </figure>
+                        {% endif %}
+                    </article>
+                    <div class="divider"></div>
+                {% endfor %}
+            </div>
+        </div>
+        <footer>
+            <div class="footer-links">
+                <a href="/blog/">← Back to my website</a> <a href="/blog/rss.xml">RSS feed</a>
+            </div>
+            <p class="footer-text">&copy; 1984 dam</p>
+        </footer>
+    </div>
+</body>
+</html>

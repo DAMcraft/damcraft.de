@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ blog.title }} - dam's blog</title>
+    <style>
+        * {
+            margin: 0;
+        }
+        body {
+            background-color: black;
+            color: white;
+            font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+            padding: 0;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: #0066cc;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            /* make it a flex container so that the footer can be at the bottom */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .blog-header {
+            text-align: center;
+        }
+
+        .blog-header h1 {
+            font-size: 32px;
+            margin: 0;
+        }
+
+        .blog-summary {
+            font-size: 16px;
+            font-style: italic;
+            margin: 0;
+        }
+
+        .short-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-style: italic;
+            color: #808080;
+        }
+
+        .blog-content {
+            border-top: 1px solid #333;
+            margin-bottom: 30px;
+        }
+
+        .blog-image {
+            display: block;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            margin: 0;
+        }
+
+        footer {
+            border-top: 1px solid #333;
+            padding-top: 4px;
+            text-align: center;
+        }
+        .footer-links {
+            color: #808080;
+            padding: 0 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .footer-text {
+            font-size: 14px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <header class="blog-header">
+                <h1>{{ blog.title }}</h1>
+            </header>
+
+            <div class="short-info">
+                <div class="blog-date">
+                    <p>{{ blog.date }}</p>
+                </div>
+                <div class="short-url">
+                    <p>short: https://damcraft.de/-{{  blog.hash() }}</p>
+                </div>
+            </div>
+
+            <section class="blog-summary">
+                <p>{{ blog.summary }}</p>
+            </section>
+
+            {% if blog.image %}
+                <figure class="blog-image">
+                    <img src="{{ blog.image }}" alt="{{ blog.title }}" width="100%">
+                </figure>
+            {% endif %}
+
+            <article class="blog-content">
+                {{ blog.content|safe }}
+            </article>
+        </div>
+        <footer>
+            <div class="footer-links">
+                <a href="/">← Back to blogs</a> <a href="/blog/rss.xml">RSS feed</a>
+            </div>
+            <p class="footer-text">&copy; 1984 dam</p>
+        </footer>
+    </div>
+</body>
+</html>

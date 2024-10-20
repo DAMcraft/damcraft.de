@@ -8,7 +8,9 @@ from flask import Flask, render_template, Response, send_from_directory, request
 import time
 import dotenv
 
+import blog
 import jammingen
+from blog import get_blog_posts
 from dino import dino_game
 from helpers import get_discord_status, get_discord_invite, get_age
 
@@ -45,6 +47,33 @@ def discord_status_route():
     return render_template("discord_status.html", discord_status=discord_status, refresh_every=refresh_every)
 
 
+@app.route('/blog/')
+def blogs_page():
+    return render_template('blogs.html', blogs=blogs)
+
+
+@app.route('/blog/<blog_id>')
+def blog_post(blog_id):
+    for blog in blogs:
+        if blog.url_name == blog_id:
+            return render_template('blog_page.html', blog=blog)
+    return "Not found", 404
+
+
+@app.route('/-<blog_id>')
+def blog_post_short(blog_id):
+    for post in blogs:
+        if post.hash() == blog_id:
+            return redirect(f"/blog/{post.url_name}", code=301)
+    return "Not found", 404
+
+
+@app.route('/blog/rss')
+@app.route('/blog/rss.xml')
+def rss():
+    return Response(blog.get_rss(), mimetype="text/xml")
+
+
 @app.route('/pgp')
 def pgp():
     resp = Response(open('pgp', 'rb').read())
@@ -57,12 +86,12 @@ def favicon():
     return send_from_directory(".", "favicon.ico")
 
 
-@app.route('/88x31/<path:filename>')
+@app.route('/assets/<path:filename>')
 def banner(filename):
-    return send_from_directory("88x31", filename)
+    return send_from_directory("assets", filename)
 
 
-@app.route('/88x31/jammin.webp')
+@app.route('/assets/88x31/jammin.webp')
 def jammin():
     return jammingen.render()
 
@@ -117,6 +146,7 @@ def after_request(response):
 
 discord_status = ""
 discord_invite = None
+blogs = get_blog_posts()
 
 
 def stats_updater():
