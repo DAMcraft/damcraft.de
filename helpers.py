@@ -1,3 +1,4 @@
+import json
 import os
 from datetime import datetime
 
@@ -18,7 +19,7 @@ def get_discord_invite():
             f"https://discord.com/api/v9/guilds/{os.environ.get('SERVER_ID')}/widget.json"
         ).json())
         return widget.get("instant_invite")
-    except requests.exceptions.RequestException:
+    except (requests.exceptions.RequestException, json.JSONDecodeError, KeyError):
         return None
 
 
