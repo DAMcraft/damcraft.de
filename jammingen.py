@@ -50,7 +50,7 @@ def render():
     data = get_ip_info(ip)
 
     # Open the animated image
-    jamming: WebPImagePlugin.WebPImageFile = Image.open("88x31/jammin.webp")  # type: ignore
+    jamming: WebPImagePlugin.WebPImageFile = Image.open("assets/88x31/jammin.webp")  # type: ignore
 
     texts = [
         "IP: " + ip,
