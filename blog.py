@@ -1,4 +1,5 @@
 import hashlib
+import html
 import os
 import base64
 from datetime import datetime
@@ -54,6 +55,9 @@ def get_rss():
             <description>{post.summary}</description>
             <pubDate>{datetime.strptime(post.date, "%Y-%m-%d").strftime("%a, %d %b %Y %H:%M:%S %z")}</pubDate>
             <guid isPermaLink="true">https://damcraft.de/blog/{post.url_name}</guid>
+            <content type="html" xml:base="https://damcraft.de/blog/{post.url_name}">
+                {html.escape(post.content)}
+            </content>
         </item>"""
     data = f"""<?xml version="1.0" encoding="UTF-8"?>
     <rss version="2.0">
