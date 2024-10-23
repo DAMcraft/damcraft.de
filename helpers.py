@@ -18,7 +18,9 @@ def get_discord_invite():
         widget = (requests.get(
             f"https://discord.com/api/v9/guilds/{os.environ.get('SERVER_ID')}/widget.json"
         ).json())
-        return widget.get("instant_invite")
+        invite = widget.get("instant_invite")
+        invite = invite.replace("https://discord.com/invite/", "https://discord.gg/")
+        return invite
     except (requests.exceptions.RequestException, json.JSONDecodeError, KeyError):
         return None
 
