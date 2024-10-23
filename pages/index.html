@@ -350,6 +350,15 @@
         .topbar a:hover {
             text-decoration: underline;
         }
+        @media (max-width: 500px) {
+            .link-bar {
+                display: none;
+            }
+            .wrapper {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
         .cycle {
             animation: cycle steps(1) 5s infinite;
         }
