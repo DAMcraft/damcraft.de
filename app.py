@@ -57,9 +57,13 @@ def blogs_page():
 
 @app.route('/blog/<blog_id>')
 def blog_post(blog_id):
-    for blog in blogs:
-        if blog.url_name == blog_id:
-            return render_template('blog_page.html', blog=blog)
+    for i, blog_ in enumerate(blogs):
+        if blog_.url_name == blog_id:
+            resp = app.make_response(render_template('blog_page.html', blog=blog_))
+            if i == 0:
+                resp.set_cookie("last_read", blog_.url_name, max_age=60 * 60 * 24 * 365)
+            return resp
+
     return "Not found", 404
 
 
