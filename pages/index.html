@@ -43,8 +43,8 @@
             background-color: #000000;
             color: #fff;
             font-size: 20px;
-            font-family: sans-serif;
             scrollbar-gutter: stable;
+            font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, "Courier New", monospace;
 
             /* Center everything */
             display: flex;
@@ -72,13 +72,38 @@
             max-width: 1100px;
             width: 80%;
         }
+        .secret {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            display: none;
+        }
+        .show-again {
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            background-color: #1f1f1f;
+            padding: 8px 14px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .show-again:hover {
+            background-color: #2f2f2f;
+            border: 1px solid #fff;
+            padding: -1px;
+        }
 
+        .terminal-wrapper {
+            width: 100%;
+            max-width: 100%;
+            position: relative;
+        }
         .terminal {
             background-color: #090909;
             color: white;
             font-size: medium;
-            font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-            border-radius: 5px;
             border: 1px solid #fff;
             box-shadow: 0 0 10px gray;
         }
@@ -86,8 +111,18 @@
             padding: 0 10px 10px;
         }
 
+        #show-terminal:checked ~ .terminal {
+            visibility: hidden;
+        }
+        #show-terminal:checked ~ .secret {
+            display: block;
+
+        }
+        #show-terminal {
+            display: none;
+        }
+
         .terminal pre {
-            {#background-color: #191919;#}
             color: white;
             font-size: medium;
             font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
@@ -298,40 +333,81 @@
 
         .topbar {
             position: relative;
-            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
             height: 20px;
-            background-color: #1f1f1f;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-top: 5px;
+            padding: 2px 2px 5px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
         }
-        .topbar svg {
-            width: 20px;
-            height: 20px;
+        .topbar a {
+            text-decoration: none;
         }
+        .topbar a:hover {
+            text-decoration: underline;
+        }
+        .cycle {
+            animation: cycle steps(1) 5s infinite;
+        }
+        @keyframes cycle {
+            0% {
+                content: "welcome to my website\00A0\00A0\00A0\00A0\00A0\00A0";
+            }
+            10% {
+                content: "welcome to my website.\00A0\00A0\00A0\00A0\00A0";
+            }
+            20% {
+                content: "welcome to my website..\00A0\00A0\00A0\00A0";
+            }
+            30% {
+                content: "welcome to my website...\00A0\00A0\00A0";
+            }
+            40% {
+                opacity: 1;
+                content: "welcome to my website...\00A0:\00A0";
+            }
+            50% {
+                content: "welcome to my website...\00A0:3";
+            }
+        }
+        .cycle::before {
+            content: "";
+            animation: cycle steps(1) 5s infinite;
+        }
+
         .close {
             position: absolute;
-            top: 0;
             right: 0;
             height: 20px;
             width: 20px;
             background-color: #ff5f57;
-            border-top-right-radius: 5px;
+            fill: #eff0f1;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            cursor: pointer;
         }
-        .maximize {
+        .close::before, .close::after {
+            content: '';
             position: absolute;
-            top: 0;
-            right: 20px;
-            height: 20px;
-            width: 20px;
-            background-color: #ffbd2e;
+            width: 12px;
+            height: 2px;
+            background-color: #eff0f1;
         }
-        .minimize {
-            position: absolute;
-            top: 0;
-            right: 40px;
-            height: 20px;
-            width: 20px;
-            background-color: #28ca41;
+        .close::before {
+            transform: rotate(45deg);
+        }
+        .close::after {
+            transform: rotate(-45deg);
+        }
+        .close:hover {
+            border: 1px solid white;
+            padding: -1px;
+            margin: -1px;
         }
 
         /* Terminal styled input box */
@@ -380,9 +456,6 @@
             #that_one_linebreak {
                 display: none;
             }
-        }
-        .monospace {
-            font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
         }
         .glitch-hover {
             color: #00ff00;
@@ -476,15 +549,24 @@
 </head>
 <body>
 <div class="wrapper">
-    <div class="terminal">
-        <div class="topbar">
-            <div class="close"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></div>
-            <div class="maximize"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0 0v-560 560Z"/></svg></div>
-            <div class="minimize"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M240-120v-80h480v80H240Z"/></svg></div>
+    <div class="terminal-wrapper">
+        <input type="checkbox" id="show-terminal">
+        <div class="secret">
+            <p>
+                ...why would you do that? why the hell did you remove the terminal??
+            </p>
+            <label for="show-terminal" class="show-again">sorry...</label>
         </div>
-        <div class="content">
-            <section id="welcome">
-<pre id="welcomeText">
+        <div class="terminal">
+            <div class="topbar">
+                <span class="link-bar">
+                    <span class="cycle"></span> | <a href="/blog">blog</a> ← please read
+                </span>
+                <label for="show-terminal" class="close"></label>
+            </div>
+            <div class="content">
+                <section id="welcome">
+                    <pre id="welcomeText">
      _                                 __ _             _
   __| | __ _ _ __ ___   ___ _ __ __ _ / _| |_        __| | ___
  / _` |/ _` | '_ ` _ \ / __| '__/ _` | |_| __|      / _` |/ _ \
@@ -619,7 +701,8 @@ vd09k6kojtZk5bS0LMmeazKwe9CJsGXuZHSEt2xg8NoRMbSaUPFB/lICB8x9yu9d
 AfnY+xdN8hTBYFURagTJlhqN4x8=
 =+G9v
 -----END PGP PUBLIC KEY BLOCK-----</pre>
-            </section>
+                </section>
+            </div>
         </div>
     </div>
     <section id="badges">
@@ -672,7 +755,7 @@ AfnY+xdN8hTBYFURagTJlhqN4x8=
         <a href="https://lona.moe/"><img src="/assets/88x31/lona.gif" alt="Lona"></a>
     </section>
     <div class="webring">
-        <p class="monospace webring-text">
+        <p class="webring-text">
             <a
                     href="https://ring.ssi.fyi/previous?host=damcraft.de"
                     class="glitch-hover align-left"
