@@ -453,7 +453,22 @@
             }
         }
 
-
+        .notification {
+            border: none;
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            z-index: 1000;
+            width: 350px;
+            max-width: 100%;
+            height: 180px;
+        }
+        /* Hide notification if width < 1000px */
+        @media (max-width: 1000px) {
+            .notification {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -669,6 +684,9 @@ AfnY+xdN8hTBYFURagTJlhqN4x8=
                     aria-label="→">→</a>
         </p>
     </div>
+    {%  if blog %}
+        <iframe class="notification" src="/notification?theme={{ theme }}"></iframe>
+    {% endif %}
 </div>
 </body>
 </html>

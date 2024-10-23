@@ -12,7 +12,7 @@ import blog
 import jammingen
 from blog import get_blog_posts
 from dino import dino_game
-from helpers import get_discord_status, get_discord_invite, get_age
+from helpers import get_discord_status, get_discord_invite, get_age, show_notification
 
 # Disable werkzeug logging
 import logging
@@ -30,6 +30,8 @@ def index():
         # If the user agent is curl, return the silly dino game
         return app.response_class(dino_game(), mimetype='text/plain')
 
+    last_blog = show_notification(blogs, request)
+
     theme = "pink" if random.randint(1, 20) == 1 else "blue"
     return render_template(
         'index.html',
@@ -37,6 +39,7 @@ def index():
         discord_invite=discord_invite,
         age=get_age(),
         theme=theme,
+        blog=last_blog,
         is_tor=request.headers.get("Host", "").endswith(".onion")
     )
 
@@ -72,6 +75,22 @@ def blog_post_short(blog_id):
 @app.route('/blog/rss.xml')
 def rss():
     return Response(blog.get_rss(), mimetype="text/xml")
+
+
+@app.route('/notification')
+def notification():
+    newest_blog = show_notification(blogs, request)
+    return render_template("notification.html", blog=newest_blog)
+
+
+@app.route('/mark_as_read', methods=["POST"])
+def mark_as_read():
+    url_name = request.form.get("url_name")
+    if url_name is not None:
+        resp = app.make_response(render_template("nothing.html"))
+        resp.set_cookie("last_read", url_name, max_age=60 * 60 * 24 * 365)
+        return resp
+    return "Invalid request", 400
 
 
 @app.route('/pgp')

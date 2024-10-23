@@ -32,3 +32,12 @@ def get_age():
     has_passed = (today.month, today.day) >= (birthday.month, birthday.day)
     return today.year - birthday.year - (not has_passed)
 
+
+def show_notification(blogs, request):
+    if len(blogs) == 0:
+        return None
+    blog = blogs[0]
+    cookie = request.cookies.get("last_read")
+    if cookie == blog.url_name:
+        return None
+    return blog

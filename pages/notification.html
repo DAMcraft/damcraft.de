@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Box</title>
+    <style>
+        html {
+            overflow: hidden;
+            width: fit-content;
+        }
+        * {
+            margin: 2px;
+            padding: 0;
+        }
+
+        .notification-box {
+            background-color: #000000;
+            border: 1px solid rgba(255, 255, 255, 1);
+            border-radius: 5px;
+            font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, "Courier New", monospace;
+            box-shadow: 0 0 10px gray;
+            padding: 10px;
+            color: #eff0f1;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 13px;
+            right: 17px;
+            width: 20px;
+            height: 20px;
+            background-color: #f1605c;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .close-btn:hover {
+            background-color: #bf4946;
+        }
+
+        .close-btn::before, .close-btn::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 2px;
+            background-color: #eff0f1;
+        }
+
+        .close-btn::before {
+            transform: rotate(45deg);
+        }
+
+        .close-btn::after {
+            transform: rotate(-45deg);
+        }
+
+        .notification-content h2 {
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #eff0f1;
+        }
+
+        .notification-content p {
+            margin-top: 0;
+            font-size: 14px;
+            color: #eff0f1;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .action-buttons * {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 8px 14px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .read-btn {
+            background-color: {{ "#1482aa" if request.args.get("theme") == "blue" else "#b30e41"}};
+            text-decoration: none;
+            color: #eff0f1;
+            margin-right: 10px;
+        }
+
+        .no-thanks-btn {
+            background-color: #151515;
+            color: #eff0f1;
+        }
+
+        .read-btn:hover, .no-thanks-btn:hover {
+            opacity: 0.8;
+            color: #eff0f1;
+        }
+    </style>
+</head>
+<body>
+{% if blog %}
+    <div class="notification-box">
+
+        <div class="notification-header">
+            <span>New blog post</span>
+        </div>
+
+        <!-- Form for the close button and hidden submission -->
+        <form id="close-form" method="POST" action="/mark_as_read" >
+            <input type="hidden" name="url_name" value="{{ blog.url_name }}">
+
+            <button type="submit" id="submit-btn" hidden></button>
+
+            <label for="submit-btn" class="close-btn"></label>
+        </form>
+
+        <div class="notification-content">
+            <h2>{{ blog.title }}</h2>
+            <p>{{ blog.summary }}</p>
+            <div class="action-buttons">
+                <a href="/blog/{{ blog.url_name }}" class="read-btn" target="_top">Read</a>
+
+                <label for="submit-btn" class="no-thanks-btn">No Thanks</label>
+            </div>
+        </div>
+    </div>
+{% endif %}
+</body>
+</html>
