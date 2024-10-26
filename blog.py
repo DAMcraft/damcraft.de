@@ -1,5 +1,4 @@
 import hashlib
-import html
 import os
 import base64
 from datetime import datetime
@@ -49,15 +48,21 @@ def get_blog_posts():
 def get_rss():
     posts = ""
     for post in get_blog_posts():
+        blog_img = ''
+        if post.image:
+            blog_img = f'<img src="http://127.0.0.1:5000{post.image}" alt="{post.title}" style="max-width: 100%;">'  # TODO
+        rss_content = f"""
+            <h2>{post.title}</h2>
+            <p><i>{post.summary}</i></p>
+            {blog_img}
+            {post.content}
+        """.replace("]", "&#93;").replace("[", "&#91;")
         posts += f"""<item>
             <title>{post.title}</title>
             <link>https://damcraft.de/blog/{post.url_name}</link>
-            <description>{post.summary}</description>
+            <description><![CDATA[{rss_content}]]></description>
             <pubDate>{datetime.strptime(post.date, "%Y-%m-%d").strftime("%a, %d %b %Y %H:%M:%S %z")}</pubDate>
             <guid isPermaLink="true">https://damcraft.de/blog/{post.url_name}</guid>
-            <content type="html" xml:base="https://damcraft.de/blog/{post.url_name}">
-                {html.escape(post.content)}
-            </content>
         </item>"""
     data = f"""<?xml version="1.0" encoding="UTF-8"?>
     <rss version="2.0">
@@ -72,7 +77,7 @@ def get_rss():
 
 
 if __name__ == '__main__':
-    for post in get_blog_posts():
-        print(post)
-        print(post.content)
-        print(post.hash())
+    for blog_post in get_blog_posts():
+        print(blog_post)
+        print(blog_post.content)
+        print(blog_post.hash())
