@@ -50,7 +50,7 @@ def get_rss():
     for post in get_blog_posts():
         blog_img = ''
         if post.image:
-            blog_img = f'<img src="http://127.0.0.1:5000{post.image}" alt="{post.title}" style="max-width: 100%;">'  # TODO
+            blog_img = f'<img src="https://damcraft.de{post.image}" alt="{post.title}" style="max-width: 100%;">'
         rss_content = f"""
             <h2>{post.title}</h2>
             <p><i>{post.summary}</i></p>
