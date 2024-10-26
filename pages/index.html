@@ -43,6 +43,7 @@
             background-color: #000000;
             color: #fff;
             font-size: 20px;
+            line-height: 1.2;
             scrollbar-gutter: stable;
             font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, "Courier New", monospace;
 
@@ -52,7 +53,36 @@
             align-items: center;
             justify-content: center;
         }
+        body:has(#freaky:checked) {
+            font-family: Papyrus, Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, "Courier New", monospace;
+            line-height: 1.3;
+            font-weight: bold;
+        }
+        .freakedUp {
+            display: none;
+            position: fixed;
+            top: 40%;
+            left: 50%;
 
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            z-index: 1000;
+            color: #ff5f57;
+            background-color: rgba(255, 255, 255, 0.8);
+            pointer-events: none;
+        }
+        #freaky:checked ~ .freakedUp {
+            display: block;
+        }
+        .freakyLevel {
+            color: black;
+        }
+        #freaky {
+            display: none;
+        }
+        .freaky-label {
+            cursor: pointer;
+        }
 
         a {
             color: var(--links);
@@ -63,6 +93,9 @@
 
         #welcomeText {
             color: var(--highlight);
+            font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, "Courier New", monospace;
+            font-weight: normal;
+            line-height: normal;
         }
 
         .wrapper {
@@ -125,7 +158,7 @@
         .terminal pre {
             color: white;
             font-size: medium;
-            font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+            font-family: inherit;
             margin: 0;
             padding: 0;
             overflow: auto;
@@ -359,9 +392,7 @@
                 max-width: 100%;
             }
         }
-        .cycle {
-            animation: cycle steps(1) 5s infinite;
-        }
+
         @keyframes cycle {
             0% {
                 content: "welcome to my website\00A0\00A0\00A0\00A0\00A0\00A0";
@@ -554,6 +585,31 @@
                 display: none;
             }
         }
+
+
+        /* freaky mode, stolen from slonk.ing with permission <3 */
+        :root:has(#freaky:checked)::after {
+            content: "";
+            z-index: 1000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgb(154, 65, 40);
+            background: linear-gradient(
+                215deg,
+                rgba(154, 65, 40, 1) 0%,
+                rgba(116, 36, 94, 1) 50%,
+                rgba(59, 56, 132, 1) 100%
+            );
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+            opacity: 0.6;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -609,12 +665,12 @@
                 <span class="prefix">
                         <span style="color: #747f8d;">root@<span class="servername">damcraft.de</span><span class="shortServername">dam</span></span>:~<span style="color: #747f8d;">$ </span></span>
                     <span class="command">./socials.sh</span>
-                <pre>
-Do you want to contact me?
-You can find all my socials below!
-I will probably respond the fastest on Discord.
-You can find my PGP key just below this section.
-</pre>
+                <div>
+Do you want to contact me?<br>
+You can find all my socials below!<br>
+I will probably respond the fastest on Discord.<br>
+You can find my PGP key just below this section.<br>
+</div>
             <table>
                 <tbody>
                     <tr>
@@ -722,6 +778,7 @@ AfnY+xdN8hTBYFURagTJlhqN4x8=
         {% else %}
             <a href="https://we-are-jammin.xyz/"><img src="/assets/88x31/jammin.webp" alt="We are jammin"></a>
         {% endif %}
+        <label for="freaky" class="freaky-label"><img src="/assets/88x31/freakmode.gif" alt="Freaky mode"></label>
         <a href="https://europa.eu/"><img src="/assets/88x31/eu.png" alt="EU - United in diversity"></a>
         <a href="https://www.gesetze-im-internet.de/gg/art_1.html" title="Article 1 of the German constitution"><img src="/assets/88x31/germany.png" alt="Human dignity shall be inviolable. To respect and protect it shall be the duty of all state authority."></a>
         <a href="https://magmaus3.eu.org/"><img src="/assets/88x31/magmaus3.gif" alt="Maia"></a>
@@ -778,6 +835,11 @@ AfnY+xdN8hTBYFURagTJlhqN4x8=
                     class="glitch-hover"
                     aria-label="→">→</a>
         </p>
+    </div>
+
+    <input type="checkbox" id="freaky">
+    <div class="freakedUp">
+        Freak level: <span class="freakyLevel">&infin;</span>
     </div>
     {%  if blog %}
         <iframe class="notification" src="/notification?theme={{ theme }}"></iframe>
