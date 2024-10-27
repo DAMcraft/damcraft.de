@@ -64,6 +64,13 @@
         }
         .freakedUp {
             display: none;
+            pointer-events: none;
+            user-select: none;
+        }
+        #freaky:checked ~ .freakedUp {
+            display: block;
+        }
+        .freakLevel {
             position: fixed;
             top: 40%;
             left: 50%;
@@ -73,10 +80,15 @@
             z-index: 1000;
             color: #ff5f57;
             background-color: rgba(255, 255, 255, 0.8);
-            pointer-events: none;
         }
-        #freaky:checked ~ .freakedUp {
-            display: block;
+        .freakyTongue {
+            left: 50%;
+            bottom: 0;
+            transform: translate(-50%, -10%);
+            position: absolute;
+            max-width: 90%;
+            z-index: 999;
+            opacity: 0.9;
         }
         .freakyLevel {
             color: black;
@@ -844,7 +856,10 @@ AfnY+xdN8hTBYFURagTJlhqN4x8=
 
     <input type="checkbox" id="freaky">
     <div class="freakedUp">
-        Freak level: <span class="freakyLevel">&infin;</span>
+        <div class="freakLevel">
+            Freak level: <span class="freakyLevel">&infin;</span>
+        </div>
+        <img class="freakyTongue" src="/assets/tongue.webp">
     </div>
     {%  if blog %}
         <iframe class="notification" src="/notification?theme={{ theme }}"></iframe>
