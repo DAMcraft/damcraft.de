@@ -147,7 +147,7 @@ def button():
 
 
 @app.route('/.well-known/atproto-did')
-def security_txt():
+def atproto_did():
     return os.environ.get("ATPROTO_DID")
 
 
