@@ -146,6 +146,11 @@ def button():
     }], indent=4), mimetype="application/json")
 
 
+@app.route('/.well-known/atproto-did')
+def security_txt():
+    return os.environ.get("ATPROTO_DID")
+
+
 @app.route('/robots.txt')
 def robots_txt():
     return send_from_directory(".", "robots.txt")
