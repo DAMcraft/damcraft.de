@@ -191,6 +191,80 @@
             color: #1f1f1f;
         }
 
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .about-image-separate {
+            height: auto;
+            max-width: 200px;
+            margin-right: 1rem;
+            object-fit: cover;
+        }
+
+        .text-content {
+            flex: 1;
+            overflow-wrap: break-word;
+        }
+
+        .about-image-inline {
+            display: none;
+            position: relative;
+            float: left;
+            height: auto;
+            width: 100%;
+            max-width: 200px;
+            margin-right: 1rem;
+            margin-top: 0.5rem;
+            border: 1px solid #fff;
+        }
+        .about-image-inline img {
+            width: 100%;
+            height: fit-content;
+            object-fit: cover;
+            margin-bottom: -4px;
+        }
+        .about-image-topbar {
+            /* float above the image */
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin: 2px 2px 2px 4px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .about-image-topbar span {
+            color: #b5b5b5;
+            font-size: 0.8em;
+        }
+        .about-image-topbar .close {
+            position: absolute;
+            display: flex;
+            margin-top: 4px;
+            margin-right: 8px;
+        }
+        .about-image-topbar .close:hover {
+            border: 1px solid white;
+            padding: -1px;
+            margin: 3px 7px -1px;
+        }
+
+        @media (max-width: 1300px) {
+            .about-image-separate {
+                display: none;
+            }
+            .about-image-inline {
+                display: block;
+            }
+            #showImage:checked ~ .about-image-inline {
+                display: none;
+            }
+
+        }
+
         #pgp {
             display: none;
             /* make double click to select everything work */
@@ -658,24 +732,38 @@
             </section>
             <section id="about_me" class="nomargin">
                 <span class="prefix">
-                        <span style="color: #747f8d;">root@<span class="servername">damcraft.de</span><span class="shortServername">dam</span></span>:~<span style="color: #747f8d;">$ </span></span>
+                    <span style="color: #747f8d;">
+                        root@<span class="servername">damcraft.de</span><span class="shortServername">dam</span>
+                    </span>:~<span style="color: #747f8d;">$ </span>
+                </span>
                 <span class="command">cat about_me.txt</span>
-                <div>
-                    Hi! I'm Damian, a {{age}}-year-old developer from Germany!<br>
-                    You might know me from <a href="https://cuiiliste.de/">CUII-Liste</a>, a project that publishes a secret list of domains blocked by
-                    German ISPs and <b>exposed</b> wrongful blocking of domains.<br>
-                    If you're curious to find out more, there's English articles from <b>TorrentFreak</b> (<a href="https://torrentfreak.com/17-year-old-student-exposes-germanys-secret-pirate-site-blocklist-240822/">1</a>)(<a href="https://torrentfreak.com/homebrew-transparency-portal-reveals-needlessly-blocked-pirate-sites-240928/">2</a>),
-                    or German ones from <b>Heise</b> (<a href="https://heise.de/-9847202">1</a> [<a href="https://heise.de/-9847399">en</a>])(<a href="https://heise.de/-9959663">2</a> [<a href="https://heise.de/-9960346">en</a>]) and
-                    <b>Netzpolitik</b> (<a href="https://netzpolitik.org/2024/cuii-liste-diese-websites-sperren-provider-freiwillig/">1</a>)(<a href="https://netzpolitik.org/2024/cuii-viele-netzsperren-wirken-laenger-als-erlaubt/">2</a>)(<a href="https://netzpolitik.org/2024/cuii-liste-internetprovider-heben-39-netzsperren-auf/">3</a>).
-                    There's more articles from Golem, Tarnkappe.info, winfuture and others, but I can't list them all here.<br>
-                    You may have also heard ServerSeeker, which scanned the <b>entire</b> IPv4 address space for Minecraft servers.
-                    When I sold it, the discord server had more than 14k members and the bot was in over 9k discord guilds.<br>
-                    {% if discord_invite != None %}
-                        Development <b>discord server</b> for my projects: <a id="discordInv" href="{{discord_invite}}">{{discord_invite}}</a><br>
-                    {% endif %}
-                    I <b>love</b> programming in Python, Java, JavaScript and Rust.<br>
-                    (Ok, that JavaScript part was a lie, this website is made entirely without JS.<span id="that_one_linebreak"><br></span>
-                    &nbsp;And yes, my discord status below <i>does</i> update automatically every 10s <b>without</b> JS)
+                <div class="content-wrapper">
+                    <img src="/assets/me.png" alt="me :3" class="about-image-separate" width="655" height="655">
+                    <div class="text-content">
+                        <input type="checkbox" id="showImage" style="display: none;" autocomplete="off">
+                        <div class="about-image-inline">
+                            <div class="about-image-topbar">
+                                <span>dam.png</span>
+                                <label for="showImage" class="close"></label>
+                            </div>
+                            <img src="/assets/me.png" alt="me :3" width="655" height="655">
+                        </div>
+                        Hi! I'm Damian, a {{age}}-year-old developer from Germany!<br>
+                        You might know me from <a href="https://cuiiliste.de/">CUII-Liste</a>, a project that publishes a secret list of domains blocked by
+                        German ISPs and <b>exposed</b> wrongful blocking of domains.<br>
+                        If you're curious to find out more, there's English articles from <b>TorrentFreak</b> (<a href="https://torrentfreak.com/17-year-old-student-exposes-germanys-secret-pirate-site-blocklist-240822/">1</a>)(<a href="https://torrentfreak.com/homebrew-transparency-portal-reveals-needlessly-blocked-pirate-sites-240928/">2</a>),
+                        or German ones from <b>Heise</b> (<a href="https://heise.de/-9847202">1</a> [<a href="https://heise.de/-9847399">en</a>])(<a href="https://heise.de/-9959663">2</a> [<a href="https://heise.de/-9960346">en</a>]) and
+                        <b>Netzpolitik</b> (<a href="https://netzpolitik.org/2024/cuii-liste-diese-websites-sperren-provider-freiwillig/">1</a>)(<a href="https://netzpolitik.org/2024/cuii-viele-netzsperren-wirken-laenger-als-erlaubt/">2</a>)(<a href="https://netzpolitik.org/2024/cuii-liste-internetprovider-heben-39-netzsperren-auf/">3</a>).
+                        There's more articles from Golem, Tarnkappe.info, winfuture and others, but I can't list them all here.<br>
+                        You may have also heard ServerSeeker, which scanned the <b>entire</b> IPv4 address space for Minecraft servers.
+                        When I sold it, the discord server had more than 14k members and the bot was in over 9k discord guilds.<br>
+                        {% if discord_invite != None %}
+                            Development <b>discord server</b> for my projects: <a id="discordInv" href="{{discord_invite}}">{{discord_invite}}</a><br>
+                        {% endif %}
+                        I <b>love</b> programming in Python, Java, JavaScript and Rust.<br>
+                        (Ok, that JavaScript part was a lie, this website is made entirely without JS.<span id="that_one_linebreak"><br></span>
+                        &nbsp;And yes, my discord status below <i>does</i> update automatically every 10s <b>without</b> JS)
+                    </div>
                 </div>
             </section>
             <section id="socials">

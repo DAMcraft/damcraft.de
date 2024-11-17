@@ -1,5 +1,4 @@
 User-agent: *
 Disallow: /discord_status
-
-User-agent: *
+Disallow: /notifications
 Allow: /
