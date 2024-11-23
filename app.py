@@ -70,7 +70,7 @@ def blog_post(blog_id):
 @app.route('/-<blog_id>')
 def blog_post_short(blog_id):
     for post in blogs:
-        if post.hash() == blog_id:
+        if post.hash == blog_id:
             return redirect(f"/blog/{post.url_name}", code=301)
     return "Not found", 404
 
@@ -149,6 +149,28 @@ def button():
 @app.route('/.well-known/atproto-did')
 def atproto_did():
     return os.environ.get("ATPROTO_DID")
+
+
+@app.route('/.well-known/matrix/client')
+def matrix_client():
+    return {
+        "m.server": {
+            "base_url": os.environ.get("MATRIX_SERVER_BASE_URL")
+        },
+        "m.homeserver": {
+            "base_url": os.environ.get("MATRIX_SERVER_BASE_URL")
+        },
+        "org.matrix.msc3575.proxy": {
+            "url": os.environ.get("MATRIX_SERVER_BASE_URL")
+        }
+    }
+
+
+@app.route('/.well-known/matrix/server')
+def matrix_server():
+    return {
+        "m.server": os.environ.get("MATRIX_SERVER_BASE_URL")
+    }
 
 
 @app.route('/robots.txt')

@@ -129,8 +129,8 @@
         </form>
 
         <div class="notification-content">
-            <h2>{{ blog.title }}</h2>
-            <p>{{ blog.summary }}</p>
+            <h2>{{ blog.title|safe }}</h2>
+            <p>{{ blog.summary|safe }}</p>
             <div class="action-buttons">
                 <a href="/blog/{{ blog.url_name }}" class="read-btn" target="_top">Read</a>
 

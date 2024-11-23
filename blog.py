@@ -18,6 +18,8 @@ class BlogPost:
         self.image = image or None
         self.content = markdown.markdown(content)
 
+    @property
+    @cache
     def hash(self):
         digest = hashlib.md5(self.url_name.encode()).hexdigest()
         base64_hash = base64.b64encode(digest.encode()).decode()
@@ -31,7 +33,7 @@ class BlogPost:
 def get_blog_posts():
     blog_posts = []
     for filename in os.listdir(blog_directory):
-        with open(os.path.join(blog_directory, filename)) as f:
+        with open(os.path.join(blog_directory, filename), encoding='utf-8') as f:
             title = f.readline().strip()
             url_name = filename.split('.')[0]
             summary = f.readline().strip()
@@ -80,4 +82,4 @@ if __name__ == '__main__':
     for blog_post in get_blog_posts():
         print(blog_post)
         print(blog_post.content)
-        print(blog_post.hash())
+        print(blog_post.hash)

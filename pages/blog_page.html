@@ -3,6 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {# SEO meta tags #}
+    <meta name="description" content="{{ blog.summary }}">
+    <meta name="author" content="dam">
+
+    {# Open Graph meta tags #}
+    <meta name="og:title" content="{{ blog.title }}">
+    <meta name="og:description" content="{{ blog.summary }}">
+    {% if blog.image %}
+        <meta name="og:image" content="{{ blog.image }}">
+    {% endif %}
+    <meta name="og:url" content="https://damcraft.de/blog/{{ blog.url_name }}">
+    <meta name="og:type" content="article">
+    <meta name="og:site_name" content="dam's blog">
+
+    {# Twitter meta tags #}
+    {% if blog.image %}
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="{{ blog.image }}">
+    {% else %}
+        <meta name="twitter:card" content="summary">
+    {% endif %}
+    <meta name="twitter:title" content="{{ blog.title }}">
+    <meta name="twitter:description" content="{{ blog.summary }}">
+    <meta name="twitter:site" content="@dams_blog">
+
+    {# Additional meta tags #}
+    <meta name="theme-color" content="#00BEFF">
+    <meta name="robots" content="index, follow">
+
+
     <title>{{ blog.title }} - dam's blog</title>
     <style>
         * {
@@ -11,7 +42,7 @@
         body {
             background-color: black;
             color: white;
-            font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+            font-family: Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             padding: 0;
             margin: 0;
             line-height: 1.6;
@@ -64,7 +95,7 @@
             margin-bottom: 30px;
         }
 
-        .blog-image {
+        img {
             display: block;
             align-items: center;
             justify-content: center;
@@ -73,6 +104,11 @@
             max-width: 100%;
             height: auto;
             margin: 0;
+        }
+        .subtext {
+            font-style: italic;
+            color: #808080;
+            line-height: 1.2;
         }
 
         footer {
@@ -108,7 +144,7 @@
                     <p>{{ blog.date }}</p>
                 </div>
                 <div class="short-url">
-                    <p>short: https://damcraft.de/-{{  blog.hash() }}</p>
+                    <p>short: https://damcraft.de/-{{  blog.hash }}</p>
                 </div>
             </div>
 
@@ -128,7 +164,7 @@
         </div>
         <footer>
             <div class="footer-links">
-                <a href="/">← Back to blogs</a> <a href="/blog/rss.xml">RSS feed</a>
+                <a href="/blog/">← Back to blogs</a> <a href="/blog/rss.xml">RSS feed</a>
             </div>
             <p class="footer-text">&copy; 1984 dam</p>
         </footer>
