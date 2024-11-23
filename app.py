@@ -169,7 +169,7 @@ def matrix_client():
 @app.route('/.well-known/matrix/server')
 def matrix_server():
     return {
-        "m.server": os.environ.get("MATRIX_SERVER_BASE_URL")
+        "m.server": os.environ.get("MATRIX_SERVER")
     }
 
 
