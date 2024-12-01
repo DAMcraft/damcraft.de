@@ -1,19 +1,9 @@
 :root {
-{
-% if theme = = "pink" %
-} --links: #ff1f64;
-    --links-hover: #ff4e87;
-    --selection: #ff1f64;
-    --highlight: #e5195a;
-{
-% elif theme = = "blue" %
-} --links: #0095cb;
+    --links: #0095cb;
     --links-hover: #57a3da;
     --selection: #00BEFF;
     --highlight: #00BEFF;
-{
-% endif %
-} height: 100vh;
+    height: 100vh;
     width: 100vw;
     margin: 0;
     padding: 0;
