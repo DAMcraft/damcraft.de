@@ -94,7 +94,8 @@ def listening_to():
     return event_reader(resp), 200, {
         "Cache-Control": "no-cache",
         "Content-Type": "text/html; charset=utf-8",
-        "X-Content-Type-Options": "nosniff"
+        "X-Content-Type-Options": "nosniff",
+        "Refresh": "120"
     }
 
 
