@@ -117,7 +117,7 @@ def spotify_status_updater():
 
         try:
             status = get_spotify_status(access_token)
-            retry_after = 0.5
+            retry_after = 2
             if status and status.get("error", {}).get("status") == 429:
                 retry_after = int(status.get("error", {}).get("retry_after", 2))
 
@@ -234,6 +234,7 @@ def spotify_status_updater():
         except BaseException:
             traceback.print_exc()
             pass
+        time.sleep(1)
 
 
 access_token, expires_on = get_access_token()
