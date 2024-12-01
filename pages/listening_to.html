@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listening to</title>
+    <style>
+        html {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .music-box {
+            background-color: #000000;
+            border: 1px solid rgba(255, 255, 255, 1);
+            font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, "Courier New", monospace;
+            box-shadow: 0 0 10px gray;
+            padding: 5px;
+            color: #eff0f1;
+            height: 85%;
+            width: 95%;
+            position: absolute;
+        }
+
+        .music-header {
+            font-size: 12px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            padding-top: 8px;
+            padding-right: 5px
+        }
+
+        #hide-btn:checked ~ .music-box {
+            display: none;
+        }
+
+        .album-cover {
+            width: 100px;
+            height: 100px;
+            margin-right: 10px;
+        }
+
+        .album-cover {
+            background-size: cover;
+            background-position: center;
+        }
+
+        .song-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 70%;
+        }
+        .song-title {
+            font-weight: bold;
+        }
+        .song-artist {
+            font-size: 12px;
+        }
+
+
+        .song-progress {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .seconds-progress, .minutes-progress {
+            width: 2ch;
+            display: inline-block;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        .seconds-progress::before, .minutes-progress::before {
+            max-width: 2ch;
+            text-align: right;
+            display: inline-block;
+            white-space: nowrap;
+            direction: rtl;
+        }
+        .current-progress {
+            display: flex;
+            align-items: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background-color: #333;
+            position: relative;
+            margin: -2px 7px 0 5px;
+            animation: increase-song-length 5s linear forwards;
+        }
+        .progress-bar::before {
+            content: '';
+            height: 100%;
+            background-color: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .paused {
+            margin-top: 5px;
+            color: #666;
+            font-size: 15px;
+        }
+        .pausedSVG {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="music-box">
+
+        <div class="music-header">
+                <img src="/assets/spotify.svg" alt="Spotify logo" width="15" height="15" style="margin-right: 5px;">
+                <p>Listening to</p>
+        </div>
+
+        <div class="notification-content">
+            <div class="album-cover"></div>
+            <div class="song-info">
+                <div class="song-title"></div>
+                <div class="song-artist"></div>
+                <div class="song-progress">
+                    <div class="current-progress">
+                        <div class="minutes-progress"></div>:<div class="seconds-progress"></div>
+                    </div>
+                    <div class="progress-bar"></div>
+                    <div class="song-length"></div>
+                </div>
+                <div class="paused">
+                    <img src="/assets/paused.svg" alt="Paused" width="15" height="15" class="pausedSVG"> Paused
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

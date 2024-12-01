@@ -4,7 +4,7 @@ import random
 from hashlib import sha256
 from threading import Thread
 
-from flask import Flask, render_template, Response, send_from_directory, request, redirect
+from flask import Flask, render_template, Response, send_from_directory, request, redirect, make_response
 import time
 import dotenv
 
@@ -12,7 +12,8 @@ import blog
 import jammingen
 from blog import get_blog_posts
 from dino import dino_game
-from helpers import get_discord_status, get_discord_invite, get_age, show_notification
+from helpers import get_discord_status, get_discord_invite, get_age, show_notification, \
+    event_reader, spotify_status_updater
 
 # Disable werkzeug logging
 import logging
@@ -85,6 +86,17 @@ def rss():
 def notification():
     newest_blog = show_notification(blogs, request)
     return render_template("notification.html", blog=newest_blog)
+
+
+@app.route('/listening_to')
+def listening_to():
+    resp = render_template("listening_to.html")
+    return event_reader(resp), 200, {
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive",
+        "Content-Type": "text/html; charset=utf-8",
+        "X-Content-Type-Options": "nosniff"
+    }
 
 
 @app.route('/mark_as_read', methods=["POST"])
@@ -214,5 +226,6 @@ def stats_updater():
 
 
 # Check if Flask is in debug mode
+Thread(target=spotify_status_updater).start()
 if os.environ.get("FLASK_DEBUG") != "1":
     Thread(target=stats_updater).start()

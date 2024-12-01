@@ -139,6 +139,12 @@
                 <h1>{{ blog.title }}</h1>
             </header>
 
+
+            <section class="blog-summary">
+                <p>{{ blog.summary }}</p>
+            </section>
+
+
             <div class="short-info">
                 <div class="blog-date">
                     <p>{{ blog.date }}</p>
@@ -147,11 +153,6 @@
                     <p>short: https://damcraft.de/-{{  blog.hash }}</p>
                 </div>
             </div>
-
-            <section class="blog-summary">
-                <p>{{ blog.summary }}</p>
-            </section>
-
             {% if blog.image %}
                 <figure class="blog-image">
                     <img src="{{ blog.image }}" alt="{{ blog.title }}" width="100%">

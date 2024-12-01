@@ -33,7 +33,7 @@ class BlogPost:
 def get_blog_posts():
     blog_posts = []
     for filename in os.listdir(blog_directory):
-        with open(os.path.join(blog_directory, filename), encoding='utf-8') as f:
+        with open(os.path.join(blog_directory, filename), encoding='utf-8', errors='ignore') as f:
             title = f.readline().strip()
             url_name = filename.split('.')[0]
             summary = f.readline().strip()
