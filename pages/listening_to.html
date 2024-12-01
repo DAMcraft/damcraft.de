@@ -126,6 +126,12 @@
         .pausedSVG {
             vertical-align: middle;
         }
+        .not-playing {
+            visibility: hidden;
+            width: 0;
+            height: 0;
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
@@ -152,6 +158,11 @@
                     <img src="/assets/paused.svg" alt="Paused" width="15" height="15" class="pausedSVG"> Paused
                 </div>
             </div>
+        </div>
+        <div class="not-playing">
+            <p>
+                I am currently not listening to any music on Spotify.
+            </p>
         </div>
     </div>
 </body>

@@ -112,6 +112,25 @@ def spotify_status_updater():
 
         try:
             status = get_spotify_status(access_token)
+            if status is None or "error" in status:
+                data = f"""
+                <style>
+                    .notification-content {{
+                        visibility: hidden;
+                        width: 0;
+                        height: 0;
+                    }}
+                    .not-playing {{
+                        visibility: visible;
+                        width: 100%;
+                        height: 100%;
+                    }}
+                </style>
+                """
+                event_writer(data)
+                last_event = data
+                continue
+
             song_title = status["item"]["name"]
             artist = ", ".join([artist["name"] for artist in status["item"]["artists"]])
             cover = status["item"]["album"]["images"][0]["url"]
@@ -143,6 +162,17 @@ def spotify_status_updater():
             minutes_keyframes = "\n".join(minutes_keyframes)
 
             data = f"""<style>
+            .notification-content {{
+                visibility: visible;
+                width: 100%;
+                height: 100%;
+            }}
+            .not-playing {{
+                visibility: hidden;
+                width: 0;
+                height: 0;
+            }}
+                    
             .song-length::before {{
                 content: "{duration_str}";
             }}
