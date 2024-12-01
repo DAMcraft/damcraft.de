@@ -55,6 +55,8 @@ def get_spotify_status(access_token):
         req = requests.get("https://api.spotify.com/v1/me/player/currently-playing", headers={
             "Authorization": f"Bearer {access_token}"
         })
+        if req.status_code == 429:
+            return {"error": {"status": 429, "retry_after": req.headers.get("Retry-After")}}
         return req.json()
 
     except (requests.exceptions.RequestException, JSONDecodeError):
@@ -116,7 +118,7 @@ def spotify_status_updater():
         try:
             status = get_spotify_status(access_token)
             if status and status.get("error", {}).get("status") == 429:
-                time.sleep(1.5)
+                time.sleep(status.get("error", {}).get("retry_after") or 2)
                 continue
             if status is None or "error" in status:
                 data = f"""
