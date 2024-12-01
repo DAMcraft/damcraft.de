@@ -116,19 +116,16 @@ def spotify_status_updater():
                 data = f"""
                 <style>
                     .notification-content {{
-                        visibility: hidden;
-                        width: 0;
-                        height: 0;
+                        display: none;
                     }}
                     .not-playing {{
-                        visibility: visible;
-                        width: 100%;
-                        height: 100%;
+                        display: flex;
                     }}
                 </style>
                 """
                 event_writer(data)
                 last_event = data
+                time.sleep(0.5)
                 continue
 
             song_title = status["item"]["name"]
@@ -163,14 +160,10 @@ def spotify_status_updater():
 
             data = f"""<style>
             .notification-content {{
-                visibility: visible;
-                width: 100%;
-                height: 100%;
+                display: flex;
             }}
             .not-playing {{
-                visibility: hidden;
-                width: 0;
-                height: 0;
+                display: none;
             }}
                     
             .song-length::before {{
