@@ -756,7 +756,7 @@ section {
     z-index: 1000;
     width: 350px;
     height: 155px;
-    animation: reappear 2s forwards;
+    animation: reappear 5s forwards;
 }
 
 @keyframes reappear {
