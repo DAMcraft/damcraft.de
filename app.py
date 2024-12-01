@@ -95,7 +95,7 @@ def listening_to():
         "Cache-Control": "no-cache",
         "Content-Type": "text/html; charset=utf-8",
         "X-Content-Type-Options": "nosniff",
-        "Refresh": "120"
+        "Refresh": "60"
     }
 
 
