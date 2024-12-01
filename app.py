@@ -93,7 +93,6 @@ def listening_to():
     resp = render_template("listening_to.html")
     return event_reader(resp), 200, {
         "Cache-Control": "no-cache",
-        "Connection": "keep-alive",
         "Content-Type": "text/html; charset=utf-8",
         "X-Content-Type-Options": "nosniff"
     }
