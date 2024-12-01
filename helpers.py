@@ -5,6 +5,8 @@ import queue
 import time
 import traceback
 from datetime import datetime
+from json import JSONDecodeError
+
 import requests
 
 
@@ -52,9 +54,10 @@ def get_spotify_status(access_token):
     try:
         req = requests.get("https://api.spotify.com/v1/me/player/currently-playing", headers={
             "Authorization": f"Bearer {access_token}"
-        }).json()
-        return req
-    except requests.exceptions.RequestException:
+        })
+        return req.json()
+
+    except (requests.exceptions.RequestException, JSONDecodeError):
         return None
 
 
