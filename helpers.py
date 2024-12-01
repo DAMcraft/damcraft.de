@@ -112,7 +112,7 @@ def spotify_status_updater():
 
         try:
             status = get_spotify_status(access_token)
-            if status.get("error", {}).get("status") == 429:
+            if status and status.get("error", {}).get("status") == 429:
                 time.sleep(1.5)
                 continue
             if status is None or "error" in status:
