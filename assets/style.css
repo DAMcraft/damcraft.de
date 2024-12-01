@@ -745,7 +745,7 @@ section {
     left: -99999px;
     z-index: 1000;
     width: 350px;
-    height: 155px;
+    height: 140px;
     animation: reappear 5s forwards;
 }
 
