@@ -208,6 +208,9 @@ def before_request():
 @app.after_request
 def after_request(response):
     response.headers["Onion-Location"] = "http://" + os.environ.get("TOR_HOSTNAME") + request.path  # noqa
+    # cache if it's /assets/
+    if request.path.startswith("/assets/"):
+        response.headers["Cache-Control"] = "public, max-age=604800"
     return response
 
 
