@@ -1,6 +1,6 @@
 <!--
     Yeah. There is none. No JavaScript.
-    Yes. The discord status updates automatically. No JavaScript.
+    Yes. The spotfiy and discord status update automatically. No JavaScript.
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -76,7 +76,7 @@
                         {% endif %}
                         I <b>love</b> programming in Python, Java, JavaScript and Rust.<br>
                         (Ok, that JavaScript part was a lie, this website is made entirely without JS.<span id="that_one_linebreak"><br></span>
-                        &nbsp;And yes, my discord status below <i>does</i> update automatically every 10s <b>without</b> JS)
+                        &nbsp;And yes, my discord and spotify statuses <i>do</i> update dynamically <b>without</b> JS)
                     </div>
                 </div>
             </section>
@@ -102,6 +102,7 @@ You can find my PGP key just below this section.<br>
                                     <iframe src="/discord_status?refresh_every=9" id="status1" height="20em"></iframe>
                                     <iframe src="/discord_status?refresh_every=10" id="status2" height="20em"></iframe>
                                 </div>
+                            {% endif %}
                             {% endif %}
                         </td>
                     </tr>
