@@ -152,8 +152,8 @@ def spotify_status_updater():
             last_state = state
             last_push = progress
 
-            song_title = song_title.replace('"', '\\"')
-            artist = artist.replace('"', '\\"')
+            song_title = song_title.replace('"', '\\"').replace("\\", "\\\\")
+            artist = artist.replace('"', '\\"').replace("\\", "\\\\")
 
             unique_id = str(time.time()).replace(".", "")
             seconds_keyframes = []
