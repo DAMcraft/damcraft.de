@@ -174,6 +174,8 @@ def spotify_status_updater():
                 tmp_i = i
                 if not is_playing:
                     tmp_i = 0
+                if progress + tmp_i >= duration:
+                    tmp_i = duration - progress
                 seconds_keyframes.append(f"{i * 10}% {{ counter-increment: seconds{unique_id} {(progress + tmp_i) % 60}; }}")
                 minutes_keyframes.append(f"{i * 10}% {{ counter-increment: minutes{unique_id} {(progress + tmp_i) // 60}; }}")
             seconds_keyframes = "\n".join(seconds_keyframes)
