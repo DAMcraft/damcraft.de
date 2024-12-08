@@ -259,7 +259,7 @@ def spotify_status_updater():
         except BaseException:
             traceback.print_exc()
             pass
-        time.sleep(1)
+        time.sleep(1.5)
 
 
 access_token, expires_on = get_access_token()
