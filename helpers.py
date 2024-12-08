@@ -62,6 +62,16 @@ def show_notification(blogs, request):
     return blog
 
 
+def escape(s):
+    s = s.replace("\\", "\\\\")
+    s = s.replace("'", "\\'")
+    s = s.replace('"', '\\"')
+    s = s.replace("\n", "\\A")
+    return s
+
+
+
+
 def get_spotify_status(access_token):
     try:
         req = requests.get("https://api.spotify.com/v1/me/player/currently-playing", headers={
@@ -132,6 +142,7 @@ def spotify_status_updater():
             retry_after = 2
             if status and status.get("error", {}).get("status") == 429:
                 retry_after = int(status.get("error", {}).get("retry_after", 2))
+                print(f"We are being rate limited, retrying after {retry_after} seconds")
 
             if status is None or "error" in status:
                 data = f"""
@@ -164,8 +175,8 @@ def spotify_status_updater():
             last_state = state
             last_push = progress
 
-            song_title = song_title.replace('"', '\\"').replace("\\", "\\\\")
-            artist = artist.replace('"', '\\"').replace("\\", "\\\\")
+            song_title = escape(song_title)
+            artist = escape(artist)
 
             unique_id = str(time.time()).replace(".", "")
             seconds_keyframes = []
