@@ -803,7 +803,7 @@ section {
 @media (max-width: 1000px) {
     .listening-wrapper {
         /* do not display the listening wrapper on mobile */
-        display: none;
+        /*display: none;*/
     }
 }
 

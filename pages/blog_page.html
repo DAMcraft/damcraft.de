@@ -33,12 +33,11 @@
     <meta name="theme-color" content="#00BEFF">
     <meta name="robots" content="index, follow">
 
+    <link rel="stylesheet" href="/assets/codehilite.css"/>
+
 
     <title>{{ blog.title }} - dam's blog</title>
     <style>
-        * {
-            margin: 0;
-        }
         body {
             background-color: black;
             color: white;
@@ -129,6 +128,26 @@
         a:hover {
             text-decoration: underline;
         }
+        video {
+            width: 100%;
+        }
+        pre {
+            padding: 5px;
+        }
+        .codehilite {
+            overflow-x: auto;
+            margin: 5px 0;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+        }
+        p, figure, ul, ol, pre, blockquote, table {
+            margin: 0;
+        }
+        .no-select {
+            user-select: none;
+        }
     </style>
     <link rel="alternate" type="application/rss+xml" title="RSS feed" href="/blog/rss.xml">
 </head>
@@ -150,7 +169,7 @@
                     <p>{{ blog.date }}</p>
                 </div>
                 <div class="short-url">
-                    <p>short: https://damcraft.de/-{{  blog.hash }}</p>
+                    <p><span class="no-select">short: </span>https://damcraft.de/-{{  blog.hash }}</p>
                 </div>
             </div>
             {% if blog.image %}
