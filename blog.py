@@ -10,17 +10,25 @@ blog_directory = 'blog_posts'
 
 
 class BlogPost:
-    def __init__(self, title: str, summary: str, date: str, image: str, content: str, url_name: str = None):
+    def __init__(
+            self,
+            title: str,
+            summary: str,
+            date: str,
+            image: str,
+            content: str,
+            url_name: str = None,
+            blog_hash: str = None
+    ):
         self.title = title
         self.url_name = url_name or title.lower().replace(" ", "-")
         self.summary = summary
         self.date = date
         self.image = image or None
+        self.hash = blog_hash or self._get_hash()
         self.content = markdown.markdown(content, extensions=['fenced_code', 'codehilite', 'extra'])
 
-    @property
-    @cache
-    def hash(self):
+    def _get_hash(self):
         digest = hashlib.md5(self.url_name.encode()).hexdigest()
         base64_hash = base64.b64encode(digest.encode()).decode()
         truncated_hash = base64_hash[:4]  # 64 ^ 4 = 16,777,216 possible hashes, should be enough
@@ -39,9 +47,10 @@ def get_blog_posts():
             summary = f.readline().strip()
             date = f.readline().strip()
             image = f.readline().strip()
+            blog_hash = f.readline().strip()
             f.readline()  # skip the empty line
             content = f.read()
-            blog_posts.append(BlogPost(title, summary, date, image, content, url_name))
+            blog_posts.append(BlogPost(title, summary, date, image, content, url_name, blog_hash))
     blog_posts.sort(key=lambda x: x.date, reverse=True)
     return blog_posts
 

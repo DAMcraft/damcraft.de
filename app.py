@@ -13,7 +13,7 @@ import jammingen
 from blog import get_blog_posts
 from dino import dino_game
 from helpers import get_discord_status, get_discord_invite, get_age, show_notification, \
-    event_reader, spotify_status_updater
+    event_reader, spotify_status_updater, format_iso_date
 
 # Disable werkzeug logging
 import logging
@@ -60,7 +60,8 @@ def blogs_page():
 def blog_post(blog_id):
     for i, blog_ in enumerate(blogs):
         if blog_.url_name == blog_id:
-            resp = app.make_response(render_template('blog_page.html', blog=blog_))
+            date_text = format_iso_date(blog_.date)
+            resp = app.make_response(render_template('blog_page.html', blog=blog_, date_text=date_text))
             if i == 0:
                 resp.set_cookie("last_read", blog_.url_name, max_age=60 * 60 * 24 * 365)
             return resp

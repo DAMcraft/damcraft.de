@@ -40,6 +40,18 @@ def get_age():
     return today.year - birthday.year - (not has_passed)
 
 
+def format_iso_date(iso_timestamp):
+    # Convert to datetime object
+    date_obj = datetime.strptime(iso_timestamp, "%Y-%m-%d")
+
+    # Get the day suffix
+    day = date_obj.day
+    suffix = "th" if 4 <= day <= 20 or 24 <= day % 10 <= 30 else "st" if day % 10 == 1 else "nd" if day % 10 == 2 else "rd"
+
+    # Format the date as "Month day_suffix Year"
+    return date_obj.strftime(f"%B {day}{suffix}, %Y")
+
+
 def show_notification(blogs, request):
     if len(blogs) == 0:
         return None

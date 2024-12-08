@@ -1,7 +1,8 @@
 Fully automatic updating Spotify status... without JavaScript?
-How I managed to keep my website JavaScript-free and still show my current Spotify status in real-time.
+How I managed to keep my website JavaScript-free while still showing my current Spotify status in real-time.
 2024-12-08
 /assets/blog/spotify-status.png
+spotify
 ---------
 ## The challenge
 
@@ -93,3 +94,22 @@ Yes, it would've been way easier with JavaScript, and I spent way too many hours
     
 The code for this can be found on my GitHub:
 [https://github.com/DAMcraft/damcraft.de](https://github.com/DAMcraft/damcraft.de)
+
+<div class="listening-wrapper">
+    <iframe loading="lazy" class="listening-to" src="/listening_to"></iframe>
+</div>
+
+<style>
+.listening-to {
+    border: none;
+    background: none;
+    width: 350px;
+    height: 140px;
+}
+.listening-wrapper {
+    margin-top: 20px;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+}
+</style>

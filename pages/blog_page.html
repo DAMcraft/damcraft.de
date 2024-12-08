@@ -151,6 +151,12 @@
         ul {
             padding-left: 20px;
         }
+        .blog-date:hover p {
+            display: none;
+        }
+        .blog-date:hover::before {
+            content: "{{ date_text }}";
+        }
     </style>
     <link rel="alternate" type="application/rss+xml" title="RSS feed" href="/blog/rss.xml">
 </head>
