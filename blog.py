@@ -16,7 +16,7 @@ class BlogPost:
         self.summary = summary
         self.date = date
         self.image = image or None
-        self.content = markdown.markdown(content, extensions=['fenced_code', 'codehilite'])
+        self.content = markdown.markdown(content, extensions=['fenced_code', 'codehilite', 'extra'])
 
     @property
     @cache

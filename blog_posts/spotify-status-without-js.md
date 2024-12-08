@@ -23,9 +23,11 @@ Instead of changing the actual HTML structure or DOM (which is what JavaScript w
 Yep, all the dynamic changes — like song title, progress, album art — are handled by changing the styles.
 
 Here's how I do it:
-- I create a skeleton HTML page that contains placeholders for things like the song title and album art.
-- I keep the connection open between the server and the browser using something called server-sent events (essentially, a live stream of data from the server to the browser).
-- When there’s an update (song change, playback status, etc.), I inject new CSS into the page. This CSS is what updates things like the song title and progress bar.
+<ul>
+    <li> I create a skeleton HTML page that contains placeholders for things like the song title and album art.</li>
+    <li> I keep the connection open between the server and the browser using something called server-sent events (essentially, a live stream of data from the server to the browser).</li>
+    <li> When there’s an update (song change, playback status, etc.), I inject new CSS into the page. This CSS is what updates things like the song title and progress bar.</li>
+</ul>
 
 This idea was suggested to me by my friend yui ([https://zptr.cc/](https://zptr.cc/)), 
 whose website is genuinely amazing, please check it out!
