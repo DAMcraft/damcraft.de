@@ -312,7 +312,7 @@ a:hover {
     user-select: none;
 }
 
-#downloadPgp svg {
+#downloadPgp img {
     width: 24px;
     height: 24px;
     fill: #fff;
@@ -405,12 +405,9 @@ table td a:hover {
     color: var(--links-hover) !important;
 }
 
-table td svg {
-    fill: #fff;
+table td img {
     padding-right: 0.5em;
-    /* Align the SVG icons to the text */
     vertical-align: middle;
-    /* Make the SVG icons smaller */
     width: 19px;
 }
 
