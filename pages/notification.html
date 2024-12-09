@@ -9,6 +9,7 @@
             overflow: hidden;
             width: fit-content;
             height: 100%;
+            color: #eff0f1;
         }
         * {
             margin: 2px;
@@ -33,7 +34,6 @@
             padding-bottom: 5px;
             border-bottom: 2px solid rgba(255, 255, 255, 0.2);
             margin: 0;
-            color: #eff0f1;
         }
 
         .close-btn {
@@ -75,13 +75,11 @@
             font-size: 18px;
             margin-top: 10px;
             margin-bottom: 5px;
-            color: #eff0f1;
         }
 
         .notification-content p {
             margin-top: 0;
             font-size: 14px;
-            color: #eff0f1;
         }
 
         .action-buttons {
@@ -100,13 +98,12 @@
         .read-btn {
             background-color: {{ "#1482aa" if request.args.get("theme") == "blue" else "#b30e41"}};
             text-decoration: none;
-            color: #eff0f1;
             margin-right: 10px;
+            color: #eff0f1;
         }
 
         .no-thanks-btn {
             background-color: #151515;
-            color: #eff0f1;
         }
 
         .read-btn:hover, .no-thanks-btn:hover {
