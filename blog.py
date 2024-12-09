@@ -72,7 +72,7 @@ def get_rss():
             <title>{post.title}</title>
             <link>https://damcraft.de/blog/{post.url_name}</link>
             <description><![CDATA[{rss_content}]]></description>
-            <pubDate>{datetime.strptime(post.date, "%Y-%m-%d").strftime("%a, %d %b %Y %H:%M:%S %z")}</pubDate>
+            <pubDate>{datetime.strptime(post.date, "%Y-%m-%d").strftime("%a, %d %b %Y %H:%M:%S %z").strip()}</pubDate>
             <guid isPermaLink="true">https://damcraft.de/blog/{post.url_name}</guid>
         </item>"""
     data = f"""<?xml version="1.0" encoding="UTF-8"?>
