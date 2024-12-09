@@ -132,7 +132,44 @@
         }
         .not-playing {
             display: none;
-            height: 100%;
+            height: 100px;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .open-song {
+            display: inline-block;
+            text-decoration: none;
+            position: absolute;
+            right: 10px;
+            bottom: 7px;
+        }
+
+        .open-song div {
+            background-color: white;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .open-song:hover div {
+            background-color: #d6d6d6;
+        }
+
+        .open-song div img {
+            max-width: 100%;
+            height: auto;
+        }
+        .overwrite-div {
+            background-color: black;
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            right: 10px;
+            bottom: 7px;
         }
     </style>
 </head>

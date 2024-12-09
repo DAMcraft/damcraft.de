@@ -70,8 +70,6 @@ def escape(s):
     return s
 
 
-
-
 def get_spotify_status(access_token):
     try:
         req = requests.get("https://api.spotify.com/v1/me/player/currently-playing", headers={
@@ -139,13 +137,16 @@ def spotify_status_updater():
 
         try:
             status = get_spotify_status(access_token)
-            retry_after = 2
+            retry_after = 3
             if status and status.get("error", {}).get("status") == 429:
-                retry_after = int(status.get("error", {}).get("retry_after", 2))
+                retry_after = int(status.get("error", {}).get("retry_after", 3))
+                if retry_after < 3:
+                    retry_after = 3
                 print(f"We are being rate limited, retrying after {retry_after} seconds")
 
             if status is None or "error" in status:
                 data = f"""
+                <div class="overwrite-div"></div>
                 <style>
                     .notification-content {{
                         display: none;
@@ -165,6 +166,7 @@ def spotify_status_updater():
             cover = status["item"]["album"]["images"][0]["url"]
             progress = status["progress_ms"] // 1000
             duration = status["item"]["duration_ms"] // 1000
+            song_url = status["item"]["external_urls"]["spotify"]
             is_playing = status["is_playing"]
             delta = duration - progress
             duration_str = f"{duration // 60}:{duration % 60:02d}"
@@ -192,7 +194,11 @@ def spotify_status_updater():
             seconds_keyframes = "\n".join(seconds_keyframes)
             minutes_keyframes = "\n".join(minutes_keyframes)
 
-            data = f"""<style>
+            data = f"""
+            <div class="overwrite-div"></div>
+            <a href="{song_url}" class="open-song" target="_blank"><div><img src="/assets/open.svg" alt="Open"></div></a>
+            
+            <style>
             .notification-content {{
                 display: flex;
             }}
