@@ -230,6 +230,6 @@ def stats_updater():
 
 
 # Check if Flask is in debug mode
-Thread(target=spotify_status_updater).start()
 if os.environ.get("FLASK_DEBUG") != "1":
+    Thread(target=spotify_status_updater).start()
     Thread(target=stats_updater).start()

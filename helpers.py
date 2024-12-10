@@ -173,6 +173,9 @@ def spotify_status_updater():
 
             state = (song_title, artist, cover, duration, is_playing)
             if state == last_state and 0 <= progress - last_push <= 5:
+                if not is_playing:
+                    time.sleep(1.5)
+                    continue
                 continue
             last_state = state
             last_push = progress
