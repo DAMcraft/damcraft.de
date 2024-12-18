@@ -15,16 +15,18 @@ class BlogPost:
             title: str,
             summary: str,
             date: str,
-            image: str,
             content: str,
             url_name: str = None,
-            blog_hash: str = None
+            blog_hash: str = None,
+            image: str = None
     ):
+        if not title or not summary or not date or not content:
+            raise ValueError("Missing required fields")
         self.title = title
         self.url_name = url_name or title.lower().replace(" ", "-")
         self.summary = summary
         self.date = date
-        self.image = image or None
+        self.image = image
         self.hash = blog_hash or self._get_hash()
         self.content = markdown.markdown(content, extensions=['fenced_code', 'codehilite', 'extra'])
 
@@ -42,15 +44,38 @@ def get_blog_posts():
     blog_posts = []
     for filename in os.listdir(blog_directory):
         with open(os.path.join(blog_directory, filename), encoding='utf-8', errors='ignore') as f:
-            title = f.readline().strip()
             url_name = filename.split('.')[0]
-            summary = f.readline().strip()
-            date = f.readline().strip()
-            image = f.readline().strip()
-            blog_hash = f.readline().strip()
-            f.readline()  # skip the empty line
-            content = f.read()
-            blog_posts.append(BlogPost(title, summary, date, image, content, url_name, blog_hash))
+
+            data = {
+                "title": "",
+                "summary": "",
+                "date": "",
+                "content": "",
+                "image": None,
+                "hash": None,
+                "url_name": url_name
+            }
+
+            done = False
+            while not done:
+                line = f.readline().strip()
+                if line.replace("-", "").strip() == "":
+                    done = True
+                else:
+                    try:
+                        key, value = line.split(":", 1)
+                    except ValueError:
+                        raise ValueError(f"Invalid line: {line}")
+                    key = key.strip().lower()
+                    if key not in data:
+                        raise ValueError(f"Unknown key: {key}")
+                    data[key] = value.strip()
+
+            data["content"] = f.read()
+            data["blog_hash"] = data["hash"]
+            del data["hash"]
+            blog_posts.append(BlogPost(**data))
+
     blog_posts.sort(key=lambda x: x.date, reverse=True)
     return blog_posts
 

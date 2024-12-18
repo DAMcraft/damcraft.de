@@ -1,8 +1,8 @@
-Fully automatic updating Spotify status... without JavaScript?
-How I managed to keep my website JavaScript-free while still showing my current Spotify status in real-time.
-2024-12-08
-/assets/blog/spotify-status.png
-spotify
+Title: Fully automatic updating Spotify status... without JavaScript?
+Summary: How I managed to keep my website JavaScript-free while still showing my current Spotify status in real-time.
+Date: 2024-12-08
+Image: /assets/blog/spotify-status.png
+Hash: spotify
 ---------
 ## The challenge
 
