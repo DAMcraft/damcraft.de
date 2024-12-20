@@ -28,10 +28,10 @@ targeting pornographic sites with inadequate safeguards — and Russian sanction
 However, these blocks have been largely ineffective, with operators bypassing them almost immediately.  
 
 ## Opinion
-While blocking terrorist propaganda like Al-Manar seems like a good step in keeping harmful content off the internet,
-it’s important to remember that these measures can set a dangerous precedent. 
-We all agree that such content is abhorrent, but we must be careful about the broader implications. 
-A crackdown on content deemed 'unconstitutional' could lead to more censorship, 
-potentially targeting other forms of expression that don't align with government or societal views. 
-What starts with targeting terrorism could end up restricting freedom of speech in ways that go beyond what is necessary 
+While blocking terrorist propaganda like Al-Manar might seem like a good step in keeping harmful content off the internet,
+such measures could lead to dangerous consequences. 
+We all agree that such content is bad and harmful, but we need to pay attention about consequences that could follow from this. 
+Blocking of content deemed 'unconstitutional' could lead to more censorship, 
+potentially targeting other forms of expression that don't match with government or public views. 
+What starts with targeting terrorism could end up restricting freedom of speech in more than necessary 
 to protect public safety.
