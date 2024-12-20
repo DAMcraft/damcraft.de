@@ -3,6 +3,7 @@ import os
 import random
 from hashlib import sha256
 from threading import Thread
+from urllib.parse import urlparse
 
 from flask import Flask, render_template, Response, send_from_directory, request, redirect, make_response
 import time
@@ -188,7 +189,30 @@ def matrix_server():
 
 @app.route('/robots.txt')
 def robots_txt():
-    return send_from_directory(".", "robots.txt")
+    components = urlparse(request.host_url)
+    url_base = f"{components.scheme}://{components.netloc}"
+    data = render_template("robots.txt", url_base=url_base)
+    return Response(data, mimetype="text/plain")
+
+
+@app.route('/sitemap.xml')
+def sitemap_xml():
+    components = urlparse(request.host_url)
+    url_base = f"{components.scheme}://{components.netloc}"
+    xml_sitemap = render_template(
+        "sitemap.xml", urls=sitemap_urls, url_base=url_base
+    )
+    response = make_response(xml_sitemap)
+    response.headers["Content-Type"] = "application/xml"
+    return response
+
+
+@app.route('/sitemap.txt')
+def sitemap_txt():
+    components = urlparse(request.host_url)
+    url_base = f"{components.scheme}://{components.netloc}"
+    data = "\n".join([url_base + url for url in sitemap_urls])
+    return Response(data, mimetype="text/plain")
 
 
 @app.route('/headers', methods=["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"])
@@ -227,6 +251,21 @@ def stats_updater():
         discord_invite = get_discord_invite()
 
         time.sleep(10)
+
+
+def gen_urllist():
+    urls = []
+    for rule in app.url_map.iter_rules():
+        if "GET" in rule.methods and len(rule.arguments) == 0:
+            urls.append(rule.rule)
+
+    for blog_ in blogs:
+        urls.append(f"/blog/{blog_.url_name}")
+
+    return urls
+
+
+sitemap_urls = gen_urllist()
 
 
 # Check if Flask is in debug mode
