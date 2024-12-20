@@ -1,5 +1,6 @@
 import base64
 import json
+import logging
 import os
 import queue
 import time
@@ -7,6 +8,7 @@ import traceback
 from datetime import datetime
 from json import JSONDecodeError
 
+import flask.wrappers
 import requests
 
 
@@ -60,6 +62,22 @@ def show_notification(blogs, request):
     if cookie == blog.url_name:
         return None
     return blog
+
+
+def get_handlers() -> [logging.StreamHandler]:
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+
+    # Create a handler for the console
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG)
+    console_handler.setFormatter(formatter)
+
+    # Create a handler for the file
+    file_handler = logging.FileHandler("app.log")
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(formatter)
+
+    return console_handler, file_handler
 
 
 def escape(s):

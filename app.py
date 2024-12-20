@@ -14,13 +14,11 @@ import jammingen
 from blog import get_blog_posts
 from dino import dino_game
 from helpers import get_discord_status, get_discord_invite, get_age, show_notification, \
-    event_reader, spotify_status_updater, format_iso_date
-
-# Disable werkzeug logging
+    event_reader, spotify_status_updater, format_iso_date, get_handlers
 import logging
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
-# ------------------------
+
+for handler in get_handlers():
+    logging.getLogger().addHandler(handler)
 
 app = Flask(__name__, template_folder='pages')
 dotenv.load_dotenv()
