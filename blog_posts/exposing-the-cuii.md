@@ -31,8 +31,8 @@ It aimed to crowdsource a list of blocked domains[^4].
 Sadly, *cuiiliste.de* shut down in 2023[^5].  
 
 When I discovered this, I decided to revive the concept. 
-I acquired the domain and automated the process of checking and monitoring blocked websites. 
-This is because of the CUII's refusal to publish a domain list, as permitted under their Code of Conduct (Appendix 1, Section 4, Paragraph 4, Letter l)[^3].  
+I acquired the domain and automated the process of checking and monitoring blocked websites. This included monitoring when which ISP blocked or unblocked which domain.
+This is because of the CUII's refusal to publish a domain list, as described in their Code of Conduct (Appendix 1, Section 4, Paragraph 4, Letter l)[^3].  
 
 While I worked on this, my friend [Northernside](https://northernsi.de) **GOT HIS HANDS ON THE ACTUAL CUII DOMAIN LIST!?**  
 We won't disclose how, but this was groundbreaking.
@@ -49,7 +49,7 @@ There are no wildcard blocks, all subdomains were individually listed.
 
 Once the list was added to the database, news outlets picked up the story. 
 Articles appeared on platforms like Netzpolitik.org[^6], Heise[^8], TorrentFreak[^9], and others. 
-The publicity was immense, shining a spotlight on the CUII's lack of transparency.  
+This made the project gained widespread attention, making the CUII’s lack of transparency more widely known.  
 
 You can still view and contribute to the updated list at [cuiiliste.de](https://cuiiliste.de/).  
 
@@ -65,11 +65,11 @@ This requirement is also enforced by the Federal Network Agency (BNetzA)[^10].
 ![CUII Monitoring](/assets/blog/regelmaessiges-monitoring.png)  
 <div class="subtext">
 Translation: "The applicant [CUII member] has to carry out regular monitoring to check whether the conditions for the blocking claim according to §19a UrhG [German Copyright Act] still exist."<br>
-- Statement from the Federal Network Agency (BNetzA) in a Freedom of Information request
+- Statement from the Federal Network Agency (BNetzA) in a Freedom of Information Act request
 </div>
 
-Yet domains remained wrongfully blocked for years. 
-For example, `serien.sx` redirected to non-infringing content (`serien.domains`) as early as April 2022. 
+Yet domains remained wrongfully blocked **for years**. 
+For example, `serien.sx` redirected to non-infringing content (`serien.domains`) as early as April 2022 (over 2 and a half year!). 
 Despite this, it remained blocked until I raised the issue with the CUII. 
 While they never responded, the domain was quietly unblocked soon after.  
 
