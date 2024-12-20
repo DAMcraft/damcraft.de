@@ -10,6 +10,7 @@ from json import JSONDecodeError
 
 import flask.wrappers
 import requests
+from flask import has_request_context, request
 
 
 def get_discord_status():
@@ -65,7 +66,7 @@ def show_notification(blogs, request):
 
 
 def get_handlers() -> [logging.StreamHandler]:
-    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S")
 
     # Create a handler for the console
     console_handler = logging.StreamHandler()
