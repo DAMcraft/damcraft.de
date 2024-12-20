@@ -27,7 +27,7 @@ def render():
     if not os.path.exists("cache"):
         os.mkdir("cache")
 
-    ip = request.headers.get("X-Client-IP") or request.remote_addr
+    ip = request.headers.get("X-Forwarded-For") or request.remote_addr
     if ip == "127.0.0.1":
         return b""
     if ":" in ip:

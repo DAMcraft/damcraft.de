@@ -8,6 +8,8 @@ from urllib.parse import urlparse
 from flask import Flask, render_template, Response, send_from_directory, request, redirect, make_response
 import time
 import dotenv
+import logging
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 import blog
 import jammingen
@@ -15,12 +17,13 @@ from blog import get_blog_posts
 from dino import dino_game
 from helpers import get_discord_status, get_discord_invite, get_age, show_notification, \
     event_reader, spotify_status_updater, format_iso_date, get_handlers
-import logging
+
 
 for handler in get_handlers():
     logging.getLogger().addHandler(handler)
 
 app = Flask(__name__, template_folder='pages')
+app.wsgi_app = ProxyFix(app.wsgi_app)
 dotenv.load_dotenv()
 
 
