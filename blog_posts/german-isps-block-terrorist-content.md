@@ -1,5 +1,5 @@
-Title: First Major Internet Block in Germany for Terrorist Propaganda  
-Summary: German ISPs now block websites for spreading unconstitutional content, a significant shift in censorship.  
+Title: First major internet block in Germany for terrorist propaganda  
+Summary: German ISPs now block websites for spreading unconstitutional content, a change in internet censorship here.  
 Date: 2024-12-20  
 Image: /assets/blog/terrorist-block.jpg  
 Hash: almanar  
@@ -14,7 +14,7 @@ was found spreading hate speech and terror propaganda.
 The German government had already banned the channel in 2008 for its unconstitutional content, 
 but it continued to operate online.  
 
-On December 18, 2024, the *Commission for Youth Media Protection (KJM)* ordered telecom companies to block both the  
+On December 18, 2024, the *Commission for Youth Media Protection (KJM)* ordered telecom companies to block both the 
 Arabic and English versions of *Al-Manar TV's* website. 
 We were able to find two domains affected under these blocks.
 The reason? The site was found to spread content that undermines the values of a free and democratic society, 
