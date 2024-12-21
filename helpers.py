@@ -13,7 +13,7 @@ import const
 
 def get_discord_status():
     try:
-        req = requests.get("https://api.lanyard.rest/v1/users/" + const.DISCORD_ID).json()
+        req = requests.get("https://api.lanyard.rest/v1/users/" + str(const.DISCORD_ID)).json()
         return req.get("data", {}).get("discord_status", "")
     except requests.exceptions.RequestException:
         return None

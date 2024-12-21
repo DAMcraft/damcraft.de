@@ -223,7 +223,7 @@ def before_request():
 def after_request(response):
     response.headers["Onion-Location"] = "http://" + const.TOR_HOSTNAME + request.path  # noqa
     if not str(response.status_code).startswith("3"):
-        response.headers["Link"] = f'<https://damcraft.de{request.path}>; rel="canonical"'
+        response.headers["Link"] = f'<{const.URL_BASE}{request.path}>; rel="canonical"'
     response.headers["Content-Security-Policy"] = "script-src 'none';"
     return response
 
