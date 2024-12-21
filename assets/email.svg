@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" height="12.8" width="135">
+  <style>
+    :root {
+      --links: #0095cb;
+      --links-hover: #57a3da;
+    }
+    text {
+      font-family: Consolas, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
+      font-size: 12.8px;
+      fill: var(--links); /* Default color */
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    a:hover text {
+      fill: var(--links-hover);
+    }
+  </style>
+  <a href="mailto:c&#111;ntact&#64;d&#97;mcraf&#116;&#46;de">
+    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle">
+      cont<!--aa-->act&#64;damcr<!--boop-->aft&#46;de
+    </text>
+  </a>
+</svg>
