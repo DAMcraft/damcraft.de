@@ -1,21 +1,19 @@
 import base64
 import json
 import logging
-import os
 import queue
 import time
 import traceback
 from datetime import datetime
 from json import JSONDecodeError
-
-import flask.wrappers
 import requests
-from flask import has_request_context, request
+
+import const
 
 
 def get_discord_status():
     try:
-        req = requests.get("https://api.lanyard.rest/v1/users/" + os.environ.get("DISCORD_ID")).json()
+        req = requests.get("https://api.lanyard.rest/v1/users/" + const.DISCORD_ID).json()
         return req.get("data", {}).get("discord_status", "")
     except requests.exceptions.RequestException:
         return None
@@ -24,7 +22,7 @@ def get_discord_status():
 def get_discord_invite():
     try:
         widget = (requests.get(
-            f"https://discord.com/api/v9/guilds/{os.environ.get('SERVER_ID')}/widget.json"
+            f"https://discord.com/api/v9/guilds/{const.SERVER_ID}/widget.json"
         ).json())
         invite = widget.get("instant_invite")
         invite = invite.replace("https://discord.com/invite/", "https://discord.gg/")
@@ -34,7 +32,7 @@ def get_discord_invite():
 
 
 def get_age():
-    birthday_str = os.environ.get("BIRTHDAY")  # YYYY-MM-DD
+    birthday_str = const.BIRTHDAY  # YYYY-MM-DD
     if birthday_str is None:
         return None
     birthday = datetime.strptime(birthday_str, "%Y-%m-%d").date()
@@ -49,7 +47,7 @@ def format_iso_date(iso_timestamp):
 
     # Get the day suffix
     day = date_obj.day
-    suffix = "th" if 4 <= day <= 20 or 24 <= day % 10 <= 30 else "st" if day % 10 == 1 else "nd" if day % 10 == 2 else "rd"
+    suffix = "th" if 4 <= day <= 20 or 24 <= day % 10 <= 30 else "st" if day % 10 == 1 else "nd" if day % 10 == 2 else "rd"  # noqa
 
     # Format the date as "Month day_suffix Year"
     return date_obj.strftime(f"%B {day}{suffix}, %Y")
@@ -103,9 +101,9 @@ def get_spotify_status(access_token):
 
 
 def get_access_token():
-    refresh_token = os.environ.get("SPOTIFY_REFRESH_TOKEN")
-    client_id = os.environ.get("SPOTIFY_CLIENT_ID")
-    client_secret = os.environ.get("SPOTIFY_CLIENT_SECRET")
+    refresh_token = const.SPOTIFY_REFRESH_TOKEN
+    client_id = const.SPOTIFY_CLIENT_ID
+    client_secret = const.SPOTIFY_CLIENT_SECRET
     auth = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()
     headers = {
         "Authorization": f"Basic {auth}",
@@ -211,8 +209,8 @@ def spotify_status_updater():
                     tmp_i = 0
                 if progress + tmp_i >= duration:
                     tmp_i = duration - progress
-                seconds_keyframes.append(f"{i * 10}% {{ counter-increment: seconds{unique_id} {(progress + tmp_i) % 60}; }}")
-                minutes_keyframes.append(f"{i * 10}% {{ counter-increment: minutes{unique_id} {(progress + tmp_i) // 60}; }}")
+                seconds_keyframes.append(f"{i * 10}% {{ counter-increment: seconds{unique_id} {(progress + tmp_i) % 60}; }}")   # noqa
+                minutes_keyframes.append(f"{i * 10}% {{ counter-increment: minutes{unique_id} {(progress + tmp_i) // 60}; }}")  # noqa
             seconds_keyframes = "\n".join(seconds_keyframes)
             minutes_keyframes = "\n".join(minutes_keyframes)
 

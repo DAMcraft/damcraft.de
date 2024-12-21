@@ -1,7 +1,0 @@
-User-agent: *
-Disallow: /discord_status
-Disallow: /notifications
-
-Sitemap: https://damcraft.de/sitemap.xml
-Sitemap: https://damcraft.de/sitemap.txt
-Sitemap: https://damcraft.de/blog/rss.xml

@@ -3,7 +3,6 @@ import os
 import random
 from hashlib import sha256
 from threading import Thread
-from urllib.parse import urlparse
 
 from flask import Flask, render_template, Response, send_from_directory, request, redirect, make_response
 import time
@@ -12,12 +11,13 @@ import logging
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 import blog
+import const
 import jammingen
+import robots
 from blog import get_blog_posts
 from dino import dino_game
 from helpers import get_discord_status, get_discord_invite, get_age, show_notification, \
     event_reader, spotify_status_updater, format_iso_date, get_handlers
-
 
 for handler in get_handlers():
     logging.getLogger().addHandler(handler)
@@ -28,6 +28,8 @@ dotenv.load_dotenv()
 
 
 @app.route('/')
+@robots.index
+@robots.follow
 def index():
     if "curl" in str(request.headers.get("User-Agent")).lower():
         # If the user agent is curl, return the silly dino game
@@ -48,17 +50,24 @@ def index():
 
 
 @app.route('/discord_status')
+@robots.noindex
 def discord_status_route():
     refresh_every = request.args.get("refresh_every", 10)
     return render_template("discord_status.html", discord_status=discord_status, refresh_every=refresh_every)
 
 
 @app.route('/blog/')
+@robots.noarchive
+@robots.index
+@robots.follow
 def blogs_page():
     return render_template('blogs.html', blogs=blogs)
 
 
 @app.route('/blog/<blog_id>')
+@robots.noarchive
+@robots.index
+@robots.follow
 def blog_post(blog_id):
     for i, blog_ in enumerate(blogs):
         if blog_.url_name == blog_id:
@@ -72,6 +81,7 @@ def blog_post(blog_id):
 
 
 @app.route('/-<blog_id>')
+@robots.follow
 def blog_post_short(blog_id):
     for post in blogs:
         if post.hash == blog_id:
@@ -86,12 +96,14 @@ def rss():
 
 
 @app.route('/notification')
+@robots.noindex
 def notification():
     newest_blog = show_notification(blogs, request)
     return render_template("notification.html", blog=newest_blog)
 
 
 @app.route('/listening_to')
+@robots.noindex
 def listening_to():
     resp = render_template("listening_to.html")
     return event_reader(resp), 200, {
@@ -103,6 +115,7 @@ def listening_to():
 
 
 @app.route('/mark_as_read', methods=["POST"])
+@robots.noindex
 def mark_as_read():
     url_name = request.form.get("url_name")
     if url_name is not None:
@@ -126,7 +139,9 @@ def favicon():
 
 @app.route('/assets/<path:filename>')
 def banner(filename):
-    return send_from_directory("assets", filename)
+    resp = make_response(send_from_directory("assets", filename))
+    resp.headers["Cache-Control"] = "public, max-age=604800"
+    return resp
 
 
 @app.route('/assets/88x31/jammin.webp')
@@ -163,20 +178,20 @@ def button():
 
 @app.route('/.well-known/atproto-did')
 def atproto_did():
-    return os.environ.get("ATPROTO_DID")
+    return const.ATPROTO_DID
 
 
 @app.route('/.well-known/matrix/client')
 def matrix_client():
     return {
         "m.server": {
-            "base_url": os.environ.get("MATRIX_SERVER_BASE_URL")
+            "base_url": const.MATRIX_SERVER_BASE_URL
         },
         "m.homeserver": {
-            "base_url": os.environ.get("MATRIX_SERVER_BASE_URL")
+            "base_url": const.MATRIX_SERVER_BASE_URL
         },
         "org.matrix.msc3575.proxy": {
-            "url": os.environ.get("MATRIX_SERVER_BASE_URL")
+            "url": const.MATRIX_SERVER_BASE_URL
         }
     }
 
@@ -184,39 +199,12 @@ def matrix_client():
 @app.route('/.well-known/matrix/server')
 def matrix_server():
     return {
-        "m.server": os.environ.get("MATRIX_SERVER")
+        "m.server": const.MATRIX_SERVER
     }
 
 
-@app.route('/robots.txt')
-def robots_txt():
-    components = urlparse(request.host_url)
-    url_base = f"{components.scheme}://{components.netloc}"
-    data = render_template("robots.txt", url_base=url_base)
-    return Response(data, mimetype="text/plain")
-
-
-@app.route('/sitemap.xml')
-def sitemap_xml():
-    components = urlparse(request.host_url)
-    url_base = f"{components.scheme}://{components.netloc}"
-    xml_sitemap = render_template(
-        "sitemap.xml", urls=sitemap_urls, url_base=url_base
-    )
-    response = make_response(xml_sitemap)
-    response.headers["Content-Type"] = "application/xml"
-    return response
-
-
-@app.route('/sitemap.txt')
-def sitemap_txt():
-    components = urlparse(request.host_url)
-    url_base = f"{components.scheme}://{components.netloc}"
-    data = "\n".join([url_base + url for url in sitemap_urls])
-    return Response(data, mimetype="text/plain")
-
-
 @app.route('/headers', methods=["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"])
+@robots.noindex
 def parrot():
     return Response(str(request.headers), mimetype="text/plain")
 
@@ -227,16 +215,16 @@ def before_request():
     if (request.headers.get("X-Forwarded-Proto") == "http" and
             request.headers.get("Host") == "damcraft.de" and
             "curl" not in str(request.headers.get("User-Agent")).lower()):
-        return redirect("https://damcraft.de" + request.path, code=302)
+        return redirect("https://damcraft.de" + request.path, code=301)
 
 
 # Add the Onion-Location header to the response
 @app.after_request
 def after_request(response):
-    response.headers["Onion-Location"] = "http://" + os.environ.get("TOR_HOSTNAME") + request.path  # noqa
-    # cache if it's /assets/
-    if request.path.startswith("/assets/"):
-        response.headers["Cache-Control"] = "public, max-age=604800"
+    response.headers["Onion-Location"] = "http://" + const.TOR_HOSTNAME + request.path  # noqa
+    if not str(response.status_code).startswith("3"):
+        response.headers["Link"] = f'<https://damcraft.de{request.path}>; rel="canonical"'
+    response.headers["Content-Security-Policy"] = "script-src 'none';"
     return response
 
 
@@ -254,19 +242,7 @@ def stats_updater():
         time.sleep(10)
 
 
-def gen_urllist():
-    urls = []
-    for rule in app.url_map.iter_rules():
-        if "GET" in rule.methods and len(rule.arguments) == 0:
-            urls.append(rule.rule)
-
-    for blog_ in blogs:
-        urls.append(f"/blog/{blog_.url_name}")
-
-    return urls
-
-
-sitemap_urls = gen_urllist()
+robots.robot_friendly(app, blogs, extra_sitemaps=["blog/rss.xml"])
 
 
 # Check if Flask is in debug mode

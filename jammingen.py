@@ -7,6 +7,8 @@ from PIL import Image, ImageDraw, WebPImagePlugin
 from flask import Response, request, redirect
 import requests
 
+import const
+
 
 def get_ip_info(ip: str):
     empty = {
@@ -18,7 +20,7 @@ def get_ip_info(ip: str):
         "postal": "",
         "timezone": "UTC/UTC",
     }
-    req = requests.get(f"https://ipinfo.io/{ip}?token={os.environ.get('IPINFO_API_KEY')}")
+    req = requests.get(f"https://ipinfo.io/{ip}?token={const.IP_INFO_API_KEY}")
     empty.update(req.json())  # Ensure that all keys are present
     return empty
 
