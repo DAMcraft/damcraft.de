@@ -23,7 +23,8 @@ for handler in get_handlers():
     logging.getLogger().addHandler(handler)
 
 app = Flask(__name__, template_folder='pages')
-app.wsgi_app = ProxyFix(app.wsgi_app)
+if os.getenv("FLASK_DEBUG") != "1":
+    app.wsgi_app = ProxyFix(app.wsgi_app)
 dotenv.load_dotenv()
 
 
@@ -102,6 +103,13 @@ def notification():
     return render_template("notification.html", blog=newest_blog)
 
 
+@app.route("/email.svg")
+@robots.noindex
+@robots.disallow
+def email_svg():
+    return Response(render_template("email.svg"), mimetype="image/svg+xml")
+
+
 @app.route('/listening_to')
 @robots.noindex
 def listening_to():
@@ -140,7 +148,8 @@ def favicon():
 @app.route('/assets/<path:filename>')
 def banner(filename):
     resp = make_response(send_from_directory("assets", filename))
-    resp.headers["Cache-Control"] = "public, max-age=604800"
+    if os.getenv("FLASK_DEBUG") != "1":
+        resp.headers["Cache-Control"] = "public, max-age=604800"
     return resp
 
 

@@ -16,6 +16,21 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="alternate" type="application/rss+xml" title="RSS feed" href="/blog/rss.xml">
     <link rel="stylesheet" href="/assets/style.css" type="text/css">
+    <style>
+        :root {
+            {% if theme == "pink" %}
+                --links: #ff1f64;
+                --links-hover: #ff4e87;
+                --selection: #ff1f64;
+                --highlight: #e5195a;
+            {% elif theme == "blue" %}
+                --links: #00BEFF;
+                --links-hover: #00d4ff;
+                --selection: #00BEFF;
+                --highlight: #00a6d4;
+            {% endif %}
+        }
+    </style>
 </head>
 <body>
 <div class="wrapper">
@@ -122,8 +137,7 @@ You can find my PGP key just below this section.<br>
                     <tr>
                         <td><img src="/assets/mail.svg" alt="Email logo" width="19" height="19"></td>
                         <td>
-                            <!-- https://spencermortensen.com/articles/email-obfuscation/#text-svg -->
-                            <iframe src="/assets/email.svg" style="border:none; width: 100%; height: 1em;vertical-align: middle;"></iframe>
+                            <iframe src="/email.svg?theme={{ theme }}" style="border:none; width: 100%; height: 1em;vertical-align: middle;"></iframe>
                         </td>
                     </tr>
                     <tr>
