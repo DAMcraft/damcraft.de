@@ -180,7 +180,13 @@ def spotify_status_updater():
 
             song_title = status["item"]["name"]
             artist = ", ".join([artist["name"] for artist in status["item"]["artists"]])
-            cover = status["item"]["album"]["images"][0]["url"]
+            # get the first image that is at least 100x100
+            covers = status["item"]["album"]["images"]
+            cover = covers[0]["url"]  # default to the first image
+            for cover_ in covers:
+                if cover_["height"] >= 100 and cover_["width"] >= 100:
+                    cover = cover_["url"]
+            cover = cover.replace("https://i.scdn.co/image/", "https://damcraft.de/spotify-image-proxy/")
             progress = status["progress_ms"] // 1000
             duration = status["item"]["duration_ms"] // 1000
             song_url = status["item"]["external_urls"]["spotify"]

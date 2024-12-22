@@ -125,7 +125,6 @@ a:hover {
 .show-again:hover {
     background-color: #2f2f2f;
     border: 1px solid #fff;
-    padding: -1px;
 }
 
 .terminal-wrapper {
@@ -242,7 +241,6 @@ a:hover {
 
 .about-image-topbar .close:hover {
     border: 1px solid white;
-    padding: -1px;
     margin: 3px 3px -1px;
 }
 
@@ -568,7 +566,6 @@ section {
 
 .close:hover {
     border: 1px solid white;
-    padding: -1px;
     margin: -1px;
 }
 

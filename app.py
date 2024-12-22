@@ -1,9 +1,11 @@
 import json
 import os
 import random
+from functools import lru_cache
 from hashlib import sha256
 from threading import Thread
 
+import requests
 from flask import Flask, render_template, Response, send_from_directory, request, redirect, make_response
 import time
 import dotenv
@@ -208,6 +210,18 @@ def parrot():
     return Response(str(request.headers), mimetype="text/plain")
 
 
+@app.route('/spotify-image-proxy/<image_id>')
+@lru_cache(maxsize=10)
+@robots.noindex
+@robots.disallow
+def spotify_image_proxy(image_id):
+    req = requests.get(f"https://i.scdn.co/image/{image_id}")
+    resp = make_response(req.content)
+    resp.headers["Content-Type"] = req.headers["Content-Type"]
+    resp.headers["Cache-Control"] = f"public, max-age={60 * 60 * 24}"
+    return resp
+
+
 @app.before_request
 def before_request():
     # Redirect to HTTPS
@@ -223,7 +237,11 @@ def after_request(response):
     response.headers["Onion-Location"] = "http://" + const.TOR_HOSTNAME + request.path  # noqa
     if not str(response.status_code).startswith("3"):
         response.headers["Link"] = f'<{const.URL_BASE}{request.path}>; rel="canonical"'
-    response.headers["Content-Security-Policy"] = "script-src 'none';"
+    response.headers["Content-Security-Policy"] = (
+        f"script-src 'none'; "
+        f"style-src 'self' *.{request.host} 'unsafe-inline'; "
+        f"default-src 'self' *.{request.host};"
+    )
     return response
 
 
