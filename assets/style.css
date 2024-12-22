@@ -409,14 +409,23 @@ table td img {
     image-rendering: -moz-crisp-edges;
     margin-top: 1em;
     text-align: center;
+    display: flex;
     padding: 10px;
     width: 100%;
     max-width: 100%;
     font-family: serif; /* this somehow fixes spacing issues in freakmode */
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
 }
 
 #badges img {
     display: inline-flex;
+    width: 88px;
+    height: 31px;
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 #badges img:hover {
