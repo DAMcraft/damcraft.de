@@ -44,8 +44,12 @@ def follow(f):
 
 
 def noindex(f):
-    do_not_index.append(f.__name__)
     return robot_decorator("noindex")(f)
+
+
+def disallow(f):
+    do_not_index.append(f.__name__)
+    return f
 
 
 def nofollow(f):

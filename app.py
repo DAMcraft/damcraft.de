@@ -149,16 +149,6 @@ def jammin():
     return jammingen.render()
 
 
-@app.route('/88x31/<filename>')
-def button88x31(filename):
-    return redirect(f"/assets/88x31/{filename}", code=301)
-
-
-@app.route('/dam.png')
-def damdotpng():
-    return send_from_directory(".", "dam.png")
-
-
 @app.route('/.well-known/security.txt')
 def security_txt():
     return send_from_directory(".", "security.txt")
@@ -178,7 +168,7 @@ def button():
 
 @app.route('/.well-known/atproto-did')
 def atproto_did():
-    return const.ATPROTO_DID
+    return Response(const.ATPROTO_DID, mimetype="text/plain")
 
 
 @app.route('/.well-known/matrix/client')
