@@ -48,7 +48,8 @@ def index():
         age=get_age(),
         theme=theme,
         blog=last_blog,
-        is_tor=request.headers.get("Host", "").endswith(".onion")
+        is_tor=request.headers.get("Host", "").endswith(".onion"),
+        const=const
     )
 
 

@@ -147,6 +147,27 @@ You can find my PGP key just below this section.<br>
                 </tbody>
             </table>
         </section>
+        <section id="donations" class="nomargin">
+            <span class="prefix">
+                <span style="color: #747f8d;">root@<span class="servername">damcraft.de</span><span class="shortServername">dam</span></span>:~<span style="color: #747f8d;">$ </span>
+            </span>
+            <span class="command">support --list-methods</span>
+            <div class="donation-grid">
+                <a href="{{ const.PAYPAL_DONATION_URL }}" target="_blank" rel="noopener" class="donation-item paypal">
+                    <img src="/assets/paypal.svg" alt="">PayPal</a>
+                -=-
+                <a href="{{ const.KO_FI_DONATION_URL }}" target="_blank" rel="noopener" class="donation-item ko-fi">
+                    <img src="/assets/kofi.svg" alt="" >Ko-fi</a>
+                <span id="crypto-donations">
+                    -=-
+                    <label for="show-xmr" class="donation-item xmr">
+                        <img src="/assets/xmr.svg" alt="">XMR</label>
+                    -=-
+                    <label for="show-btc" class="donation-item btc"><img src="/assets/btc.svg" alt="">BTC</label>
+                </span>
+            </div>
+        </section>
+
         <section id="pgpSection" class="nomargin">
             <span class="prefix">
                 <span style="color: #747f8d;">root@<span class="servername">damcraft.de</span><span class="shortServername">dam</span></span>:~<span style="color: #747f8d;">$ </span></span>
@@ -291,5 +312,32 @@ AfnY+xdN8hTBYFURagTJlhqN4x8=
     <label for="close-listening" class="close-listening-btn"></label>
     <iframe loading="lazy" class="listening-to" src="/listening_to?theme={{ theme }}"></iframe>
 </div>
+
+<input type="checkbox" id="show-btc" style="display: none;">
+<input type="checkbox" id="show-xmr" style="display: none;">
+<div class="crypto-popup" id="btc-popup">
+    <label for="show-btc" class="overlay"></label>
+    <div class="popup-content">
+        <div class="popup-header">
+            <span>Bitcoin Address</span>
+            <label for="show-btc" class="close"></label>
+        </div>
+        <img src="/assets/btc-qr.png" alt="" class="qr-code" width="200" height="200">
+        <code class="crypto-address">{{ const.BTC_DONATION_ADDRESS }}</code>
+    </div>
+</div>
+
+<div class="crypto-popup" id="xmr-popup">
+    <label for="show-xmr" class="overlay"></label>
+    <div class="popup-content">
+        <div class="popup-header">
+            <span>Monero Address</span>
+            <label for="show-xmr" class="close"></label>
+        </div>
+        <img src="/assets/xmr-qr.png" alt="" class="qr-code" width="200" height="200">
+        <code class="crypto-address">{{ const.XMR_DONATION_ADDRESS }}</code>
+    </div>
+</div>
+
 </body>
 </html>
