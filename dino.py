@@ -9,6 +9,7 @@ class GameState:
     dino_height: int = 0
     dino_direction: int = 1
     speed: float = 1.0
+    bell_triggered: bool = False
 
     def __init__(self):
         self.columns = []
@@ -58,7 +59,7 @@ def render_frame(state: GameState) -> str:
     tmp_columns[DINO_POSITION][state.dino_height] = DINO_CHAR
 
     frame = [CLEAR_SCREEN]
-    if getattr(state, 'bell_triggered', False):
+    if state.bell_triggered:
         frame.append(BELL_CHAR)
         state.bell_triggered = False
 
