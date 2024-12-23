@@ -1,62 +1,95 @@
 import random
 import time
+from typing import List, Generator, Tuple
 
 
-def dino_game():
-    columns = []
-    last_cacti = 0
-    dino_height = 0
-    dino_direction = 1
-    speed = 1
+class GameState:
+    columns: List[List[str]]
+    last_cacti: int = 0
+    dino_height: int = 0
+    dino_direction: int = 1
+    speed: float = 1.0
+
+    def __init__(self):
+        self.columns = []
+
+
+SCREEN_WIDTH = 40
+SCREEN_HEIGHT = 10
+DINO_POSITION = 2
+MAX_JUMP_HEIGHT = 2
+MIN_CACTI_DISTANCE = 10
+SPEED_INCREMENT = 0.0025
+CLEAR_SCREEN = "\033[J\033[H"
+DINO_CHAR = "█"
+CACTI_CHAR = "X"
+FLOOR_CHAR = "_"
+EMPTY_CHAR = " "
+BELL_CHAR = "\x07"
+
+
+def generate_column(last_cacti: int) -> Tuple[List[str], bool]:
+    column = [EMPTY_CHAR] * SCREEN_HEIGHT
+    column[0] = FLOOR_CHAR
+
+    if (last_cacti > MIN_CACTI_DISTANCE and
+            random.random() < 1 / max(1, last_cacti)):
+        height = random.randint(1, 3)
+        for i in range(height):
+            column[i] = CACTI_CHAR
+        return column, True
+    return column, False
+
+
+def update_dino_state(state: GameState) -> None:
+    if state.columns[4][0] == CACTI_CHAR or state.dino_height > 0:
+        if state.dino_height == 0:
+            state.bell_triggered = True
+
+        state.dino_height += state.dino_direction
+        if state.dino_height > MAX_JUMP_HEIGHT:
+            state.dino_direction = -1
+        elif state.dino_height <= 0:
+            state.dino_direction = 1
+
+
+def render_frame(state: GameState) -> str:
+    tmp_columns = [list(col) for col in state.columns]
+    tmp_columns[DINO_POSITION][state.dino_height] = DINO_CHAR
+
+    frame = [CLEAR_SCREEN]
+    if getattr(state, 'bell_triggered', False):
+        frame.append(BELL_CHAR)
+        state.bell_triggered = False
+
+    frame.extend(
+        ''.join(tmp_columns[x][y] for x in range(SCREEN_WIDTH)) + '\n'
+        for y in range(SCREEN_HEIGHT - 1, -1, -1)
+    )
+    return ''.join(frame)
+
+
+def dino_game() -> Generator[str, None, None]:
+    state = GameState()
+
     while True:
-        last_cacti += 1
-        for _ in range(40 - len(columns)):
-            col, has_cacti = generate_column(last_cacti)
-            columns.append(col)
+        state.last_cacti += 1
+
+        # generate new columns
+        needed_columns = SCREEN_WIDTH - len(state.columns)
+        for _ in range(needed_columns):
+            col, has_cacti = generate_column(state.last_cacti)
+            state.columns.append(col)
             if has_cacti:
-                last_cacti = 0
+                state.last_cacti = 0
 
-        rendered = "\033[2J\033[H"  # Clear the screen
+        # dino movement logic
+        update_dino_state(state)
 
-        # Check if the third column has a cacti
-        if columns[4][0] == "X" or dino_height > 0:
-            if dino_height == 0:
-                rendered += "\x07"
-            dino_height += dino_direction
-            if dino_height > 2:
-                dino_direction = -1
-            elif dino_height <= 0:
-                dino_direction = 1
+        # render and yield frame
+        yield render_frame(state)
 
-        tmp_columns = [list(x) for x in columns]
-        tmp_columns[2][dino_height] = "█"
-
-        # Render the columns
-        for y in range(10)[::-1]:
-            for x in range(40):
-                rendered += tmp_columns[x][y]
-            rendered += "\n"
-
-        yield rendered
-        # Remove the first column
-        columns.pop(0)
-        time.sleep(0.1 / speed)
-        speed += 0.0025
-
-
-def generate_column(last_cacti):
-    column = [" "] * 10
-    # Add floor
-    column[0] = "_"
-    has_added_cacti = False
-
-    # The longer it's been since the last cacti, the more likely it is to generate one
-    should_generate_cacti = (random.randint(0, 100) // last_cacti) == 0
-    if should_generate_cacti and last_cacti > 10:
-        cacti_height = random.randint(1, 3)
-        for i in range(cacti_height):
-            column[i] = "X"
-        has_added_cacti = True
-
-    return column, has_added_cacti
-
+        # update game state
+        state.columns.pop(0)
+        time.sleep(0.1 / state.speed)
+        state.speed += SPEED_INCREMENT
