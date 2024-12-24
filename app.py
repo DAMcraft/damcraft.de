@@ -157,6 +157,8 @@ def banner(filename):
 
 
 @app.route('/assets/88x31/jammin.webp')
+@robots.disallow
+@robots.noindex
 def jammin():
     return jammingen.render()
 
