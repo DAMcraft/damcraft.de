@@ -89,13 +89,22 @@ def gen_robots_txt(sitemaps: [str], app: flask.app.Flask):
     lines = ["User-agent: *"]
 
     # Add Disallow lines for blocked routes
-    blocked_routes = [route.rule for route in app.url_map.iter_rules() if route.endpoint in do_not_index]
+    blocked_routes = [route for route in app.url_map.iter_rules() if route.endpoint in do_not_index]
+    blocked_paths = []
+    for route in blocked_routes:
+        path = route.rule
+        url_parameters = route.arguments
+        for url_parameter in url_parameters:
+            path = path.replace(f"<{url_parameter}>", "")
+            if path.endswith("/"):
+                path = path[:-1]
+        blocked_paths.append(path)
     if blocked_routes:
         lines.extend([
             f"Disallow: {route} \n"
             f"Disallow: {route}?\n"
             f"Disallow: {route}/\n"
-            for route in blocked_routes
+            for route in blocked_paths
         ])
 
     # Add Sitemap lines
