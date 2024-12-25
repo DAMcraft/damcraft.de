@@ -19,7 +19,7 @@ import robots
 from blog import get_blog_posts
 from dino import dino_game
 from helpers import get_discord_status, get_discord_invite, get_age, show_notification, \
-    event_reader, spotify_status_updater, format_iso_date, get_handlers
+    event_reader, spotify_status_updater, format_iso_date, get_handlers, fishlogic
 
 for handler in get_handlers():
     logging.getLogger().addHandler(handler)
@@ -161,6 +161,13 @@ def banner(filename):
 @robots.noindex
 def jammin():
     return jammingen.render()
+
+
+@app.route('/assets/88x31/makeafish.png')
+@robots.disallow
+@robots.noindex
+def makeafish():
+    return fishlogic()
 
 
 @app.route('/.well-known/security.txt')

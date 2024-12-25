@@ -6,7 +6,10 @@ import time
 import traceback
 from datetime import datetime
 from json import JSONDecodeError
+
+import pytz
 import requests
+from flask import send_from_directory, request
 
 import const
 
@@ -39,6 +42,24 @@ def get_age():
     today = datetime.now().date()
     has_passed = (today.month, today.day) >= (birthday.month, birthday.day)
     return today.year - birthday.year - (not has_passed)
+
+
+def get_time_at_ip(ip: str) -> str | None:
+    try:
+        req = requests.get(f"https://ipinfo.io/{ip}?token={const.IP_INFO_API_KEY}").json()
+        timezone = req.get("timezone", "UTC")
+        time_there = datetime.now(pytz.timezone(timezone))
+        return time_there.strftime("%H:%M")
+    except requests.exceptions.RequestException:
+        return None
+
+
+def fishlogic():
+    user_time = get_time_at_ip(request.remote_addr)
+    if user_time == "11:11":
+        return send_from_directory("assets/88x31", "makeafishtime.png")
+
+    return send_from_directory("assets/88x31", "makeafish.png")
 
 
 def format_iso_date(iso_timestamp):
