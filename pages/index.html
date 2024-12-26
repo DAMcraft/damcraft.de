@@ -187,14 +187,16 @@ You can find my PGP key just below this section.<br>
     </div>
     <section id="badges">
 <!--        Frens and cool 88x31's go here-->
-        <a href="/"><img src="/assets/88x31/dam.gif" alt="My badge"></a>
+        {% if theme == "blue" %}
+            <a href="/"><img src="/assets/88x31/dam.gif" alt="My badge"></a>
+        {% else %}
+            <a href="/"><img src="/assets/88x31/dam-pink.gif" alt="My badge"></a>
+        {% endif %}
         {% if is_tor %}
             <a href="https://www.torproject.org/"><img src="/assets/88x31/tor.png" alt="Tor"></a>
         {% else %}
             <a href="https://we-are-jammin.xyz/"><img src="/assets/88x31/jammin.webp" alt="We are jammin"></a>
         {% endif %}
-        <a href="https://europa.eu/"><img src="/assets/88x31/eu.png" alt="EU - United in diversity"></a>
-        <a href="https://www.gesetze-im-internet.de/gg/art_1.html" title="Article 1 of the German constitution"><img src="/assets/88x31/germany.png" alt="Human dignity shall be inviolable. To respect and protect it shall be the duty of all state authority."></a>
         <a href="https://magmaus3.eu.org/"><img src="/assets/88x31/magmaus3.gif" alt="Maia"></a>
         <a href="https://ssi.fyi/"><img src="/assets/88x31/ssi.gif" alt="ServerScanningInc"></a>
         <a href="https://notnite.com/"><img src="/assets/88x31/notnite.png" alt="notnite"></a>
