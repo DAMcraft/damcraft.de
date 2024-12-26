@@ -260,7 +260,7 @@ def after_request(response):
 discord_status = ""
 discord_invite = None
 blogs = get_blog_posts()
-style_hash = sha256(open("assets/style.css", "rb").read()).hexdigest()
+style_hash = sha256(open("assets/style.css", "rb").read()).hexdigest()[:8]
 button_hash = sha256(open("assets/88x31/dam.gif", "rb").read()).hexdigest()
 pgp_key = open('pgp', 'rb').read()
 
