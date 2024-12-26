@@ -49,7 +49,9 @@ def index():
         theme=theme,
         blog=last_blog,
         is_tor=request.headers.get("Host", "").endswith(".onion"),
-        const=const
+        const=const,
+        style_hash=style_hash,
+        pgp_key=pgp_key.decode("utf-8")
     )
 
 
@@ -138,7 +140,7 @@ def mark_as_read():
 
 @app.route('/pgp')
 def pgp():
-    resp = Response(open('pgp', 'rb').read())
+    resp = Response(pgp_key, mimetype="application/pgp-keys")
     resp.headers["Content-Disposition"] = "attachment; filename=damcraft_public.asc"
     return resp
 
@@ -183,7 +185,7 @@ def button():
         "id": "damcraft.de",
         "uri": "https://damcraft.de/assets/88x31/dam.gif",
         "link": "https://damcraft.de",
-        "sha256": sha256(open("assets/88x31/dam.gif", "rb").read()).hexdigest()
+        "sha256": button_hash
     }], indent=4), mimetype="application/json")
 
 
@@ -258,6 +260,9 @@ def after_request(response):
 discord_status = ""
 discord_invite = None
 blogs = get_blog_posts()
+style_hash = sha256(open("assets/style.css", "rb").read()).hexdigest()
+button_hash = sha256(open("assets/88x31/dam.gif", "rb").read()).hexdigest()
+pgp_key = open('pgp', 'rb').read()
 
 
 def stats_updater():
