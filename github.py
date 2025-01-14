@@ -12,8 +12,8 @@ from blog import BlogPost
 
 
 def get_oauth_url(return_url=None):
-    # redirect_url = const.URL_BASE + "/github/callback" TODO: USE THIS
-    redirect_url = "https://localpc.damcraft.de/github/callback"
+    redirect_url = const.URL_BASE + "/github/callback"
+    # redirect_url = "https://localpc.damcraft.de/github/callback"
     if return_url is not None:
         redirect_url += "?return=" + urllib.parse.quote(return_url)
 
