@@ -9,6 +9,7 @@ from json import JSONDecodeError
 
 import pytz
 import requests
+import unicodedata
 from flask import send_from_directory, request
 
 import const
@@ -140,6 +141,34 @@ def get_access_token():
         expires_on = datetime.now().timestamp() + response.json().get("expires_in")
         return at, expires_on
     return None, 0
+
+
+def timestamp_to_relative(timestamp):
+    date = datetime.fromtimestamp(timestamp)
+    now = datetime.now()
+    delta = now - date
+
+    if delta.total_seconds() < 60:
+        return "just now"
+    if delta.total_seconds() < 60 * 60:
+        return f"{int(delta.total_seconds() / 60)} minutes ago"
+    if delta.total_seconds() < 60 * 60 * 24:
+        return f"{int(delta.total_seconds() / 60 / 60)} hours ago"
+    if delta.total_seconds() < 60 * 60 * 24 * 7:
+        return f"{int(delta.total_seconds() / 60 / 60 / 24)} days ago"
+    return date.strftime("%Y-%m-%d")
+
+
+def sanitize_comment(content):
+    if not content or not content.strip():
+        return
+
+    if len(content.encode('utf-8')) > 2048 or len(content) > 1000:
+        return
+    content = ''.join(
+        c for c in unicodedata.normalize("NFKC", content) if not unicodedata.combining(c)
+    ).strip()
+    return content
 
 
 shared_event_queues = set()

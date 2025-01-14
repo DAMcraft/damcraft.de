@@ -14,6 +14,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 import blog
 import const
+import github
 import jammingen
 import robots
 from blog import get_blog_posts
@@ -75,15 +76,36 @@ def blogs_page():
 @robots.index
 @robots.follow
 def blog_post(blog_id):
+    user_data = github.get_user_data_from_request(request)
     for i, blog_ in enumerate(blogs):
         if blog_.url_name == blog_id:
             date_text = format_iso_date(blog_.date)
-            resp = app.make_response(render_template('blog_page.html', blog=blog_, date_text=date_text))
+            resp = app.make_response(
+                render_template(
+                    'blog_page.html',
+                    blog=blog_,
+                    date_text=date_text,
+                    user_data=user_data)
+            )
             if i == 0:
                 resp.set_cookie("last_read", blog_.url_name, max_age=60 * 60 * 24 * 365)
             return resp
 
     return "Not found", 404
+
+
+@app.route('/blog/<blog_id>/comment', methods=["POST"])
+@robots.noindex
+def comment(blog_id):
+    github.handle_comment(blog_id, request, blogs)
+    return redirect(f"/blog/{blog_id}#comments-section")
+
+
+@app.route('/blog/<blog_id>/comments/<comment_id>', methods=["POST"])
+@robots.noindex
+def modify_comment(blog_id, comment_id):
+    github.modify_comment(blog_id, comment_id, request, blogs)
+    return redirect(f"/blog/{blog_id}#comments-section")
 
 
 @app.route('/-<blog_id>')
@@ -98,7 +120,7 @@ def blog_post_short(blog_id):
 @app.route('/blog/rss')
 @app.route('/blog/rss.xml')
 def rss():
-    return Response(blog.get_rss(), mimetype="text/xml")
+    return Response(blog.get_rss(blogs), mimetype="text/xml")
 
 
 @app.route('/notification')
@@ -136,6 +158,29 @@ def mark_as_read():
         resp.set_cookie("last_read", url_name, max_age=60 * 60 * 24 * 365)
         return resp
     return "Invalid request", 400
+
+
+@app.route('/github/callback')
+def github_callback():
+    return github.handle_callback()
+
+
+@app.route('/github/login')
+def github_login():
+    return_url = request.args.get("return")
+    return redirect(github.get_oauth_url(return_url=return_url))
+
+
+@app.route('/github/profile_image/<user_id>')
+@lru_cache(maxsize=30)
+@robots.noindex
+@robots.disallow
+def github_profile_image(user_id):
+    req = requests.get(f"https://avatars.githubusercontent.com/u/{user_id}?v=4&s=100")
+    resp = make_response(req.content)
+    resp.headers["Content-Type"] = req.headers["Content-Type"]
+    resp.headers["Cache-Control"] = f"public, max-age={60 * 60 * 24}"
+    return resp
 
 
 @app.route('/pgp')

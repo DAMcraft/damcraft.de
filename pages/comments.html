@@ -1,0 +1,248 @@
+{# "comment section" for blog posts #}
+<style>
+    #comments-section {
+        margin-top: 20px;
+        border-top: 1px solid #333;
+        padding-top: 20px;
+    }
+    .comment {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #111;
+        position: relative;
+    }
+    .comment-avatar {
+        width: 50px;
+        height: 50px;
+    }
+    .comment-content {
+        flex: 1;
+    }
+    .comment-header {
+        color: #808080;
+        font-size: 14px;
+        margin-bottom: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .comment-text {
+        word-break: break-word;
+    }
+    .comment-form {
+        margin-top: 20px;
+    }
+    .comment-input {
+        width: 100%;
+        min-height: 100px;
+        background-color: #222;
+        color: white;
+        border: 1px solid #333;
+        padding: 10px;
+        margin-bottom: 10px;
+        font-family: inherit;
+        box-sizing: border-box;
+        resize: vertical;
+    }
+    .comment-input:focus {
+        outline: none;
+    }
+    .comment-button {
+        background-color: #0066cc;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        cursor: pointer;
+    }
+    .login-overlay {
+        background-color: rgba(0, 0, 0, 0.8);
+        padding: 20px;
+        text-align: center;
+    }
+    .github-login {
+        display: inline-block;
+        background-color: #333;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+    }
+    .no-comments {
+        text-align: center;
+        color: #808080;
+        padding: 20px 0;
+    }
+    .deleted-comment {
+        color: #808080;
+        font-style: italic;
+    }
+    .comment-actions {
+        display: flex;
+        gap: 8px;
+    }
+    .action-btn {
+        background: none;
+        border: none;
+        color: #666;
+        cursor: pointer;
+        font-size: 14px;
+        padding: 2px 6px;
+    }
+    .action-btn:hover {
+        color: #999;
+    }
+    /* Hidden checkbox controls */
+    .edit-toggle, .delete-toggle {
+        display: none;
+    }
+    .edit-form, .delete-overlay {
+        display: none;
+    }
+    .edit-toggle:checked ~ .edit-form {
+        display: block;
+    }
+    .delete-toggle:checked ~ .delete-overlay {
+        display: flex;
+    }
+    .edit-label, .delete-label {
+        cursor: pointer;
+    }
+    /* Edit form */
+    .edit-form {
+        margin-top: 10px;
+    }
+    .delete-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+        z-index: 998;
+    }
+    .delete-click-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 999;
+    }
+    .delete-confirm {
+        background: #222;
+        padding: 20px;
+        text-align: center;
+        z-index: 1000;
+    }
+    .delete-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 15px;
+    }
+    .delete-btn {
+        margin: 0;
+        font: inherit;
+        padding: 8px 16px;
+        border: none;
+        cursor: pointer;
+    }
+    .delete-btn:hover {
+        filter: brightness(0.9);
+    }
+    .delete-confirm-btn {
+        background: #cc0000;
+        color: white;
+    }
+    .delete-cancel-btn {
+        background: #333;
+        color: white;
+    }
+    .edited-tag {
+        font-size: 12px;
+        color: #666;
+        margin-left: 8px;
+    }
+</style>
+
+<div id="comments-section">
+    <h2>Comments</h2>
+
+    {% if blog.get_comments()|length > 0 %}
+        {% for comment in blog.get_comments() %}
+            <div class="comment">
+                <img class="comment-avatar" src="/github/profile_image/{{ comment.user_id }}" alt="Profile picture">
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <div class="comment-info">
+                            <span class="comment-username">{{ comment.user_name }}</span>
+                            <span class="comment-date">{{ comment.date_str }}</span>
+                            {% if comment.edited_timestamp %}
+                                <span class="edited-tag">(edited {{ comment.edited_date_str }})</span>
+                            {% endif %}
+                        </div>
+                        {% if comment.user_id == user_data.user_id and not comment.is_deleted %}
+                            <div class="comment-actions">
+                                <label for="edit-{{ comment.comment_id }}" class="action-btn edit-label">Edit</label>
+                                <label for="delete-{{ comment.comment_id }}" class="action-btn delete-label">Delete</label>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="comment-text">
+                        {% if comment.is_deleted %}
+                            <div class="deleted-comment">This comment was deleted</div>
+                        {% else %}
+                            {{ comment.comment|safe }}
+                        {% endif %}
+                    </div>
+
+                    {% if comment.user_id == user_data.user_id and not comment.is_deleted %}
+                        {# Edit form #}
+                        <input type="checkbox" id="edit-{{ comment.comment_id }}" class="edit-toggle">
+                        <form class="edit-form" method="post" action="{{ request.path }}/comments/{{ comment.comment_id }}">
+                            <input type="hidden" name="action" value="edit">
+                            <textarea name="content" class="comment-input" required maxlength="1000">{{ comment.comment|striptags }}</textarea>
+                            <button type="submit" class="comment-button">Save changes</button>
+                        </form>
+
+                        {# Delete confirmation #}
+                        <input type="checkbox" id="delete-{{ comment.comment_id }}" class="delete-toggle">
+                        <div class="delete-overlay">
+                            <label for="delete-{{ comment.comment_id }}" class="delete-click-bg"></label>
+                            <div class="delete-confirm">
+                                <p>Are you sure you want to delete this comment?</p>
+                                <div class="delete-buttons">
+                                    <label for="delete-{{ comment.comment_id }}" class="delete-btn delete-cancel-btn">Cancel</label>
+                                    <form method="post" action="{{ request.path }}/comments/{{ comment.comment_id }}" style="display: inline;">
+                                        <input type="hidden" name="action" value="delete">
+                                        <button type="submit" class="delete-btn delete-confirm-btn">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-comments">
+            No comments yet. Be the first to comment!
+        </div>
+    {% endif %}
+
+    {% if user_data %}
+        <form class="comment-form" method="post" action="{{ request.path }}/comment">
+            <textarea name="comment" class="comment-input" placeholder="Write your comment here..." required maxlength="1000"></textarea>
+            <button type="submit" class="comment-button">Comment</button>
+        </form>
+    {% else %}
+        <div class="login-overlay">
+            <a href="/github/login?return={{ request.path }}#comments-section" class="github-login">
+                Login with GitHub to comment
+            </a>
+        </div>
+    {% endif %}
+</div>

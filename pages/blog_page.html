@@ -198,6 +198,16 @@
             text-decoration: underline;
             color: #808080;
         }
+        blockquote {
+            border-left: 2px solid #808080;
+            padding: 5px 5px 5px 10px;
+            background-color: #333;
+            margin-top: 5px;
+        }
+        blockquote > blockquote {
+            border-left: 2px solid #666;
+            background-color: #444;
+        }
     </style>
     <link rel="alternate" type="application/rss+xml" title="RSS feed" href="/blog/rss.xml">
 </head>
@@ -231,6 +241,10 @@
             <article class="blog-content">
                 {{ blog.content|safe }}
             </article>
+
+            <div class="comments">
+                {% include 'comments.html' %}
+            </div>
         </div>
         <footer>
             <div class="footer-links">
