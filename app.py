@@ -97,7 +97,9 @@ def blog_post(blog_id):
 @app.route('/blog/<blog_id>/comment', methods=["POST"])
 @robots.noindex
 def comment(blog_id):
-    github.handle_comment(blog_id, request, blogs)
+    comment_id = github.handle_comment(blog_id, request, blogs)
+    if comment_id:
+        return redirect(f"/blog/{blog_id}#comment-{comment_id}")
     return redirect(f"/blog/{blog_id}#comments-section")
 
 
@@ -105,7 +107,7 @@ def comment(blog_id):
 @robots.noindex
 def modify_comment(blog_id, comment_id):
     github.modify_comment(blog_id, comment_id, request, blogs)
-    return redirect(f"/blog/{blog_id}#comments-section")
+    return redirect(f"/blog/{blog_id}#comment-{comment_id}")
 
 
 @app.route('/-<blog_id>')

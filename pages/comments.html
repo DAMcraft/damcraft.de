@@ -13,6 +13,14 @@
         background-color: #111;
         position: relative;
     }
+    .comment:target {
+        animation: highlight 1s;
+    }
+    @keyframes highlight {
+        0% { background-color: #111; }
+        50% { background-color: #004b98; }
+        100% { background-color: #111; }
+    }
     .comment-avatar {
         width: 50px;
         height: 50px;
@@ -30,6 +38,19 @@
     }
     .comment-text {
         word-break: break-word;
+    }
+    .comment-username {
+        font-weight: bold;
+        color: inherit;
+    }
+    .comment-reply {
+        background-color: #222;
+        margin: 10px 0;
+    }
+    .reply-info {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 5px;
     }
     .comment-form {
         margin-top: 20px;
@@ -93,10 +114,10 @@
         color: #999;
     }
     /* Hidden checkbox controls */
-    .edit-toggle, .delete-toggle {
+    .edit-toggle, .delete-toggle, .reply-toggle {
         display: none;
     }
-    .edit-form, .delete-overlay {
+    .edit-form, .delete-overlay, .reply-form {
         display: none;
     }
     .edit-toggle:checked ~ .edit-form {
@@ -105,7 +126,10 @@
     .delete-toggle:checked ~ .delete-overlay {
         display: flex;
     }
-    .edit-label, .delete-label {
+    .reply-toggle:checked ~ .reply-form {
+        display: block;
+    }
+    .edit-label, .delete-label, .reply-label {
         cursor: pointer;
     }
     /* Edit form */
@@ -173,21 +197,26 @@
 
     {% if blog.get_comments()|length > 0 %}
         {% for comment in blog.get_comments() %}
-            <div class="comment">
+            <div class="comment" id="comment-{{ comment.comment_id }}">
                 <img class="comment-avatar" src="/github/profile_image/{{ comment.user_id }}" alt="Profile picture">
                 <div class="comment-content">
                     <div class="comment-header">
                         <div class="comment-info">
-                            <span class="comment-username">{{ comment.user_name }}</span>
+                            <a class="comment-username" href="https://github.com/{{ comment.user_name }}" target="_blank">
+                                {{ comment.user_name }}</a>
                             <span class="comment-date">{{ comment.date_str }}</span>
                             {% if comment.edited_timestamp %}
                                 <span class="edited-tag">(edited {{ comment.edited_date_str }})</span>
                             {% endif %}
                         </div>
-                        {% if comment.user_id == user_data.user_id and not comment.is_deleted %}
+
+                        {% if not comment.is_deleted and user_data %}
                             <div class="comment-actions">
-                                <label for="edit-{{ comment.comment_id }}" class="action-btn edit-label">Edit</label>
-                                <label for="delete-{{ comment.comment_id }}" class="action-btn delete-label">Delete</label>
+                                <label for="reply-{{ comment.comment_id }}" class="action-btn reply-label">Reply</label>
+                                {% if user_data and comment.user_id == user_data.user_id %}
+                                    <label for="edit-{{ comment.comment_id }}" class="action-btn edit-label">Edit</label>
+                                    <label for="delete-{{ comment.comment_id }}" class="action-btn delete-label">Delete</label>
+                                {% endif %}
                             </div>
                         {% endif %}
                     </div>
@@ -195,34 +224,54 @@
                         {% if comment.is_deleted %}
                             <div class="deleted-comment">This comment was deleted</div>
                         {% else %}
+                            {% if comment.replies_to %}
+                                <blockquote class="comment-reply">
+                                    <div class="reply-info">
+                                        In reply to
+                                        <a href="#comment-{{ comment.replies_to.comment_id }}">
+                                            {{ comment.replies_to.user_name }}</a>:
+                                    </div>
+                                    {{ comment.replies_to.short_comment|safe }}
+                                </blockquote>
+                            {% endif %}
                             {{ comment.comment|safe }}
                         {% endif %}
                     </div>
 
-                    {% if comment.user_id == user_data.user_id and not comment.is_deleted %}
-                        {# Edit form #}
-                        <input type="checkbox" id="edit-{{ comment.comment_id }}" class="edit-toggle">
-                        <form class="edit-form" method="post" action="{{ request.path }}/comments/{{ comment.comment_id }}">
-                            <input type="hidden" name="action" value="edit">
-                            <textarea name="content" class="comment-input" required maxlength="1000">{{ comment.comment|striptags }}</textarea>
-                            <button type="submit" class="comment-button">Save changes</button>
-                        </form>
 
-                        {# Delete confirmation #}
-                        <input type="checkbox" id="delete-{{ comment.comment_id }}" class="delete-toggle">
-                        <div class="delete-overlay">
-                            <label for="delete-{{ comment.comment_id }}" class="delete-click-bg"></label>
-                            <div class="delete-confirm">
-                                <p>Are you sure you want to delete this comment?</p>
-                                <div class="delete-buttons">
-                                    <label for="delete-{{ comment.comment_id }}" class="delete-btn delete-cancel-btn">Cancel</label>
-                                    <form method="post" action="{{ request.path }}/comments/{{ comment.comment_id }}" style="display: inline;">
-                                        <input type="hidden" name="action" value="delete">
-                                        <button type="submit" class="delete-btn delete-confirm-btn">Delete</button>
-                                    </form>
+
+                    {% if not comment.is_deleted %}
+                        <input type="checkbox" id="reply-{{ comment.comment_id }}" class="reply-toggle">
+                        <form class="comment-form reply-form" method="post" action="{{ request.path }}/comment">
+                            <input type="hidden" name="replies_to" value="{{ comment.comment_id }}">
+                            <textarea name="comment" class="comment-input" placeholder="Write your reply here..." required maxlength="1000"></textarea>
+                            <button type="submit" class="comment-button">Reply</button>
+                        </form>
+                        {% if comment.user_id == user_data.user_id %}
+                            {# Edit form #}
+                            <input type="checkbox" id="edit-{{ comment.comment_id }}" class="edit-toggle">
+                            <form class="edit-form" method="post" action="{{ request.path }}/comments/{{ comment.comment_id }}">
+                                <input type="hidden" name="action" value="edit">
+                                <textarea name="content" class="comment-input" required maxlength="1000">{{ comment.comment|striptags }}</textarea>
+                                <button type="submit" class="comment-button">Save changes</button>
+                            </form>
+
+                            {# Delete confirmation #}
+                            <input type="checkbox" id="delete-{{ comment.comment_id }}" class="delete-toggle">
+                            <div class="delete-overlay">
+                                <label for="delete-{{ comment.comment_id }}" class="delete-click-bg"></label>
+                                <div class="delete-confirm">
+                                    <p>Are you sure you want to delete this comment?</p>
+                                    <div class="delete-buttons">
+                                        <label for="delete-{{ comment.comment_id }}" class="delete-btn delete-cancel-btn">Cancel</label>
+                                        <form method="post" action="{{ request.path }}/comments/{{ comment.comment_id }}" style="display: inline;">
+                                            <input type="hidden" name="action" value="delete">
+                                            <button type="submit" class="delete-btn delete-confirm-btn">Delete</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>

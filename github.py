@@ -73,7 +73,10 @@ def handle_callback():
         const.JWT_SECRET,
         algorithm="HS256"
     )
-    resp = redirect(request.args.get("return", "/"), code=302)
+    redirect_path = request.args.get("return")
+    if not redirect_path or not redirect_path.startswith("/"):
+        redirect_path = "/"
+    resp = redirect(redirect_path)
     resp.set_cookie("github_jwt", signed_jwt, max_age=60 * 60 * 24 * 7, httponly=True, secure=True, samesite="Lax")
     return resp
 
@@ -104,10 +107,18 @@ def handle_comment(blog_id, request_, blogs):
     user_id = user_data["user_id"]
     user_name = user_data["user_name"]
     content = request_.form.get("comment")
+    replies_to = request_.form.get("replies_to")
     content = helpers.sanitize_comment(content)
     if not content:
         return
-    blog.add_comment(user_name, user_id, content, int(time.time()))
+    comment_id = blog.add_comment(
+        user_name,
+        user_id,
+        content,
+        int(time.time()),
+        int(replies_to) if replies_to else None
+    )
+    return comment_id
 
 
 def modify_comment(blog_id, comment_id, request_, blogs: [BlogPost]):

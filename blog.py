@@ -56,7 +56,7 @@ class BlogPost:
 
     def _load_comments_from_disk(self):
         directory = self._get_comments_directory()
-        comments = []
+        comment_map: {int: Comment} = {}
 
         for filename in os.listdir(directory):
             if not filename.endswith('.json') or not os.path.isfile(os.path.join(directory, filename)):
@@ -67,11 +67,16 @@ class BlogPost:
                     data = json.load(f)
                     comment_id = int(filename.split('.')[0])
                     comment = Comment(**data, comment_id=comment_id)
-                    comments.append(comment)
+                    comment_map[comment_id] = comment
                 except (json.JSONDecodeError, TypeError) as e:
                     print(f"Error loading comment from {filename}: {e}")
                     continue
 
+        for comment in comment_map.values():
+            if comment.replies_to_id:
+                comment.replies_to = comment_map.get(comment.replies_to_id)
+
+        comments = list(comment_map.values())
         comments.sort(key=lambda x: x.timestamp)
         return comments
 
@@ -82,7 +87,7 @@ class BlogPost:
                 self._comments_needs_update = False
         return self._cached_comments
 
-    def add_comment(self, user_name: str, user_id: int, comment: str, timestamp: int):
+    def add_comment(self, user_name: str, user_id: int, comment: str, timestamp: int, replies_to: int = None):
         with self._comments_lock:
             comment_id = 0
             directory = self._get_comments_directory()
@@ -97,11 +102,13 @@ class BlogPost:
                     'user_name': user_name,
                     'user_id': user_id,
                     'comment': comment,
-                    'timestamp': timestamp
+                    'timestamp': timestamp,
+                    'replies_to_id': replies_to,
                 }
                 f.write(json.dumps(data, indent=4))
 
         self.mark_comments_for_update()
+        return comment_id
 
     def edit_comment(self, comment_id: int, new_content: str):
         directory = self._get_comments_directory()
@@ -153,7 +160,8 @@ class Comment:
             comment: str,
             timestamp: int,
             edited_timestamp: int = None,
-            is_deleted: bool = False
+            is_deleted: bool = False,
+            replies_to_id: int = None
     ):
         self.comment_id = comment_id
         self.user_name = user_name
@@ -161,6 +169,8 @@ class Comment:
         self.timestamp = timestamp
         self.edited_timestamp = edited_timestamp
         self.is_deleted = is_deleted
+        self.replies_to_id = replies_to_id
+        self.replies_to = None
         self.date_str = helpers.timestamp_to_relative(timestamp)
         self.edited_date_str = helpers.timestamp_to_relative(edited_timestamp) if edited_timestamp else None
 
@@ -178,11 +188,13 @@ class Comment:
                 .replace("\n", "<br>")
             )
 
-    def get_edited_date_string(self):
-        if not self.edited_timestamp:
-            return None
-        date = datetime.fromtimestamp(self.edited_timestamp)
-        return date.strftime("%Y-%m-%d %H:%M")
+        self.short_comment = self._get_short_comment()
+
+    def _get_short_comment(self):
+        short_comment = self.comment.replace("\n", " ")
+        if len(short_comment) > 100:
+            short_comment = short_comment[:100] + "..."
+        return short_comment
 
 
 def get_blog_posts():
