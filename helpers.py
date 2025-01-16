@@ -106,6 +106,8 @@ def escape(s):
     s = s.replace("'", "\\'")
     s = s.replace('"', '\\"')
     s = s.replace("\n", "\\A")
+    s = s.replace("<", "&lt;")
+    s = s.replace(">", "&gt;")
     return s
 
 
