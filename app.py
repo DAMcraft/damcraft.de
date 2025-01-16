@@ -1,6 +1,7 @@
 import json
 import os
 import random
+import urllib.parse
 from functools import lru_cache
 from hashlib import sha256
 from threading import Thread
@@ -146,7 +147,6 @@ def listening_to():
     return event_reader(resp), 200, {
         "Cache-Control": "no-cache",
         "Content-Type": "text/html; charset=utf-8",
-        "X-Content-Type-Options": "nosniff",
         "Refresh": "60"
     }
 
@@ -295,12 +295,15 @@ def before_request():
 def after_request(response):
     response.headers["Onion-Location"] = "http://" + const.TOR_HOSTNAME + request.path  # noqa
     if not str(response.status_code).startswith("3"):
-        response.headers["Link"] = f'<{const.URL_BASE}{request.path}>; rel="canonical"'
+        path = urllib.parse.quote(request.path)
+        query = f"?{request.query_string.decode()}" if request.query_string else ""
+        response.headers["Link"] = f'<{const.URL_BASE}{path}{query}>; rel="canonical"'
     response.headers["Content-Security-Policy"] = (
         f"script-src 'none'; "
         f"style-src 'self' *.{request.host} 'unsafe-inline'; "
         f"default-src 'self' *.{request.host};"
     )
+    response.headers["X-Content-Type-Options"] = "nosniff"
     return response
 
 

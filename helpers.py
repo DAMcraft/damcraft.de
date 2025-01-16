@@ -238,7 +238,7 @@ def spotify_status_updater():
             for cover_ in covers:
                 if cover_["height"] >= 100 and cover_["width"] >= 100:
                     cover = cover_["url"]
-            cover = cover.replace("https://i.scdn.co/image/", "https://damcraft.de/spotify-image-proxy/")
+            cover = cover.replace("https://i.scdn.co/image/", "/spotify-image-proxy/")
             progress = status["progress_ms"] // 1000
             duration = status["item"]["duration_ms"] // 1000
             song_url = status["item"]["external_urls"]["spotify"]
