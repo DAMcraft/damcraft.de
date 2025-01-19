@@ -140,6 +140,7 @@ class BlogPost:
             data = json.load(f)
 
         data['is_deleted'] = True
+        data['comment'] = ""
 
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(json.dumps(data, indent=4))
@@ -171,13 +172,10 @@ class Comment:
         self.is_deleted = is_deleted
         self.replies_to_id = replies_to_id
         self.replies_to = None
-        self.date_str = helpers.timestamp_to_relative(timestamp)
-        self.edited_date_str = helpers.timestamp_to_relative(edited_timestamp) if edited_timestamp else None
 
         if is_deleted:
             self.comment = "<span class='deleted-comment'>[deleted]</span>"
             self.edited_timestamp = None
-            self.edited_date_str = None
         else:
             self.comment = (
                 comment.replace("&", "&amp;")
@@ -195,6 +193,16 @@ class Comment:
         if len(short_comment) > 100:
             short_comment = short_comment[:100] + "..."
         return short_comment
+
+    @property
+    def date_str(self):
+        return helpers.timestamp_to_relative(self.timestamp)
+
+    @property
+    def edited_date_str(self):
+        if not self.edited_timestamp:
+            return None
+        return helpers.timestamp_to_relative(self.edited_timestamp)
 
 
 def get_blog_posts():

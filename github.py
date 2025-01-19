@@ -146,6 +146,9 @@ def modify_comment(blog_id, comment_id, request_, blogs: [BlogPost]):
         new_content = helpers.sanitize_comment(new_content)
         if not new_content:
             return
+        old_content = comment.comment
+        if old_content == new_content:
+            return
 
         success = blog.edit_comment(comment_id, new_content)
         if not success:
