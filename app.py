@@ -224,16 +224,22 @@ def security_txt():
     return send_from_directory(".", "security.txt")
 
 
-@app.route('/.well-known/button')
+@app.route('/.well-known/button.json')
 def button():
-    if not request.args.get("format") == "json":
-        return send_from_directory("assets/88x31", "dam.gif")
-    return Response(json.dumps([{
-        "id": "damcraft.de",
-        "uri": "https://damcraft.de/assets/88x31/dam.gif",
-        "link": "https://damcraft.de",
-        "sha256": button_hash
-    }], indent=4), mimetype="application/json")
+    return Response(json.dumps({
+        "$schema": "https://codeberg.org/LunarEclipse/well-known-button/raw/branch/main/drafts/"
+                   "button-2024-06.schema.json",
+        "default": const.MAIN_DOMAIN,
+        "buttons": [
+            {
+                "id": const.MAIN_DOMAIN,
+                "uri": "https://damcraft.de/assets/88x31/dam.gif",
+                "link": "https://damcraft.de",
+                "sha256": button_hash,
+                "alt": "Damian / damcraft.de"
+            }
+        ]
+    }, indent=4), mimetype="application/json")
 
 
 @app.route('/.well-known/atproto-did')
