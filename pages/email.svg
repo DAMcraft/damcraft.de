@@ -17,9 +17,9 @@
       fill: var(--links-hover);
     }
   </style>
-  <a href="mailto:c&#111;ntact&#64;d&#97;mcraf&#116;&#46;de">
+  <a href="mailto:{{ email|replace('@', '&#64;')|safe }}">
     <text x="0" y="50%" text-anchor="start"  dominant-baseline="middle">
-      cont<!--aa-->act&#64;damcr<!--boop-->aft&#46;de
+      {{ email|replace("@", "&#64;<!-->meow-->")|safe }}
     </text>
   </a>
 </svg>

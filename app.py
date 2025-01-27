@@ -89,7 +89,7 @@ def blog_post(blog_id):
                     user_data=user_data)
             )
             if i == 0:
-                resp.set_cookie("last_read", blog_.url_name, max_age=60 * 60 * 24 * 365)
+                resp.set_cookie("last_read", blog_.url_name, max_age=60 * 60 * 24 * 365, samesite="Lax")
             return resp
 
     return "Not found", 404
@@ -137,7 +137,10 @@ def notification():
 @robots.noindex
 @robots.disallow
 def email_svg():
-    return Response(render_template("email.svg"), mimetype="image/svg+xml")
+    return Response(
+        render_template("email.svg", email=const.EMAIL),
+        mimetype="image/svg+xml"
+    )
 
 
 @app.route('/listening_to')
@@ -157,7 +160,7 @@ def mark_as_read():
     url_name = request.form.get("url_name")
     if url_name is not None:
         resp = app.make_response(render_template("nothing.html"))
-        resp.set_cookie("last_read", url_name, max_age=60 * 60 * 24 * 365)
+        resp.set_cookie("last_read", url_name, max_age=60 * 60 * 24 * 365, samesite="Lax")
         return resp
     return "Invalid request", 400
 

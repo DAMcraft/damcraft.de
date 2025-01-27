@@ -2,6 +2,7 @@ import base64
 import json
 import logging
 import queue
+import re
 import time
 import traceback
 from datetime import datetime
@@ -101,13 +102,15 @@ def get_handlers() -> [logging.StreamHandler]:
     return console_handler, file_handler
 
 
-def escape(s):
-    s = s.replace("\\", "\\\\")
-    s = s.replace("'", "\\'")
-    s = s.replace('"', '\\"')
-    s = s.replace("\n", "\\A")
-    s = s.replace("<", "&lt;")
-    s = s.replace(">", "&gt;")
+def css_escape(s):
+    s = s.replace("\0", "\uFFFD")  # replacement character
+
+    s = re.sub(
+        "[^A-Za-z0-9 _-]",
+        lambda x: f"\\{ord(x.group(0)):x} ",
+        s
+    )
+
     return s
 
 
@@ -255,8 +258,8 @@ def spotify_status_updater():
             last_state = state
             last_push = progress
 
-            song_title = escape(song_title)
-            artist = escape(artist)
+            song_title = css_escape(song_title)
+            artist = css_escape(artist)
 
             unique_id = str(time.time()).replace(".", "")
             seconds_keyframes = []
@@ -267,8 +270,10 @@ def spotify_status_updater():
                     tmp_i = 0
                 if progress + tmp_i >= duration:
                     tmp_i = duration - progress
-                seconds_keyframes.append(f"{i * 10}% {{ counter-increment: seconds{unique_id} {(progress + tmp_i) % 60}; }}")   # noqa
-                minutes_keyframes.append(f"{i * 10}% {{ counter-increment: minutes{unique_id} {(progress + tmp_i) // 60}; }}")  # noqa
+                seconds_keyframes.append(
+                    f"{i * 10}% {{ counter-increment: seconds{unique_id} {(progress + tmp_i) % 60}; }}")  # noqa
+                minutes_keyframes.append(
+                    f"{i * 10}% {{ counter-increment: minutes{unique_id} {(progress + tmp_i) // 60}; }}")  # noqa
             seconds_keyframes = "\n".join(seconds_keyframes)
             minutes_keyframes = "\n".join(minutes_keyframes)
 
