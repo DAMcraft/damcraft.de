@@ -7,8 +7,7 @@ from threading import Thread
 
 import requests
 from flask import Flask, render_template, Response, send_from_directory, request, redirect, make_response
-from flask_compress import Compress
-from flask_caching import Cache
+from functools import lru_cache
 import time
 import dotenv
 import logging
@@ -28,8 +27,6 @@ for handler in get_handlers():
     logging.getLogger().addHandler(handler)
 
 app = Flask(__name__, template_folder='pages')
-cache = Cache(app, config={'CACHE_TYPE': 'simple'})
-Compress(app)
 if os.getenv("FLASK_DEBUG") != "1":
     app.wsgi_app = ProxyFix(app.wsgi_app)
 dotenv.load_dotenv()
@@ -184,7 +181,7 @@ def github_login():
 
 
 @app.route('/github/profile_image/<user_id>')
-@cache.cached(timeout=60 * 60 * 24)
+@lru_cache(maxsize=30)
 @robots.noindex
 @robots.disallow
 def github_profile_image(user_id):
@@ -286,7 +283,7 @@ def parrot():
 
 
 @app.route('/spotify-image-proxy/<image_id>')
-@cache.cached(timeout=60 * 60 * 24)
+@lru_cache(maxsize=10)
 @robots.noindex
 @robots.disallow
 def spotify_image_proxy(image_id):
