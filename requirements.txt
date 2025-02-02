@@ -8,5 +8,3 @@ PyJWT
 python-dateutil
 user-agents
 Pillow
-flask-compress
-Flask-Caching
