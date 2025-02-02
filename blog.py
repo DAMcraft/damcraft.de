@@ -1,14 +1,16 @@
 import hashlib
+import html
 import json
 import os
 import base64
+import time
 from datetime import datetime
 from multiprocessing import Lock
 
-import pytz
 import markdown
 
 import helpers
+from github import get_user_data_from_request
 
 blog_directory = 'blog_posts'
 
@@ -21,8 +23,9 @@ class BlogPost:
             date: str,
             content: str,
             url_name: str = None,
-            blog_hash: str = None,
-            image: str = None
+            hash: str = None,  # noqa
+            image: str = None,
+            is_latest: bool = False
     ):
         if not title or not summary or not date or not content:
             raise ValueError("Missing required fields")
@@ -31,8 +34,10 @@ class BlogPost:
         self.summary = summary
         self.date = date
         self.image = image
-        self.hash = blog_hash or self._get_hash()
-        self.content = markdown.markdown(content, extensions=['fenced_code', 'codehilite', 'extra'])
+        self.hash = hash or self._get_hash()
+        self.is_latest = is_latest
+        self._content_md = content
+        self.content = self._render_markdown()
 
         if not os.path.exists(self._get_comments_directory()):
             os.makedirs(self._get_comments_directory())
@@ -40,6 +45,9 @@ class BlogPost:
         self._comments_lock = Lock()
         self._cached_comments: [Comment] or None = None
         self._comments_needs_update = True
+
+    def _render_markdown(self):
+        return markdown.markdown(self._content_md, extensions=['fenced_code', 'codehilite', 'extra'])
 
     def _get_comments_directory(self):
         return os.path.join(blog_directory, 'comments', self.url_name)
@@ -87,7 +95,11 @@ class BlogPost:
                 self._comments_needs_update = False
         return self._cached_comments
 
-    def add_comment(self, user_name: str, user_id: int, comment: str, timestamp: int, replies_to: int = None):
+    def get_comment(self, comment_id: int):
+        comments = self.get_comments()
+        return next((c for c in comments if c.comment_id == comment_id), None)
+
+    def add_comment(self, user_name: str, user_id: int, comment: str, replies_to: int = None):
         with self._comments_lock:
             comment_id = 0
             directory = self._get_comments_directory()
@@ -102,7 +114,7 @@ class BlogPost:
                     'user_name': user_name,
                     'user_id': user_id,
                     'comment': comment,
-                    'timestamp': timestamp,
+                    'timestamp': time.time(),
                     'replies_to_id': replies_to,
                 }
                 f.write(json.dumps(data, indent=4))
@@ -110,43 +122,34 @@ class BlogPost:
         self.mark_comments_for_update()
         return comment_id
 
-    def edit_comment(self, comment_id: int, new_content: str):
-        directory = self._get_comments_directory()
-        file_path = os.path.join(directory, f'{comment_id}.json')
-
-        if not os.path.exists(file_path):
+    def _modify_comment(self, comment_id: int, update_func):
+        comment_path = os.path.join(self._get_comments_directory(), f'{comment_id}.json')
+        if not os.path.exists(comment_path):
             return False
-
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(comment_path, 'r+', encoding='utf-8') as f:
             data = json.load(f)
-
-        data['comment'] = new_content
-        data['edited_timestamp'] = int(datetime.now().timestamp())
-
-        with open(file_path, 'w', encoding='utf-8') as f:
+            update_func(data)
+            f.seek(0)
             f.write(json.dumps(data, indent=4))
+            f.truncate()
 
         self.mark_comments_for_update()
         return True
+
+    def edit_comment(self, comment_id: int, new_content: str):
+        def update_func(data):
+            data['comment'] = new_content
+            data['edited_timestamp'] = int(time.time())
+
+        return self._modify_comment(comment_id, update_func)
 
     def delete_comment(self, comment_id: int):
-        directory = self._get_comments_directory()
-        file_path = os.path.join(directory, f'{comment_id}.json')
+        def update_func(data):
+            data['is_deleted'] = True
+            data['comment'] = ""
+            data['edited_timestamp'] = int(time.time())
 
-        if not os.path.exists(file_path):
-            return False
-
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-
-        data['is_deleted'] = True
-        data['comment'] = ""
-
-        with open(file_path, 'w', encoding='utf-8') as f:
-            f.write(json.dumps(data, indent=4))
-
-        self.mark_comments_for_update()
-        return True
+        return self._modify_comment(comment_id, update_func)
 
     def __repr__(self):
         return f'<BlogPost title="{self.title}" date="{self.date}" url_name="{self.url_name}">'
@@ -172,27 +175,19 @@ class Comment:
         self.is_deleted = is_deleted
         self.replies_to_id = replies_to_id
         self.replies_to = None
+        self._process_comment()
 
-        if is_deleted:
+    def _process_comment(self):
+        if self.is_deleted:
             self.comment = "<span class='deleted-comment'>[deleted]</span>"
             self.edited_timestamp = None
         else:
-            self.comment = (
-                comment.replace("&", "&amp;")
-                .replace(">", "&gt;")
-                .replace("<", "&lt;")
-                .replace("'", "&#39;")
-                .replace('"', "&#34;")
-                .replace("\n", "<br>")
-            )
+            self.comment = html.escape(self.comment).replace("\n", "<br>")
 
-        self.short_comment = self._get_short_comment()
-
-    def _get_short_comment(self):
-        short_comment = self.comment.replace("\n", " ")
+        short_comment = self.comment.replace("<br>", " ")
         if len(short_comment) > 100:
             short_comment = short_comment[:100] + "..."
-        return short_comment
+        self.short_comment = short_comment
 
     @property
     def date_str(self):
@@ -207,72 +202,124 @@ class Comment:
 
 def get_blog_posts():
     blog_posts = []
-    for filename in os.listdir(blog_directory):
-        if not filename.endswith('.md') or not os.path.isfile(os.path.join(blog_directory, filename)):
+    for entry in os.scandir(blog_directory):
+        if not entry.name.endswith('.md') or not entry.is_file():
             continue
-        with open(os.path.join(blog_directory, filename), encoding='utf-8', errors='ignore') as f:
-            url_name = filename.split('.')[0]
+        with open(entry.path, encoding='utf-8', errors='ignore') as f:
+            url_name = os.path.splitext(entry.name)[0]
 
-            data = {
-                "title": "",
-                "summary": "",
-                "date": "",
-                "content": "",
-                "image": None,
-                "hash": None,
-                "url_name": url_name
-            }
+            metadata = {}
 
-            done = False
-            while not done:
+            in_metadata = True
+            while in_metadata:
                 line = f.readline().strip()
                 if line.replace("-", "").strip() == "":
-                    done = True
+                    in_metadata = False
                 else:
                     try:
                         key, value = line.split(":", 1)
                     except ValueError:
                         raise ValueError(f"Invalid line: {line}")
                     key = key.strip().lower()
-                    if key not in data:
-                        raise ValueError(f"Unknown key: {key}")
-                    data[key] = value.strip()
+                    value = value.strip()
+                    metadata[key] = value
 
-            data["content"] = f.read()
-            data["blog_hash"] = data["hash"]
-            del data["hash"]
-            blog_posts.append(BlogPost(**data))
+            metadata["content"] = f.read()
+            metadata["url_name"] = url_name
+            blog_posts.append(BlogPost(**metadata))
 
     blog_posts.sort(key=lambda x: x.date, reverse=True)
+    if blog_posts:
+        blog_posts[0].is_latest = True
     return blog_posts
 
 
-def get_rss(blog_posts):
-    posts = ""
+def handle_comment(blog_id, request_, blogs):
+    blog: BlogPost = next((b for b in blogs if b.url_name == blog_id), None)
+    if not blog:
+        return
+    user_data = get_user_data_from_request(request_)
+    if not user_data:
+        return
+
+    content = request_.form.get("comment")
+    content = helpers.sanitize_comment(content)
+    if not content:
+        return
+
+    replies_to = request_.form.get("replies_to")
+
+    comment_id = blog.add_comment(
+        user_name=user_data.user_name,
+        user_id=user_data.user_id,
+        comment=content,
+        replies_to=int(replies_to) if replies_to else None
+    )
+    return comment_id
+
+
+def modify_comment(blog_id, comment_id, request_, blogs: [BlogPost]):
+    user_data = get_user_data_from_request(request_)
+    if not user_data:
+        return
+
+    blog: BlogPost = next((b for b in blogs if b.url_name == blog_id), None)
+    if not blog:
+        return
+    comment = blog.get_comment(comment_id)
+    if not comment or comment.is_deleted or comment.user_id != user_data.user_id:
+        return
+
+    action = request_.form.get('action')
+    if action == 'edit':
+        new_content = helpers.sanitize_comment(request_.form.get('content'))
+        if not new_content:
+            return
+        if comment.comment == new_content:
+            return  # No changes
+
+        if not blog.edit_comment(comment_id, new_content):
+            return  # Error
+
+    elif action == 'delete':
+        if not blog.delete_comment(comment_id):
+            return
+    else:
+        return
+
+    blog.mark_comments_for_update()
+
+
+def get_rss(blog_posts: [BlogPost]):
+    items = []
     for post in blog_posts:
-        blog_img = ''
-        if post.image:
-            blog_img = f'<img src="https://damcraft.de{post.image}" alt="{post.title}" style="max-width: 100%;">'
-        rss_content = f"""
-            <h2>{post.title}</h2>
-            <p><i>{post.summary}</i></p>
-            {blog_img}
+        pub_date = datetime.strptime(post.date, "%Y-%m-%d").strftime("%a, %d %b %Y 00:00:00 +0000")
+        description = f"""
+            <h2>{html.escape(post.title)}</h2>
+            <p><i>{html.escape(post.summary)}</i></p>
+            {f'<img src="https://damcraft.de{post.image}" alt="{html.escape(post.title)}">' if post.image else ''}
             {post.content}
-        """.replace("]", "&#93;").replace("[", "&#91;")
-        posts += f"""<item>
+        """.replace("[", "&#91;").replace("]", "&#93;")
+
+        item = f"""
+        <item>
             <title>{post.title}</title>
             <link>https://damcraft.de/blog/{post.url_name}</link>
-            <description><![CDATA[{rss_content}]]></description>
-            <pubDate>{datetime.strptime(post.date, "%Y-%m-%d").astimezone(pytz.timezone("UTC")).strftime("%a, %d %b %Y %H:%M:%S %z")}</pubDate>
             <guid isPermaLink="true">https://damcraft.de/blog/{post.url_name}</guid>
-        </item>"""
+            <pubDate>{pub_date}</pubDate>
+            <description><![CDATA[
+                {description}
+            ]]></description>
+        </item>
+        """
+        items.append(item)
     data = f"""<?xml version="1.0" encoding="UTF-8"?>
     <rss version="2.0">
     <channel>
         <title>dam's blog</title>
         <link>https://damcraft.de</link>
         <description>My little place to ramble and rant on the internet</description>
-        {posts}
+        {"".join(items)}
     </channel>
     </rss>"""
     return data

@@ -25,6 +25,10 @@
         height: 50px;
         width: 50px;
         display: block;
+        margin-top: 5px;
+    }
+    .comment-avatar img {
+        margin: 0;
     }
     .comment-content {
         flex: 1;
@@ -216,7 +220,7 @@
                         {% if not comment.is_deleted and user_data %}
                             <div class="comment-actions">
                                 <label for="reply-{{ comment.comment_id }}" class="action-btn reply-label">Reply</label>
-                                {% if user_data and comment.user_id == user_data.user_id %}
+                                {% if comment.user_id == user_data.user_id %}
                                     <label for="edit-{{ comment.comment_id }}" class="action-btn edit-label">Edit</label>
                                     <label for="delete-{{ comment.comment_id }}" class="action-btn delete-label">Delete</label>
                                 {% endif %}

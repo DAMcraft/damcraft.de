@@ -2,12 +2,13 @@ import json
 import os
 import random
 import urllib.parse
-from functools import lru_cache
 from hashlib import sha256
 from threading import Thread
 
 import requests
 from flask import Flask, render_template, Response, send_from_directory, request, redirect, make_response
+from flask_compress import Compress
+from flask_caching import Cache
 import time
 import dotenv
 import logging
@@ -27,6 +28,8 @@ for handler in get_handlers():
     logging.getLogger().addHandler(handler)
 
 app = Flask(__name__, template_folder='pages')
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
+Compress(app)
 if os.getenv("FLASK_DEBUG") != "1":
     app.wsgi_app = ProxyFix(app.wsgi_app)
 dotenv.load_dotenv()
@@ -77,28 +80,30 @@ def blogs_page():
 @robots.index
 @robots.follow
 def blog_post(blog_id):
-    user_data = github.get_user_data_from_request(request)
-    for i, blog_ in enumerate(blogs):
-        if blog_.url_name == blog_id:
-            date_text = format_iso_date(blog_.date)
-            resp = app.make_response(
-                render_template(
-                    'blog_page.html',
-                    blog=blog_,
-                    date_text=date_text,
-                    user_data=user_data)
-            )
-            if i == 0:
-                resp.set_cookie("last_read", blog_.url_name, max_age=60 * 60 * 24 * 365, samesite="Lax")
-            return resp
+    blog_ = blog_by_url.get(blog_id)
+    if not blog_:
+        return "Not found", 404
 
-    return "Not found", 404
+    user_data = github.get_user_data_from_request(request)
+
+    date_text = format_iso_date(blog_.date)
+    resp = app.make_response(
+        render_template(
+            'blog_page.html',
+            blog=blog_,
+            date_text=date_text,
+            user_data=user_data)
+    )
+    if blog_.is_latest:
+        resp.set_cookie(
+            "last_read", blog_.url_name, max_age=60 * 60 * 24 * 365, samesite="Lax", secure=True, httponly=True)
+    return resp
 
 
 @app.route('/blog/<blog_id>/comment', methods=["POST"])
 @robots.noindex
 def comment(blog_id):
-    comment_id = github.handle_comment(blog_id, request, blogs)
+    comment_id = blog.handle_comment(blog_id, request, blogs)
     if comment_id:
         return redirect(f"/blog/{blog_id}#comment-{comment_id}")
     return redirect(f"/blog/{blog_id}#comments-section")
@@ -107,16 +112,16 @@ def comment(blog_id):
 @app.route('/blog/<blog_id>/comments/<comment_id>', methods=["POST"])
 @robots.noindex
 def modify_comment(blog_id, comment_id):
-    github.modify_comment(blog_id, comment_id, request, blogs)
+    blog.modify_comment(blog_id, comment_id, request, blogs)
     return redirect(f"/blog/{blog_id}#comment-{comment_id}")
 
 
 @app.route('/-<blog_id>')
 @robots.follow
 def blog_post_short(blog_id):
-    for post in blogs:
-        if post.hash == blog_id:
-            return redirect(f"/blog/{post.url_name}", code=301)
+    post = blog_by_hash.get(blog_id)
+    if post:
+        return redirect(f"/blog/{post.url_name}", code=301)
     return "Not found", 404
 
 
@@ -160,7 +165,7 @@ def mark_as_read():
     url_name = request.form.get("url_name")
     if url_name is not None:
         resp = app.make_response(render_template("nothing.html"))
-        resp.set_cookie("last_read", url_name, max_age=60 * 60 * 24 * 365, samesite="Lax")
+        resp.set_cookie("last_read", url_name, max_age=60 * 60 * 24 * 365, samesite="Lax", secure=True, httponly=True)
         return resp
     return "Invalid request", 400
 
@@ -173,11 +178,13 @@ def github_callback():
 @app.route('/github/login')
 def github_login():
     return_url = request.args.get("return")
+    if return_url and not return_url.startswith("/"):
+        return_url = "/"
     return redirect(github.get_oauth_url(return_url=return_url))
 
 
 @app.route('/github/profile_image/<user_id>')
-@lru_cache(maxsize=30)
+@cache.cached(timeout=60 * 60 * 24)
 @robots.noindex
 @robots.disallow
 def github_profile_image(user_id):
@@ -190,8 +197,8 @@ def github_profile_image(user_id):
 
 @app.route('/pgp')
 def pgp():
-    resp = Response(pgp_key, mimetype="application/pgp-keys")
-    resp.headers["Content-Disposition"] = "attachment; filename=damcraft_public.asc"
+    resp = Response(pgp_key, mimetype="text/plain")
+    resp.headers["Content-Disposition"] = "inline; filename=damcraft_public.asc"
     return resp
 
 
@@ -279,7 +286,7 @@ def parrot():
 
 
 @app.route('/spotify-image-proxy/<image_id>')
-@lru_cache(maxsize=10)
+@cache.cached(timeout=60 * 60 * 24)
 @robots.noindex
 @robots.disallow
 def spotify_image_proxy(image_id):
@@ -318,7 +325,11 @@ def after_request(response):
 
 discord_status = ""
 discord_invite = None
+
 blogs = get_blog_posts()
+blog_by_url: dict[str, blog.BlogPost] = {blog.url_name: blog for blog in blogs}
+blog_by_hash: dict[str, blog.BlogPost] = {blog.hash: blog for blog in blogs}
+
 style_hash = sha256(open("assets/style.css", "rb").read()).hexdigest()[:8]
 button_hash = sha256(open("assets/88x31/dam.gif", "rb").read()).hexdigest()
 pgp_key = open('pgp', 'rb').read()

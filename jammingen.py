@@ -116,13 +116,10 @@ def render():
 
         frames.append(frame)
 
-    print(f"Processing took {time.time() - start_processing_time:.2f}s")
-
     # Save the new image to /cache/[ip].webp
     frames[0].save(
         cache_file, save_all=True, append_images=frames[1:], duration=jamming.info["duration"], loop=0
     )
-    print(f"Saving took {time.time() - start_processing_time:.2f}s")
 
     # Return the image
     return Response(open(cache_file, "rb"), mimetype="image/webp")

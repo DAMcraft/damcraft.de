@@ -6,11 +6,13 @@ import re
 import time
 import traceback
 from datetime import datetime
+from functools import lru_cache
 from json import JSONDecodeError
 
 import pytz
 import requests
 import unicodedata
+from dateutil.relativedelta import relativedelta
 from flask import send_from_directory, request
 
 import const
@@ -37,15 +39,12 @@ def get_discord_invite():
 
 
 def get_age():
-    birthday_str = const.BIRTHDAY  # YYYY-MM-DD
-    if birthday_str is None:
-        return None
-    birthday = datetime.strptime(birthday_str, "%Y-%m-%d").date()
+    birthday = datetime.strptime(const.BIRTHDAY, "%Y-%m-%d").date()
     today = datetime.now().date()
-    has_passed = (today.month, today.day) >= (birthday.month, birthday.day)
-    return today.year - birthday.year - (not has_passed)
+    return relativedelta(today, birthday).years
 
 
+@lru_cache(maxsize=32)
 def get_time_at_ip(ip: str) -> str | None:
     try:
         req = requests.get(f"https://ipinfo.io/{ip}?token={const.IP_INFO_API_KEY}").json()
@@ -148,20 +147,19 @@ def get_access_token():
     return None, 0
 
 
-def timestamp_to_relative(timestamp):
-    date = datetime.fromtimestamp(timestamp)
-    now = datetime.now()
-    delta = now - date
+def timestamp_to_relative(timestamp: int):
+    delta = time.time() - timestamp
 
-    if delta.total_seconds() < 60:
+    if delta < 60:
         return "just now"
-    if delta.total_seconds() < 60 * 60:
-        return f"{int(delta.total_seconds() / 60)} minutes ago"
-    if delta.total_seconds() < 60 * 60 * 24:
-        return f"{int(delta.total_seconds() / 60 / 60)} hours ago"
-    if delta.total_seconds() < 60 * 60 * 24 * 7:
-        return f"{int(delta.total_seconds() / 60 / 60 / 24)} days ago"
-    return date.strftime("%Y-%m-%d")
+    if delta < 60 * 60:
+        return f"{int(delta / 60)} minutes ago"
+    if delta < 60 * 60 * 24:
+        return f"{int(delta / 60 / 60)} hours ago"
+    if delta < 60 * 60 * 24 * 7:
+        return f"{int(delta / 60 / 60 / 24)} days ago"
+
+    return datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d")
 
 
 def sanitize_comment(content):
@@ -179,24 +177,28 @@ def sanitize_comment(content):
 shared_event_queues = set()
 
 
-def event_reader(start):
-    event_queue = queue.Queue()
+def event_reader(start=None):
+    event_queue = queue.Queue(maxsize=10)
     shared_event_queues.add(event_queue)
-    yield start
-    yield last_event
-    while True:
-        event = event_queue.get()
-        if event is None:
-            break
-        yield event
+
+    try:
+        if start:
+            yield start
+        while True:
+            event = event_queue.get(timeout=30)
+            if event is None:
+                break
+            yield event
+    finally:
+        shared_event_queues.discard(event_queue)
 
 
 def event_writer(event):
-    for q in shared_event_queues:
+    for q in list(shared_event_queues):
         try:
-            q.put(event)
-        except (queue.Full, RuntimeError, OSError):
-            shared_event_queues.remove(q)
+            q.put_nowait(event)
+        except queue.Full:
+            shared_event_queues.discard(q)
 
 
 def spotify_status_updater():

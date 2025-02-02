@@ -1,4 +1,5 @@
 import time
+from dataclasses import dataclass
 
 import jwt
 import requests
@@ -7,8 +8,6 @@ import urllib.parse
 from flask import request, redirect
 
 import const
-import helpers
-from blog import BlogPost
 
 
 def get_oauth_url(return_url=None):
@@ -90,74 +89,15 @@ def get_user_data_from_request(request_):
     if jwt_cookie is None:
         return None
     try:
-        return jwt.decode(jwt_cookie, const.JWT_SECRET, algorithms=["HS256"])
+        data = jwt.decode(jwt_cookie, const.JWT_SECRET, algorithms=["HS256"])
+        return UserData(data["user_id"], data["user_name"])
     except jwt.ExpiredSignatureError:
         return None
     except jwt.InvalidTokenError:
         return None
 
 
-def handle_comment(blog_id, request_, blogs):
-    blog: BlogPost = next((blog for blog in blogs if blog.url_name == blog_id), None)
-    if not blog:
-        return
-    user_data = get_user_data_from_request(request_)
-    if not user_data:
-        return
-    user_id = user_data["user_id"]
-    user_name = user_data["user_name"]
-    content = request_.form.get("comment")
-    replies_to = request_.form.get("replies_to")
-    content = helpers.sanitize_comment(content)
-    if not content:
-        return
-    comment_id = blog.add_comment(
-        user_name,
-        user_id,
-        content,
-        int(time.time()),
-        int(replies_to) if replies_to else None
-    )
-    return comment_id
-
-
-def modify_comment(blog_id, comment_id, request_, blogs: [BlogPost]):
-    blog: BlogPost = next((blog for blog in blogs if blog.url_name == blog_id), None)
-    if not blog:
-        return
-    user_data = get_user_data_from_request(request_)
-    if not user_data:
-        return
-    user_id = user_data["user_id"]
-
-    # Get the comment to verify ownership
-    comments = blog.get_comments()
-    comment = next((c for c in comments if str(c.comment_id) == comment_id), None)
-    if not comment:
-        return
-
-    # Verify comment ownership
-    if comment.user_id != user_id:
-        return
-    action = request_.form.get('action')
-
-    if action == 'edit':
-        new_content = request_.form.get('content')
-        new_content = helpers.sanitize_comment(new_content)
-        if not new_content:
-            return
-        old_content = comment.comment
-        if old_content == new_content:
-            return
-
-        success = blog.edit_comment(comment_id, new_content)
-        if not success:
-            return
-    elif action == 'delete':
-        success = blog.delete_comment(comment_id)
-        if not success:
-            return
-    else:
-        return
-
-    blog.mark_comments_for_update()
+@dataclass
+class UserData:
+    user_id: int
+    user_name: str

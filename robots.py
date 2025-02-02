@@ -48,7 +48,7 @@ def noindex(f):
 
 
 def disallow(f):
-    do_not_index.append(f.__name__)
+    _disallowed_endpoints.add(f.__name__)
     return f
 
 
@@ -89,7 +89,7 @@ def gen_robots_txt(sitemaps: [str], app: flask.app.Flask):
     lines = ["User-agent: *"]
 
     # Add Disallow lines for blocked routes
-    blocked_routes = [route for route in app.url_map.iter_rules() if route.endpoint in do_not_index]
+    blocked_routes = [route for route in app.url_map.iter_rules() if route.endpoint in _disallowed_endpoints]
     blocked_paths = []
     for route in blocked_routes:
         path = route.rule
@@ -126,4 +126,4 @@ def gen_urllist(app, blogs):
     return urls
 
 
-do_not_index = []
+_disallowed_endpoints: set[str] = set()

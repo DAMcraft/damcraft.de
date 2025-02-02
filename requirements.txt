@@ -1,0 +1,12 @@
+requests
+python-dotenv
+Flask
+Werkzeug
+pytz
+Markdown
+PyJWT
+python-dateutil
+user-agents
+Pillow
+flask-compress
+Flask-Caching
