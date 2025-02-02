@@ -177,13 +177,13 @@ def sanitize_comment(content):
 shared_event_queues = set()
 
 
-def event_reader(start=None):
+def event_reader(start):
     event_queue = queue.Queue(maxsize=10)
     shared_event_queues.add(event_queue)
 
     try:
-        if start:
-            yield start
+        yield start
+        yield last_event
         while True:
             event = event_queue.get(timeout=30)
             if event is None:
