@@ -185,7 +185,7 @@ def event_reader(start):
         yield start
         yield last_event
         while True:
-            event = event_queue.get(timeout=30)
+            event = event_queue.get()
             if event is None:
                 break
             yield event
