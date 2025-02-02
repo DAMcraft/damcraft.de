@@ -175,16 +175,16 @@ class Comment:
         self.is_deleted = is_deleted
         self.replies_to_id = replies_to_id
         self.replies_to = None
-        self._process_comment()
+        self._process_comment(comment)
 
-    def _process_comment(self):
+    def _process_comment(self, comment):
         if self.is_deleted:
             self.comment = "<span class='deleted-comment'>[deleted]</span>"
             self.edited_timestamp = None
         else:
-            self.comment = html.escape(self.comment).replace("\n", "<br>")
+            self.comment = html.escape(comment).replace("\n", "<br>")
 
-        short_comment = self.comment.replace("<br>", " ")
+        short_comment = html.escape(comment).replace("\n", " ")
         if len(short_comment) > 100:
             short_comment = short_comment[:100] + "..."
         self.short_comment = short_comment
