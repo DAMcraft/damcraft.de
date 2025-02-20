@@ -15,6 +15,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 import blog
 import const
+import cors
 import github
 import jammingen
 import robots
@@ -232,6 +233,7 @@ def security_txt():
 
 
 @app.route('/.well-known/button.json')
+@cors.allow_origin("*")
 def button():
     return Response(json.dumps({
         "$schema": "https://codeberg.org/LunarEclipse/well-known-button/raw/branch/main/drafts/"
@@ -250,11 +252,13 @@ def button():
 
 
 @app.route('/.well-known/atproto-did')
+@cors.allow_origin("*")
 def atproto_did():
     return Response(const.ATPROTO_DID, mimetype="text/plain")
 
 
 @app.route('/.well-known/matrix/client')
+@cors.allow_origin("*")
 def matrix_client():
     return {
         "m.server": {
@@ -270,6 +274,7 @@ def matrix_client():
 
 
 @app.route('/.well-known/matrix/server')
+@cors.allow_origin("*")
 def matrix_server():
     return {
         "m.server": const.MATRIX_SERVER
@@ -346,5 +351,5 @@ robots.robot_friendly(app, blogs, extra_sitemaps=["blog/rss.xml"])
 
 # Check if Flask is in debug mode
 if os.environ.get("FLASK_DEBUG") != "1":
-    Thread(target=spotify_status_updater).start()
-    Thread(target=stats_updater).start()
+    Thread(target=spotify_status_updater, daemon=True).start()
+    Thread(target=stats_updater, daemon=True).start()
