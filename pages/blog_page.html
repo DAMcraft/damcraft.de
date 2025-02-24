@@ -179,6 +179,11 @@
             text-align: justify;
             text-justify: inter-character;
         }
+        @media (max-width: 800px) {
+            p {
+                text-align: start;
+            }
+        }
         .footnote p {
             text-align: start;
         }
@@ -208,10 +213,47 @@
             border-left: 2px solid #666;
             background-color: #444;
         }
+        .top-buttons {
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin-top: 30px;
+            margin-left: max(20px, calc(50% - 650px));
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 20px;
+        }
+        .top-button {
+            color: white;
+            gap: 6px;
+            display: flex;
+        }
+        .top-button img {
+            height: 1em;
+            width: 1em;
+            margin: 5px 0;
+        }
+        @media (max-width: 1100px) {
+            .top-buttons {
+                display: none;
+            }
+        }
     </style>
     <link rel="alternate" type="application/rss+xml" title="RSS feed" href="/blog/rss.xml">
 </head>
 <body>
+    <div class="top-buttons">
+        <a href="/" class="top-button">
+            <img src="/assets/home.svg" alt="Home icon">
+            back home
+        </a>
+        <a href="/blog/" class="top-button">
+            <img src="/assets/arrow_left.svg" alt="Back icon">
+            back to blogs
+        </a>
+    </div>
+
     <div class="container">
         <div class="content">
             <header class="blog-header">

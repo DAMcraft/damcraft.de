@@ -8,7 +8,9 @@ import traceback
 from datetime import datetime
 from functools import lru_cache
 from json import JSONDecodeError
+from typing import Literal
 
+import bs4
 import pytz
 import requests
 import unicodedata
@@ -126,10 +128,15 @@ def get_spotify_status(access_token):
         return None
 
 
-def get_access_token():
-    refresh_token = const.SPOTIFY_REFRESH_TOKEN
-    client_id = const.SPOTIFY_CLIENT_ID
-    client_secret = const.SPOTIFY_CLIENT_SECRET
+def get_access_token(current_token):
+    if current_token == "main":
+        refresh_token = const.SPOTIFY_REFRESH_TOKEN
+        client_id = const.SPOTIFY_CLIENT_ID
+        client_secret = const.SPOTIFY_CLIENT_SECRET
+    else:
+        refresh_token = const.SPOTIFY_FALLBACK_REFRESH_TOKEN
+        client_id = const.SPOTIFY_FALLBACK_CLIENT_ID
+        client_secret = const.SPOTIFY_FALLBACK_CLIENT_SECRET
     auth = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()
     headers = {
         "Authorization": f"Basic {auth}",
@@ -201,13 +208,26 @@ def event_writer(event):
             shared_event_queues.discard(q)
 
 
+def fetch_spotify_preview(last_track_id: str) -> str | None:
+    try:
+        req = requests.get(f"https://open.spotify.com/embed/track/{last_track_id}")
+        if req.status_code != 200:
+            return None
+        bs = bs4.BeautifulSoup(req.text, "html.parser")
+        data = bs.find("script", {"id": "__NEXT_DATA__"}).string
+        data = json.loads(data)
+        return data["props"]["pageProps"]["state"]["data"]["entity"]["audioPreview"]["url"]
+    except (requests.exceptions.RequestException, JSONDecodeError, KeyError):
+        return None
+
+
 def spotify_status_updater():
-    global access_token, expires_on, last_event
+    global access_token, expires_on, last_event, current_token
     last_state = None
     last_push = 0
     while True:
         if expires_on < time.time():
-            access_token, expires_on = get_access_token()
+            access_token, expires_on = get_access_token(current_token)
 
         try:
             status = get_spotify_status(access_token)
@@ -216,6 +236,15 @@ def spotify_status_updater():
                 retry_after = int(status.get("error", {}).get("retry_after", 3))
                 if retry_after < 3:
                     retry_after = 3
+                if retry_after > 1000:
+                    print("We are being rate limited for too long, using fallback")
+                    if current_token == "main":
+                        current_token = "fallback"
+                    else:
+                        current_token = "main"
+                    access_token, expires_on = get_access_token(current_token)
+                    continue
+
                 print(f"We are being rate limited, retrying after {retry_after} seconds")
 
             if status is None or "error" in status:
@@ -256,6 +285,7 @@ def spotify_status_updater():
                 if not is_playing:
                     time.sleep(1.5)
                     continue
+                time.sleep(0.5)
                 continue
             last_state = state
             last_push = progress
@@ -353,5 +383,6 @@ def spotify_status_updater():
         time.sleep(1.5)
 
 
-access_token, expires_on = get_access_token()
+access_token, expires_on = get_access_token("main")
+current_token: Literal["main", "fallback"] = "main"
 last_event = ""
