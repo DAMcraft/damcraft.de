@@ -52,7 +52,7 @@ def get_time_at_ip(ip: str) -> str | None:
         req = requests.get(f"https://ipinfo.io/{ip}?token={const.IP_INFO_API_KEY}").json()
         timezone = req.get("timezone", "UTC")
         time_there = datetime.now(pytz.timezone(timezone))
-        return time_there.strftime("%H:%M")
+        return time_there.strftime("%I:%M")
     except requests.exceptions.RequestException:
         return None
 
