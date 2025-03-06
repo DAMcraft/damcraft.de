@@ -8,3 +8,5 @@ PyJWT
 python-dateutil
 user-agents
 Pillow
+gevent
+bs4

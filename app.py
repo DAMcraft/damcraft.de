@@ -22,7 +22,8 @@ import robots
 from blog import get_blog_posts
 from dino import dino_game
 from helpers import get_discord_status, get_discord_invite, get_age, show_notification, \
-    event_reader, spotify_status_updater, format_iso_date, get_handlers, fishlogic
+    format_iso_date, get_handlers, fishlogic
+from spotify import spotify_status_updater, event_reader
 
 for handler in get_handlers():
     logging.getLogger().addHandler(handler)
