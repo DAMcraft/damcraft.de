@@ -19,6 +19,52 @@ shared_event_queues = set()
 queue_lock = lock.RLock()
 
 
+class Lyrics:
+    def __init__(self, lines):
+        # sort lines by timestamp
+        self.lyrics = {}
+        for timestamp, words in lines.items():
+            self.lyrics[timestamp] = words
+        self.lyrics = dict(sorted(self.lyrics.items()))
+
+    def get_last_lyrics(self, timestamp: float):
+        # last where <= timestamp
+        latest_line = "", 0
+        for ts, line in self.lyrics.items():
+            if ts <= timestamp:
+                latest_line = line
+            else:
+                break
+        return latest_line
+
+    # def get_all_next_lyrics(self, timestamp: float):
+    #     # all where > timestamp
+    #     new = {timestamp: self.get_last_lyrics(timestamp)}
+    #     new.update({ts: line for ts, line in self.lyrics.items() if ts > timestamp})
+    #     print(new)
+    #     return new
+
+
+def build_lyrics_css(lyrics: Lyrics | None, progress: float, duration: float, is_playing: bool) -> str:
+    if lyrics is None or not is_playing:
+        return ".song-lyrics { display: none; } .song-lyrics::after { animation: none; }"
+    unique_id = str(time.time()).replace(".", "")
+    lyrics_css = [
+        f".song-lyrics::after {{ animation: lyrics{unique_id} {duration}s steps(1) forwards; ",
+        f"animation-delay: {-progress}s; }}",
+        f"@keyframes lyrics{unique_id} {{"
+    ]
+
+    for ts, line in lyrics.lyrics.items():
+        progress_percentage = ts * 100 / duration
+        lyrics_css.append(f"{progress_percentage}% {{ content: '{css_escape(line)}'; }}")
+    lyrics_css.append("}")
+
+    lyrics_css.append(".song-lyrics { display: block; }")
+    lyrics_css = "\n".join(lyrics_css)
+    return lyrics_css
+
+
 def get_access_token(current_token):
     if current_token == "main":
         refresh_token = const.SPOTIFY_REFRESH_TOKEN
@@ -43,6 +89,57 @@ def get_access_token(current_token):
         expires_on = datetime.now().timestamp() + response.json().get("expires_in")
         return at, expires_on
     return None, 0
+
+
+def get_account_bearer() -> (str, int) or None:
+    req = requests.get(
+        "https://open.spotify.com/get_access_token",
+        cookies={"sp_dc": const.SPOTIFY_ACCOUNT_DC}
+    )
+    if req.status_code == 200:
+        account_bearer = req.json().get("accessToken")
+        account_bearer_expires = req.json().get("accessTokenExpirationTimestampMs")
+        return account_bearer, account_bearer_expires
+    return None, 0
+
+
+def update_lyrics(track_id, account_bearer_) -> Lyrics | None:
+    try:
+        req = requests.get(
+            f"https://spclient.wg.spotify.com/color-lyrics/v2/track/{track_id}",
+            headers={
+                "Authorization": f"Bearer {account_bearer_}",
+                "app-platform": "WebPlayer",
+                "User-Agent": ""
+            },
+            params={
+                "format": "json",
+                "vocalRemoval": "false"
+            }
+        )
+        json_data = req.json()
+    except (requests.exceptions.RequestException, JSONDecodeError):
+        return None
+    if req.status_code != 200:
+        return None
+    lyric_data = json_data.get("lyrics")
+    if not lyric_data:
+        return None
+    is_synced = lyric_data.get("syncType") == "LINE_SYNCED"
+    if not is_synced:
+        return None
+    line_data = lyric_data.get("lines")
+    lines = {0: "♪"}
+    for line in line_data:
+        words = line["words"]
+        if words != "♪":
+            words = "♪ " + words
+        # words = helpers.smart_split(words, 50)
+        lines[int(line["startTimeMs"]) / 1000] = words
+
+    lyrics = Lyrics(lines)
+
+    return lyrics
 
 
 def get_spotify_status(access_token):
@@ -116,8 +213,9 @@ def fetch_spotify_preview(last_track_id: str) -> str | None:
 
 
 def spotify_status_updater():
-    global access_token, expires_on, last_event, current_token
+    global access_token, expires_on, last_event, current_token, current_lyrics, account_bearer, account_bearer_expires
     last_state = None
+    last_track_id = None
     last_push = 0
     while True:
         if expires_on < time.time():
@@ -159,6 +257,9 @@ def spotify_status_updater():
                 continue
 
             song_title = status["item"]["name"]
+            track_id = status["item"]["id"]
+            if track_id != last_track_id:
+                current_lyrics = None
             artist = ", ".join([artist["name"] for artist in status["item"]["artists"]])
             # get the first image that is at least 100x100
             covers = status["item"]["album"]["images"]
@@ -167,8 +268,10 @@ def spotify_status_updater():
                 if cover_["height"] >= 100 and cover_["width"] >= 100:
                     cover = cover_["url"]
             cover = cover.replace("https://i.scdn.co/image/", "/spotify-image-proxy/")
-            progress = status["progress_ms"] // 1000
-            duration = status["item"]["duration_ms"] // 1000
+            progress_float = status["progress_ms"] / 1000
+            progress = int(progress_float)
+            duration_float = status["item"]["duration_ms"] / 1000
+            duration = int(duration_float)
             song_url = status["item"]["external_urls"]["spotify"]
             is_playing = status["is_playing"]
             delta = duration - progress
@@ -267,9 +370,19 @@ def spotify_status_updater():
                 }
                 """
 
+            data += build_lyrics_css(current_lyrics, progress_float, duration_float, is_playing)
+
             data += "</style>"
 
             event_writer(data)
+            if last_track_id != track_id:
+                last_track_id = track_id
+                if account_bearer_expires < time.time():
+                    account_bearer, account_bearer_expires = get_account_bearer()
+                current_lyrics = update_lyrics(last_track_id, account_bearer)
+                new_lyrics_css = build_lyrics_css(current_lyrics, progress_float, duration_float, is_playing)
+                event_writer("<style>" + new_lyrics_css + "</style>")
+
             last_event = data
         except BaseException:
             traceback.print_exc()
@@ -278,5 +391,7 @@ def spotify_status_updater():
 
 
 access_token, expires_on = get_access_token("main")
+account_bearer, account_bearer_expires = get_account_bearer()
 current_token: Literal["main", "fallback"] = "main"
 last_event = ""
+current_lyrics: Lyrics | None = None

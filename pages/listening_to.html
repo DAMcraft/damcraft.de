@@ -29,7 +29,7 @@
             padding: 5px;
             color: #eff0f1;
             width: 95%;
-            min-height: 80%;
+            min-height: 100px;
         }
 
         .music-header {
@@ -62,17 +62,17 @@
         .song-info {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             width: 100%;
             flex-grow: 1;
             overflow: hidden;
+            height: 100px;
         }
         .song-title {
             font-weight: bold;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
-            overflow: hidden;
             font-size: 16px;
         }
         .song-artist {
@@ -84,7 +84,7 @@
             display: flex;
             align-items: center;
             font-size: 12px;
-            margin-top: 5px;
+            margin-top: 2px;
         }
         .seconds-progress, .minutes-progress {
             width: 2ch;
@@ -121,6 +121,18 @@
             top: 0;
             left: 0;
         }
+
+        .song-lyrics {
+            font-size: 12px;
+            margin-top: 5px;
+            max-width: 90%;
+        }
+        .song-lyrics::after {
+            content: '';
+            display: inline;
+            width: 100%;
+        }
+
         .paused {
             margin-top: 5px;
             color: #666;
@@ -193,6 +205,9 @@
                     </div>
                     <div class="progress-bar"></div>
                     <div class="song-length"></div>
+                </div>
+                <div class="song-lyrics">
+                    <!-- lyrics here -->
                 </div>
                 <div class="paused">
                     <img src="/assets/paused.svg" alt="Paused" width="15" height="15" class="pausedSVG">Paused

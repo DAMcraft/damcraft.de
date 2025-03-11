@@ -136,3 +136,12 @@ def sanitize_comment(content):
     return content
 
 
+def smart_split(string, length):
+    if len(string) <= length:
+        return string
+    end = string[:length].rsplit(" ", 1)[0]
+    end = end.rstrip(",.:-")
+    # if end is 25% shorter than cutting off the string, just cut it off
+    if len(end) < len(string[:length]) * 0.75:
+        return string[:length] + "..."
+    return end + "..."
