@@ -259,6 +259,7 @@ def handle_comment(blog_id, request_, blogs):
 
 
 def modify_comment(blog_id, comment_id, request_, blogs: [BlogPost]):
+    comment_id = int(comment_id)
     user_data = get_user_data_from_request(request_)
     if not user_data:
         return
