@@ -121,10 +121,12 @@ def update_lyrics(track_id) -> Lyrics | None:
                 "vocalRemoval": "false"
             }
         )
+        print(req.status_code)
         if req.status_code == 403:
             account_bearer, account_bearer_expires = get_account_bearer()
             return None
         json_data = req.json()
+        print(json_data)
     except (requests.exceptions.RequestException, JSONDecodeError):
         return None
     if req.status_code != 200:
