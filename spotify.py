@@ -103,12 +103,16 @@ def get_account_bearer() -> (str, int) or None:
     return None, 0
 
 
-def update_lyrics(track_id, account_bearer_) -> Lyrics | None:
+def update_lyrics(track_id) -> Lyrics | None:
+    global account_bearer, account_bearer_expires
+    if account_bearer_expires < time.time():
+        account_bearer, account_bearer_expires = get_account_bearer()
+
     try:
         req = requests.get(
             f"https://spclient.wg.spotify.com/color-lyrics/v2/track/{track_id}",
             headers={
-                "Authorization": f"Bearer {account_bearer_}",
+                "Authorization": f"Bearer {account_bearer}",
                 "app-platform": "WebPlayer",
                 "User-Agent": ""
             },
@@ -117,6 +121,9 @@ def update_lyrics(track_id, account_bearer_) -> Lyrics | None:
                 "vocalRemoval": "false"
             }
         )
+        if req.status_code == 403:
+            account_bearer, account_bearer_expires = get_account_bearer()
+            return None
         json_data = req.json()
     except (requests.exceptions.RequestException, JSONDecodeError):
         return None
@@ -377,9 +384,7 @@ def spotify_status_updater():
             event_writer(data)
             if last_track_id != track_id:
                 last_track_id = track_id
-                if account_bearer_expires < time.time():
-                    account_bearer, account_bearer_expires = get_account_bearer()
-                current_lyrics = update_lyrics(last_track_id, account_bearer)
+                current_lyrics = update_lyrics(last_track_id)
                 new_lyrics_css = build_lyrics_css(current_lyrics, progress_float, duration_float, is_playing)
                 event_writer("<style>" + new_lyrics_css + "</style>")
 
