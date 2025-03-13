@@ -260,6 +260,8 @@ def atproto_did():
 
 @app.route('/.well-known/matrix/client')
 @cors.allow_origin("*")
+@cors.allow_methods("GET, POST, PUT, DELETE, OPTIONS")
+@cors.allow_headers("X-Requested-With, Content-Type, Authorization")
 def matrix_client():
     return {
         "m.server": {
@@ -276,6 +278,8 @@ def matrix_client():
 
 @app.route('/.well-known/matrix/server')
 @cors.allow_origin("*")
+@cors.allow_methods("GET, POST, PUT, DELETE, OPTIONS")
+@cors.allow_headers("X-Requested-With, Content-Type, Authorization")
 def matrix_server():
     return {
         "m.server": const.MATRIX_SERVER
