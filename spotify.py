@@ -103,7 +103,9 @@ def get_account_bearer() -> (str, int) or None:
     return None, 0
 
 
-def update_lyrics(track_id) -> Lyrics | None:
+def update_lyrics(track_id, retry = 0) -> Lyrics | None:
+    if retry >= 5:
+        return None
     global account_bearer, account_bearer_expires
     if account_bearer_expires < time.time():
         account_bearer, account_bearer_expires = get_account_bearer()
@@ -122,9 +124,9 @@ def update_lyrics(track_id) -> Lyrics | None:
             }
         )
         print(req.status_code)
-        if req.status_code == 403:
+        if req.status_code in (401, 403):
             account_bearer, account_bearer_expires = get_account_bearer()
-            return None
+            return update_lyrics(track_id, retry + 1)
         json_data = req.json()
         print(json_data)
     except (requests.exceptions.RequestException, JSONDecodeError):
