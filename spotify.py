@@ -1,4 +1,6 @@
 import base64
+import hashlib
+import hmac
 import json
 import time
 from datetime import datetime
@@ -65,6 +67,33 @@ def build_lyrics_css(lyrics: Lyrics | None, progress: float, duration: float, is
     return lyrics_css
 
 
+def generate_spotify_totp():
+    # thank you https://github.com/KRTirtho/spotube/commit/59f298a935c87077a6abd50656f8a4ead44bd979 <3
+    secret_cipher_bytes = [12, 56, 76, 33, 88, 44, 88, 33, 78, 78, 11, 66, 22, 22, 55, 69, 54]
+
+    obfuscated_secret = [byte ^ (i % 33 + 9) for i, byte in enumerate(secret_cipher_bytes)]
+
+    hex_string = "".join(format(byte, "x") for byte in bytearray("".join(map(str, obfuscated_secret)), "utf-8"))
+    secret_bytes = bytes.fromhex(hex_string)
+
+    secret = base64.b32encode(secret_bytes).decode().rstrip("=")
+
+    server_time = requests.get("https://open.spotify.com/server-time").json()["serverTime"]
+    time_interval = server_time // 30
+
+    key = base64.b32decode(secret + "=" * ((8 - len(secret) % 8) % 8))
+    msg = time_interval.to_bytes(8, "big")
+    hmac_hash = hmac.new(key, msg, hashlib.sha1).digest()
+
+    offset = hmac_hash[-1] & 0xF
+    code = ((hmac_hash[offset] & 0x7F) << 24 |
+            (hmac_hash[offset + 1] & 0xFF) << 16 |
+            (hmac_hash[offset + 2] & 0xFF) << 8 |
+            (hmac_hash[offset + 3] & 0xFF))
+
+    return str(code % 10 ** 6).zfill(6)
+
+
 def get_access_token(current_token):
     if current_token == "main":
         refresh_token = const.SPOTIFY_REFRESH_TOKEN
@@ -102,18 +131,17 @@ def get_account_bearer() -> (str, int) or None:
             "productType": "web-player",
             "totpVer": 5,
             "ts": int(time.time()) * 1000,
-            "totp": None
+            "totp": generate_spotify_totp()
         }
     )
-    print(req.status_code)
     if req.status_code == 200:
-        account_bearer = req.json().get("accessToken")
-        account_bearer_expires = req.json().get("accessTokenExpirationTimestampMs")
-        return account_bearer, account_bearer_expires
+        account_bearer_ = req.json().get("accessToken")
+        account_bearer_expires_ = req.json().get("accessTokenExpirationTimestampMs")
+        return account_bearer_, account_bearer_expires_
     return None, 0
 
 
-def update_lyrics(track_id) -> Lyrics | None:
+def update_lyrics(track_id, retried=False) -> Lyrics | None:
     global account_bearer, account_bearer_expires
     if account_bearer_expires < time.time():
         account_bearer, account_bearer_expires = get_account_bearer()
@@ -124,6 +152,7 @@ def update_lyrics(track_id) -> Lyrics | None:
             headers={
                 "Authorization": f"Bearer {account_bearer}",
                 "app-platform": "WebPlayer",
+                'spotify-app-version': '1.2.60.334.g09ff0619',
                 "User-Agent": ""
             },
             params={
@@ -131,10 +160,9 @@ def update_lyrics(track_id) -> Lyrics | None:
                 "vocalRemoval": "false"
             }
         )
-        print(req.status_code)
-        if req.status_code in (401, 403):
+        if req.status_code in (401, 403) and not retried:
             account_bearer, account_bearer_expires = get_account_bearer()
-            return None
+            return update_lyrics(track_id, retried=True)
         json_data = req.json()
     except (requests.exceptions.RequestException, JSONDecodeError):
         return None
@@ -241,7 +269,6 @@ def spotify_status_updater():
 
         try:
             status = get_spotify_status(access_token)
-            print("Mewo")
             retry_after = 3
             if status and status.get("error", {}).get("status") == 429:
                 retry_after = int(status.get("error", {}).get("retry_after", 3))
