@@ -94,8 +94,18 @@ def get_access_token(current_token):
 def get_account_bearer() -> (str, int) or None:
     req = requests.get(
         "https://open.spotify.com/get_access_token",
-        cookies={"sp_dc": const.SPOTIFY_ACCOUNT_DC}
+        cookies={
+            "sp_dc": const.SPOTIFY_ACCOUNT_DC
+        },
+        params={
+            "reason": "init",
+            "productType": "web-player",
+            "totpVer": 5,
+            "ts": int(time.time()) * 1000,
+            "totp": None
+        }
     )
+    print(req.status_code)
     if req.status_code == 200:
         account_bearer = req.json().get("accessToken")
         account_bearer_expires = req.json().get("accessTokenExpirationTimestampMs")
@@ -103,9 +113,7 @@ def get_account_bearer() -> (str, int) or None:
     return None, 0
 
 
-def update_lyrics(track_id, retry = 0) -> Lyrics | None:
-    if retry >= 5:
-        return None
+def update_lyrics(track_id) -> Lyrics | None:
     global account_bearer, account_bearer_expires
     if account_bearer_expires < time.time():
         account_bearer, account_bearer_expires = get_account_bearer()
@@ -126,9 +134,8 @@ def update_lyrics(track_id, retry = 0) -> Lyrics | None:
         print(req.status_code)
         if req.status_code in (401, 403):
             account_bearer, account_bearer_expires = get_account_bearer()
-            return update_lyrics(track_id, retry + 1)
+            return None
         json_data = req.json()
-        print(json_data)
     except (requests.exceptions.RequestException, JSONDecodeError):
         return None
     if req.status_code != 200:
@@ -234,6 +241,7 @@ def spotify_status_updater():
 
         try:
             status = get_spotify_status(access_token)
+            print("Mewo")
             retry_after = 3
             if status and status.get("error", {}).get("status") == 429:
                 retry_after = int(status.get("error", {}).get("retry_after", 3))
@@ -381,7 +389,8 @@ def spotify_status_updater():
                 }
                 """
 
-            data += build_lyrics_css(current_lyrics, progress_float, duration_float, is_playing)
+            if last_track_id == track_id:
+                data += build_lyrics_css(current_lyrics, progress_float, duration_float, is_playing)
 
             data += "</style>"
 
@@ -390,7 +399,9 @@ def spotify_status_updater():
                 last_track_id = track_id
                 current_lyrics = update_lyrics(last_track_id)
                 new_lyrics_css = build_lyrics_css(current_lyrics, progress_float, duration_float, is_playing)
-                event_writer("<style>" + new_lyrics_css + "</style>")
+                new_lyrics_css = "<style>" + new_lyrics_css + "</style>"
+                event_writer(new_lyrics_css)
+                last_event += new_lyrics_css
 
             last_event = data
         except BaseException:
