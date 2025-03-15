@@ -69,21 +69,13 @@ def build_lyrics_css(lyrics: Lyrics | None, progress: float, duration: float, is
 
 def generate_spotify_totp():
     # thank you https://github.com/KRTirtho/spotube/commit/59f298a935c87077a6abd50656f8a4ead44bd979 <3
-    secret_cipher_bytes = [12, 56, 76, 33, 88, 44, 88, 33, 78, 78, 11, 66, 22, 22, 55, 69, 54]
+    time_interval = requests.get("https://open.spotify.com/server-time").json()["serverTime"] // 30
 
-    obfuscated_secret = [byte ^ (i % 33 + 9) for i, byte in enumerate(secret_cipher_bytes)]
-
-    hex_string = "".join(format(byte, "x") for byte in bytearray("".join(map(str, obfuscated_secret)), "utf-8"))
-    secret_bytes = bytes.fromhex(hex_string)
-
-    secret = base64.b32encode(secret_bytes).decode().rstrip("=")
-
-    server_time = requests.get("https://open.spotify.com/server-time").json()["serverTime"]
-    time_interval = server_time // 30
-
-    key = base64.b32decode(secret + "=" * ((8 - len(secret) % 8) % 8))
-    msg = time_interval.to_bytes(8, "big")
-    hmac_hash = hmac.new(key, msg, hashlib.sha1).digest()
+    hmac_hash = hmac.new(
+        key=b'5507145853487499592248630329347',
+        msg=time_interval.to_bytes(8, "big"),
+        digestmod=hashlib.sha1
+    ).digest()
 
     offset = hmac_hash[-1] & 0xF
     code = ((hmac_hash[offset] & 0x7F) << 24 |
