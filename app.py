@@ -23,7 +23,7 @@ from blog import get_blog_posts
 from dino import dino_game
 from helpers import get_discord_status, get_discord_invite, get_age, show_notification, \
     format_iso_date, get_handlers, fishlogic
-from spotify import spotify_status_updater, event_reader
+from spotify import spotify_status_updater, event_reader, last_event
 
 for handler in get_handlers():
     logging.getLogger().addHandler(handler)
@@ -150,11 +150,19 @@ def email_svg():
 @app.route('/listening_to')
 @robots.noindex
 def listening_to():
-    resp = render_template("listening_to.html")
+    refresh = request.args.get("refresh")
+
+    resp = render_template("listening_to.html", refresh=refresh)
+    if refresh:
+        return event_reader(resp, skip_rest=True), 200, {
+            "Cache-Control": "no-cache",
+            "Content-Type": "text/html; charset=utf-8",
+            "Refresh": "5; url=/listening_to"
+        }
+
     return event_reader(resp), 200, {
         "Cache-Control": "no-cache",
-        "Content-Type": "text/html; charset=utf-8",
-        "Refresh": "60"
+        "Content-Type": "text/html; charset=utf-8"
     }
 
 

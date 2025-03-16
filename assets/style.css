@@ -740,11 +740,12 @@ section {
     position: fixed;
     display: flex;
     bottom: 10px;
-    left: -99999px;
+    /* left: -99999px; */
+    left: 20px;
     z-index: 1000;
     width: 350px;
     height: 140px;
-    animation: reappear 5s forwards;
+    /*animation: reappear 5s forwards;*/
 }
 
 @keyframes reappear {

@@ -193,16 +193,18 @@ def get_spotify_status(access_token):
         return None
 
 
-def event_reader(start):
+def event_reader(start, skip_rest=False):
+    yield start
+    yield last_event
+    if skip_rest:
+        return
+
     event_queue = queue.Queue(maxsize=10)
 
     with queue_lock:
         shared_event_queues.add(event_queue)
 
     try:
-        yield start
-        yield last_event
-
         while True:
             try:
                 with Timeout(10):  # check for new events every 10 seconds
