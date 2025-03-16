@@ -66,8 +66,8 @@
             flex-direction: column;
             justify-content: flex-start;
             width: 100%;
-            flex-grow: 1;
             overflow: hidden;
+            position: relative;
             height: 100px;
         }
         .song-title {
@@ -76,9 +76,20 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             font-size: 16px;
+            text-overflow: ellipsis;
+            flex-shrink: 0;
+            overflow: hidden;
+            margin-top: -2px;
         }
         .song-artist {
+            margin-top: 1px;
             font-size: 12px;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+            flex-shrink: 0;
+            overflow: hidden;
         }
 
 
@@ -86,7 +97,7 @@
             display: flex;
             align-items: center;
             font-size: 12px;
-            margin-top: 2px;
+            margin-top: 4px;
         }
         .seconds-progress, .minutes-progress {
             width: 2ch;
@@ -126,7 +137,7 @@
 
         .song-lyrics {
             font-size: 12px;
-            margin-top: 5px;
+            margin-top: 3px;
             max-width: 90%;
         }
         .song-lyrics::after {
