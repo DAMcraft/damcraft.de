@@ -22,7 +22,7 @@ import robots
 from blog import get_blog_posts
 from dino import dino_game
 from helpers import get_discord_status, get_discord_invite, get_age, show_notification, \
-    format_iso_date, get_handlers, fishlogic
+    format_iso_date, get_handlers, fishlogic, random_copyright_year
 from spotify import spotify_status_updater, event_reader, last_event
 
 for handler in get_handlers():
@@ -71,7 +71,7 @@ def discord_status_route():
 @robots.index
 @robots.follow
 def blogs_page():
-    return render_template('blogs.html', blogs=blogs)
+    return render_template('blogs.html', blogs=blogs, copyright=random_copyright_year())
 
 
 @app.route('/blog/<blog_id>')
@@ -91,7 +91,9 @@ def blog_post(blog_id):
             'blog_page.html',
             blog=blog_,
             date_text=date_text,
-            user_data=user_data)
+            user_data=user_data,
+            copyright=random_copyright_year()
+        )
     )
     if blog_.is_latest:
         resp.set_cookie(

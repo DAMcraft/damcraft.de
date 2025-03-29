@@ -25,7 +25,8 @@ class BlogPost:
             url_name: str = None,
             hash: str = None,  # noqa
             image: str = None,
-            is_latest: bool = False
+            is_latest: bool = False,
+            co_authors: str = None
     ):
         if not title or not summary or not date or not content:
             raise ValueError("Missing required fields")
@@ -38,6 +39,8 @@ class BlogPost:
         self.is_latest = is_latest
         self._content_md = content
         self.content = self._render_markdown()
+        if co_authors:
+            self.co_authors = [markdown.markdown(author.strip()) for author in co_authors.split(",")]
 
         if not os.path.exists(self._get_comments_directory()):
             os.makedirs(self._get_comments_directory())
@@ -220,7 +223,7 @@ def get_blog_posts():
                         key, value = line.split(":", 1)
                     except ValueError:
                         raise ValueError(f"Invalid line: {line}")
-                    key = key.strip().lower()
+                    key = key.strip().lower().replace(" ", "_").replace("-", "_")
                     value = value.strip()
                     metadata[key] = value
 

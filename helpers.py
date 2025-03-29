@@ -1,5 +1,6 @@
 import json
 import logging
+import random
 import re
 import time
 from datetime import datetime
@@ -145,3 +146,23 @@ def smart_split(string, length):
     if len(end) < len(string[:length]) * 0.75:
         return string[:length] + "..."
     return end + "..."
+
+
+def random_copyright_year():
+    years = [
+        "1984",
+        "1970",
+        "1337",
+        '<?php echo date("Y"); ?>',
+        "$CURRENT_YEAR",
+        "datetime.now().year",
+        str(datetime.now().year + 1),
+        "NULL",
+        "NaN",
+        "π",
+        "random.randint(1900, 2100)",
+        hex(datetime.now().year),
+
+    ]
+    return random.choice(years)
+

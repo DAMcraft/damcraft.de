@@ -108,6 +108,17 @@
             font-style: italic;
             margin: 0;
         }
+        .co-authors {
+            font-size: 14px;
+            font-style: italic;
+            color: #808080;
+        }
+        .co-authors p {
+            margin: 0;
+            padding: 0;
+            display: inline;
+        }
+
 
         .short-info {
             display: flex;
@@ -260,6 +271,23 @@
                 <h1>{{ blog.title }}</h1>
             </header>
 
+            {% if blog.co_authors %}
+                <div class="co-authors">Co-authored by
+                    {% for author in blog.co_authors %}
+                        {% if loop.length == 1 %}
+                            {{ author|safe }}
+                        {% elif loop.last %}
+                            and {{ author|safe }}
+                        {% elif loop.index == loop.length - 1 %}
+                            {{ author|safe }}
+                        {% else %}
+                            {{ author|safe }},
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+
 
             <section class="blog-summary">
                 <p>{{ blog.summary }}</p>
@@ -292,7 +320,7 @@
             <div class="footer-links">
                 <a href="/blog/">← Back to blogs</a> <a href="/blog/rss.xml">RSS feed</a>
             </div>
-            <p class="footer-text">&copy; 1984 dam</p>
+            <p class="footer-text">&copy; {{ copyright }} dam</p>
         </footer>
     </div>
 </body>
