@@ -238,9 +238,9 @@ def makeafish():
     return fishlogic()
 
 
-@app.route('/.well-known/security.txt')
-def security_txt():
-    return send_from_directory(".", "security.txt")
+@app.route('/.well-known/<path:filename>')
+def security_txt(filename):
+    return send_from_directory("well-known", filename)
 
 
 @app.route('/.well-known/button.json')
@@ -260,40 +260,6 @@ def button():
             }
         ]
     }, indent=4), mimetype="application/json")
-
-
-@app.route('/.well-known/atproto-did')
-@cors.allow_origin("*")
-def atproto_did():
-    return Response(const.ATPROTO_DID, mimetype="text/plain")
-
-
-@app.route('/.well-known/matrix/client')
-@cors.allow_origin("*")
-@cors.allow_methods("GET, POST, PUT, DELETE, OPTIONS")
-@cors.allow_headers("X-Requested-With, Content-Type, Authorization")
-def matrix_client():
-    return {
-        "m.server": {
-            "base_url": const.MATRIX_SERVER_BASE_URL
-        },
-        "m.homeserver": {
-            "base_url": const.MATRIX_SERVER_BASE_URL
-        },
-        "org.matrix.msc3575.proxy": {
-            "url": const.MATRIX_SERVER_BASE_URL
-        }
-    }
-
-
-@app.route('/.well-known/matrix/server')
-@cors.allow_origin("*")
-@cors.allow_methods("GET, POST, PUT, DELETE, OPTIONS")
-@cors.allow_headers("X-Requested-With, Content-Type, Authorization")
-def matrix_server():
-    return {
-        "m.server": const.MATRIX_SERVER
-    }
 
 
 @app.route('/headers', methods=["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"])
