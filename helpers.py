@@ -162,7 +162,7 @@ def random_copyright_year():
         "π",
         "random.randint(1900, 2100)",
         hex(datetime.now().year),
-
+        "curl https://getfullyear.com/api/year"
     ]
     return random.choice(years)
 
