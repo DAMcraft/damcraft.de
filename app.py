@@ -239,6 +239,7 @@ def makeafish():
 
 
 @app.route('/.well-known/<path:filename>')
+@cors.allow_origin("*")
 def security_txt(filename):
     return send_from_directory("well-known", filename)
 
