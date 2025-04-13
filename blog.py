@@ -329,6 +329,35 @@ def get_rss(blog_posts: [BlogPost]):
     return data
 
 
+def get_news_sitemap(blog_posts: [BlogPost]):
+    urls = []
+    for post in blog_posts:
+        pub_date = post.date
+
+        url = f"""
+        <url>
+            <loc>https://damcraft.de/blog/{post.url_name}</loc>
+            <news:news>
+                <news:publication>
+                    <news:name>dam's blog</news:name>
+                    <news:language>en</news:language>
+                </news:publication>
+                <news:publication_date>{pub_date}</news:publication_date>
+                <news:title>{html.escape(post.title)}</news:title>
+            </news:news>
+        </url>
+        """
+        urls.append(url)
+
+    sitemap_data = f"""<?xml version="1.0" encoding="UTF-8"?>
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+            xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+        {''.join(urls)}
+    </urlset>"""
+
+    return sitemap_data
+
+
 if __name__ == '__main__':
     for blog_post in get_blog_posts():
         print(blog_post)

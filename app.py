@@ -132,6 +132,11 @@ def rss():
     return Response(blog.get_rss(blogs), mimetype="text/xml")
 
 
+@app.route('/blog/news_sitemap.xml')
+def news_sitemap():
+    return Response(blog.get_news_sitemap(blogs), mimetype="text/xml")
+
+
 @app.route('/notification')
 @robots.noindex
 def notification():
@@ -328,7 +333,7 @@ def stats_updater():
         time.sleep(10)
 
 
-robots.robot_friendly(app, blogs, extra_sitemaps=["blog/rss.xml"])
+robots.robot_friendly(app, blogs, extra_sitemaps=["blog/rss.xml", "blog/news_sitemap.xml"])
 
 
 # Check if Flask is in debug mode
