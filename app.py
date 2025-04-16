@@ -116,8 +116,10 @@ def blog_post(url_name=None):
             (blog_.original_url or blog_.url_name),
             max_age=60 * 60 * 24 * 365,
             samesite="Lax", secure=True, httponly=True)
+    links = []
     for language, url_name in blog_.get_languages().items():
-        resp.headers["Link"] = f'<{const.URL_BASE}/blog/{url_name}>; rel="alternate"; hreflang="{language}"'
+        links.append(f'<{const.URL_BASE}/blog/{url_name}>; rel="alternate"; hreflang="{language}"')
+    resp.headers["Link"] = ", ".join(links)
     return resp
 
 
@@ -322,7 +324,11 @@ def after_request(response):
     if not str(response.status_code).startswith("3"):
         path = urllib.parse.quote(request.path)
         query = f"?{request.query_string.decode()}" if request.query_string else ""
-        response.headers["Link"] = f'<{const.URL_BASE}{path}{query}>; rel="canonical"'
+        canonical = f'<{const.URL_BASE}{path}{query}>; rel="canonical"'
+        if response.headers.get("Link"):
+            response.headers["Link"] += f", {canonical}"
+        else:
+            response.headers["Link"] = canonical
     response.headers["Content-Security-Policy"] = (
         f"script-src 'none'; "
         f"style-src 'self' *.{request.host} 'unsafe-inline'; "
