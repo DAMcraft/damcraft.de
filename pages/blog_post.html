@@ -58,6 +58,14 @@
 
     <link rel="stylesheet" href="/assets/codehilite.css"/>
 
+    {% for available_language, url_name in blog.get_languages().items() %}
+        {% if available_language == blog.language %}
+            <link rel="alternate" hreflang="{{ available_language }}" href="/blog/{{ url_name }}" />
+        {% else %}
+            <link rel="alternate" hreflang="{{ available_language }}" href="/blog/{{ url_name }}" />
+        {% endif %}
+    {% endfor %}
+
 
     <title>{{ blog.title }} - dam's blog</title>
     <style>

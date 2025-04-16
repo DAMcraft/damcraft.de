@@ -75,7 +75,7 @@ def format_iso_date(iso_timestamp):
 def show_notification(blogs, request):
     if len(blogs) == 0:
         return None
-    blog = blogs[0]
+    blog = blogs.get_by_language("en")[0]
     cookie = request.cookies.get("last_read")
     if cookie == blog.url_name:
         return None

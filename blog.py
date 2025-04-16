@@ -15,40 +15,6 @@ from github import get_user_data_from_request
 blog_directory = 'blog_posts'
 
 
-class BlogPostList(list):
-    def __init__(self, *args):
-        if not all(isinstance(blog, BlogPost) for blog in args):
-            raise ValueError("not a BlogPost")
-        sorted_blogs = sorted(args, key=lambda x: x.date, reverse=True)
-        super().__init__(sorted_blogs)
-        self.languages: [str] = [*{blog.language for blog in self}]
-        # sort by amount of posts in each language
-        self.languages.sort(key=lambda x: len([blog for blog in self if blog.language == x]), reverse=True)
-
-        self.url_name_map: {str: BlogPost} = {blog.url_name: blog for blog in self}
-        self.hash_map: {str: BlogPost} = {blog.hash: blog for blog in self}
-
-    def get_by_language(self, language: str):
-        return [blog for blog in self if blog.language == language]
-
-    def get_by_url_name(self, url_name: str):
-        return self.url_name_map.get(url_name)
-
-    def get_by_hash(self, hash_: str):
-        return self.hash_map.get(hash_)
-
-    def append(self, blog_post):
-        if not isinstance(blog_post, BlogPost):
-            raise ValueError("not a BlogPost")
-        super().append(blog_post)
-        self.languages.append(blog_post.language)
-        self.languages = list(set(self.languages))
-        self.languages.sort(key=lambda x: len([blog for blog in self if blog.language == x]), reverse=True)
-        self.url_name_map[blog_post.url_name] = blog_post
-        self.hash_map[blog_post.hash] = blog_post
-        self.sort(key=lambda x: x.date, reverse=True)
-
-
 class BlogPost:
     def __init__(
             self,
@@ -59,7 +25,6 @@ class BlogPost:
             url_name: str = None,
             hash: str = None,  # noqa
             image: str = None,
-            is_latest: bool = False,
             co_authors: str = None,
             language: str = "en",
             original_url: str = None,
@@ -72,12 +37,11 @@ class BlogPost:
         self.date = date
         self.image = image
         self.hash = hash or self._get_hash()
-        self.is_latest = is_latest
         self._content_md = content
         self.content = self._render_markdown()
         self.language = language
         self.original_url = original_url
-        self.original = None  # to be set later
+        self.original: BlogPost | None = None  # to be set later
         if not original_url:
             self.languages = {self.language: self.url_name}
         if co_authors:
@@ -252,6 +216,40 @@ class Comment:
         if not self.edited_timestamp:
             return None
         return helpers.timestamp_to_relative(self.edited_timestamp)
+
+
+class BlogPostList(list):
+    def __init__(self, *args: [BlogPost]):
+        if not all(isinstance(blog, BlogPost) for blog in args):
+            raise ValueError("not a BlogPost")
+        sorted_blogs = sorted(args, key=lambda x: x.date, reverse=True)
+        super().__init__(sorted_blogs)
+        self.languages: [str] = [*{blog.language for blog in self}]
+        # sort by amount of posts in each language
+        self.languages.sort(key=lambda x: len([blog for blog in self if blog.language == x]), reverse=True)
+
+        self.url_name_map: {str: BlogPost} = {blog.url_name: blog for blog in self}
+        self.hash_map: {str: BlogPost} = {blog.hash: blog for blog in self}
+
+    def get_by_language(self, language: str) -> [BlogPost]:
+        return [blog for blog in self if blog.language == language]
+
+    def get_by_url_name(self, url_name: str) -> BlogPost:
+        return self.url_name_map.get(url_name)
+
+    def get_by_hash(self, hash_: str) -> BlogPost:
+        return self.hash_map.get(hash_)
+
+    def append(self, blog_post):
+        if not isinstance(blog_post, BlogPost):
+            raise ValueError("not a BlogPost")
+        super().append(blog_post)
+        self.languages.append(blog_post.language)
+        self.languages = list(set(self.languages))
+        self.languages.sort(key=lambda x: len([blog for blog in self if blog.language == x]), reverse=True)
+        self.url_name_map[blog_post.url_name] = blog_post
+        self.hash_map[blog_post.hash] = blog_post
+        self.sort(key=lambda x: x.date, reverse=True)
 
 
 def get_blog_posts():

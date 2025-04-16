@@ -110,9 +110,14 @@ def blog_post(url_name=None):
             copyright=random_copyright_year()
         )
     )
-    if blog_.is_latest:
+    if (blog_.original_url or blog_.url_name) == blogs.get_by_language("en")[0].url_name:
         resp.set_cookie(
-            "last_read", blog_.url_name, max_age=60 * 60 * 24 * 365, samesite="Lax", secure=True, httponly=True)
+            "last_read",
+            (blog_.original_url or blog_.url_name),
+            max_age=60 * 60 * 24 * 365,
+            samesite="Lax", secure=True, httponly=True)
+    for language, url_name in blog_.get_languages().items():
+        resp.headers["Link"] = f'<{const.URL_BASE}/blog/{url_name}>; rel="alternate"; hreflang="{language}"'
     return resp
 
 
