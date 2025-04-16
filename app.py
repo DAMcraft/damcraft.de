@@ -66,20 +66,35 @@ def discord_status_route():
     return render_template("discord_status.html", discord_status=discord_status, refresh_every=refresh_every)
 
 
+@app.route('/blogs/')
+@app.route('/blogs/<language>')
+@robots.noarchive
+@robots.index
+@robots.follow
+def blogs_page(language=None):
+    if language == "en":
+        return redirect("/blogs/", code=301)
+    language = language or "en"
+    if language not in blogs.languages:
+        return "Not found", 404
+    return render_template(
+        'blogs_list.html',
+        blogs=blogs.get_by_language(language),
+        copyright=random_copyright_year(),
+        lang=language,
+        all_languages=blogs.languages
+    )
+
+
 @app.route('/blog/')
+@app.route('/blog/<url_name>')
 @robots.noarchive
 @robots.index
 @robots.follow
-def blogs_page():
-    return render_template('blogs.html', blogs=blogs, copyright=random_copyright_year())
-
-
-@app.route('/blog/<blog_id>')
-@robots.noarchive
-@robots.index
-@robots.follow
-def blog_post(blog_id):
-    blog_ = blog_by_url.get(blog_id)
+def blog_post(url_name=None):
+    if url_name is None:
+        return redirect("/blogs/", code=301)
+    blog_ = blogs.get_by_url_name(urllib.parse.unquote(url_name))
     if not blog_:
         return "Not found", 404
 
@@ -88,7 +103,7 @@ def blog_post(blog_id):
     date_text = format_iso_date(blog_.date)
     resp = app.make_response(
         render_template(
-            'blog_page.html',
+            'blog_post.html',
             blog=blog_,
             date_text=date_text,
             user_data=user_data,
@@ -117,10 +132,10 @@ def modify_comment(blog_id, comment_id):
     return redirect(f"/blog/{blog_id}#comment-{comment_id}")
 
 
-@app.route('/-<blog_id>')
+@app.route('/-<blog_hash>')
 @robots.follow
-def blog_post_short(blog_id):
-    post = blog_by_hash.get(blog_id)
+def blog_post_short(blog_hash):
+    post = blogs.get_by_hash(urllib.parse.unquote(blog_hash))
     if post:
         return redirect(f"/blog/{post.url_name}", code=301)
     return "Not found", 404
@@ -316,8 +331,6 @@ discord_status = ""
 discord_invite = None
 
 blogs = get_blog_posts()
-blog_by_url: dict[str, blog.BlogPost] = {blog.url_name: blog for blog in blogs}
-blog_by_hash: dict[str, blog.BlogPost] = {blog.hash: blog for blog in blogs}
 
 style_hash = sha256(open("assets/style.css", "rb").read()).hexdigest()[:8]
 button_hash = sha256(open("assets/88x31/dam.gif", "rb").read()).hexdigest()

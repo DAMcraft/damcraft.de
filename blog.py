@@ -8,11 +8,46 @@ from datetime import datetime
 from multiprocessing import Lock
 
 import markdown
+from chardet.metadata import languages
 
 import helpers
 from github import get_user_data_from_request
 
 blog_directory = 'blog_posts'
+
+
+class BlogPostList(list):
+    def __init__(self, *args):
+        if not all(isinstance(blog, BlogPost) for blog in args):
+            raise ValueError("not a BlogPost")
+        sorted_blogs = sorted(args, key=lambda x: x.date, reverse=True)
+        super().__init__(sorted_blogs)
+        self.languages: [str] = [*{blog.language for blog in self}]
+        # sort by amount of posts in each language
+        self.languages.sort(key=lambda x: len([blog for blog in self if blog.language == x]), reverse=True)
+
+        self.url_name_map: {str: BlogPost} = {blog.url_name: blog for blog in self}
+        self.hash_map: {str: BlogPost} = {blog.hash: blog for blog in self}
+
+    def get_by_language(self, language: str):
+        return [blog for blog in self if blog.language == language]
+
+    def get_by_url_name(self, url_name: str):
+        return self.url_name_map.get(url_name)
+
+    def get_by_hash(self, hash_: str):
+        return self.hash_map.get(hash_)
+
+    def append(self, blog_post):
+        if not isinstance(blog_post, BlogPost):
+            raise ValueError("not a BlogPost")
+        super().append(blog_post)
+        self.languages.append(blog_post.language)
+        self.languages = list(set(self.languages))
+        self.languages.sort(key=lambda x: len([blog for blog in self if blog.language == x]), reverse=True)
+        self.url_name_map[blog_post.url_name] = blog_post
+        self.hash_map[blog_post.hash] = blog_post
+        self.sort(key=lambda x: x.date, reverse=True)
 
 
 class BlogPost:
@@ -26,7 +61,9 @@ class BlogPost:
             hash: str = None,  # noqa
             image: str = None,
             is_latest: bool = False,
-            co_authors: str = None
+            co_authors: str = None,
+            language: str = "en",
+            original_url: str = None,
     ):
         if not title or not summary or not date or not content:
             raise ValueError("Missing required fields")
@@ -39,6 +76,11 @@ class BlogPost:
         self.is_latest = is_latest
         self._content_md = content
         self.content = self._render_markdown()
+        self.language = language
+        self.original_url = original_url
+        self.original = None  # to be set later
+        if not original_url:
+            self.languages = {self.language: self.url_name}
         if co_authors:
             self.co_authors = [markdown.markdown(author.strip()) for author in co_authors.split(",")]
 
@@ -48,6 +90,16 @@ class BlogPost:
         self._comments_lock = Lock()
         self._cached_comments: [Comment] or None = None
         self._comments_needs_update = True
+
+    def add_language(self, language: str, url_name: str):
+        if self.original:
+            raise ValueError("cannot add languages to a translated post")
+        self.languages[language] = url_name
+
+    def get_languages(self):
+        if self.original:
+            return self.original.get_languages()
+        return self.languages
 
     def _render_markdown(self):
         return markdown.markdown(self._content_md, extensions=['fenced_code', 'codehilite', 'extra'])
@@ -204,8 +256,8 @@ class Comment:
 
 
 def get_blog_posts():
-    blog_posts = []
-    for entry in os.scandir(blog_directory):
+    blog_posts = BlogPostList()
+    for entry in *os.scandir(blog_directory), *os.scandir(os.path.join(blog_directory, 'translations')):
         if not entry.name.endswith('.md') or not entry.is_file():
             continue
         with open(entry.path, encoding='utf-8', errors='ignore') as f:
@@ -229,11 +281,14 @@ def get_blog_posts():
 
             metadata["content"] = f.read()
             metadata["url_name"] = url_name
-            blog_posts.append(BlogPost(**metadata))
+            blog_post = BlogPost(**metadata)
+            if blog_post.original_url:
+                original = blog_posts.get_by_url_name(blog_post.original_url)
+                assert original
+                blog_post.original = original
+                original.add_language(blog_post.language, blog_post.url_name)
+            blog_posts.append(blog_post)
 
-    blog_posts.sort(key=lambda x: x.date, reverse=True)
-    if blog_posts:
-        blog_posts[0].is_latest = True
     return blog_posts
 
 
@@ -297,6 +352,9 @@ def modify_comment(blog_id, comment_id, request_, blogs: [BlogPost]):
 def get_rss(blog_posts: [BlogPost]):
     items = []
     for post in blog_posts:
+        if post.language != "en":
+            # only include english posts
+            continue
         pub_date = datetime.strptime(post.date, "%Y-%m-%d").strftime("%a, %d %b %Y 00:00:00 +0000")
         description = f"""
             <h2>{html.escape(post.title)}</h2>
@@ -359,7 +417,7 @@ def get_news_sitemap(blog_posts: [BlogPost]):
 
 
 if __name__ == '__main__':
-    for blog_post in get_blog_posts():
-        print(blog_post)
-        print(blog_post.content)
-        print(blog_post.hash)
+    for blog_post_ in get_blog_posts():
+        print(blog_post_)
+        print(blog_post_.content)
+        print(blog_post_.hash)

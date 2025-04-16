@@ -1,30 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang }}">
 <head>
+    {#  translation map  #}
+    {% set translations = {
+        'en': {
+            'title': "Blogs Overview - dam's blog",
+            'header': "dam's blog",
+            'welcome': "welcome to my blog! this is my little place to ramble and rant on the internet",
+            'footer_back': "Back to my website",
+            'back_short': "back home",
+            'rss_feed': "RSS feed"
+        },
+        'de': {
+            'title': "Blog-Übersicht - dam's blog",
+            'header': "dam's blog",
+            'welcome': "willkommen in meinem blog! das ist meine kleine plauderecke im internet",
+            'footer_back': "Zurück zur Website",
+            'back_short': "zurück zur website",
+            'rss_feed': "RSS-Feed (englisch)"
+        }
+    } %}
+    {% set t = translations[lang] if lang in translations else translations['en'] %}
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {# SEO meta tags #}
-    <meta name="description" content="dam's blog">
+    <meta name="description" content="{{ t.header }}">
     <meta name="author" content="dam">
 
     {# Open Graph meta tags #}
-    <meta name="og:title" content="dam's blog">
-    <meta name="og:description" content="welcome to my blog! this is my little place to ramble and rant on the internet">
+    <meta name="og:title" content="{{ t.header }}">
+    <meta name="og:description" content="{{ t.welcome }}">
     <meta name="og:type" content="website">
-    <meta name="og:site_name" content="dam's blog">
+    <meta name="og:site_name" content="{{ t.header }}">
 
     {# Twitter meta tags #}
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="dam's blog">
-    <meta name="twitter:description" content="welcome to my blog! this is my little place to ramble and rant on the internet">
+    <meta name="twitter:title" content="{{ t.header }}">
+    <meta name="twitter:description" content="{{ t.welcome }}">
     <meta name="twitter:site" content="@dams_blog">
 
     {# Additional meta tags #}
     <meta name="theme-color" content="#00BEFF">
     <meta name="robots" content="index, follow">
 
-    <title>Blogs Overview - dam's blog</title>
+    <title>{{ t.title }}</title>
     <style>
                 @font-face {
             font-family: 'Atkinson Hyperlegible';
@@ -222,6 +243,28 @@
                 display: none;
             }
         }
+
+
+        .language-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .language-switcher a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #808080;
+        }
+        .language-switcher a img {
+            width: 50px;
+            height: 30px;
+            object-fit: cover;
+        }
+        .language-switcher .selected {
+            border: 2px solid white;
+        }
     </style>
     <link rel="alternate" type="application/rss+xml" title="RSS feed" href="/blog/rss.xml">
 </head>
@@ -229,21 +272,34 @@
     <div class="top-buttons">
         <a href="/" class="top-button">
             <img src="/assets/home.svg" alt="Home icon">
-            back home
+            {{ t.back_short }}
         </a>
     </div>
     <div class="container">
         <div class="content">
             <header class="blog-header">
-                <h1>dam's blog</h1>
-                <p>welcome to my blog! this is my little place to ramble and rant on the internet</p>
+                <h1>{{ t.header }}</h1>
+                <p>{{ t.welcome }}</p>
+                <div class="language-switcher">
+                    {% for lang_switcher in all_languages %}
+                        {% if lang_switcher == lang %}
+                            <a href="/blogs/{{ lang_switcher }}" class="selected">
+                                <img src="/assets/{{ lang_switcher }}.svg" alt="{{ lang_switcher }}">
+                            </a>
+                        {% else %}
+                            <a href="/blogs/{{ lang_switcher }}">
+                                <img src="/assets/{{ lang_switcher }}.svg" alt="{{ lang_switcher }}">
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </header>
 
             <div class="blog-overview">
                 {% for blog in blogs %}
                     <article class="blog-post">
                         <div class="blog-title">
-                            <a href="{{ blog.url_name }}" class="blog-link">
+                            <a href="/blog/{{ blog.url_name }}" class="blog-link">
                                 <h1>{{ blog.title }}</h1>
                                 <span>→</span>
                             </a>
@@ -257,7 +313,7 @@
 
                         {% if blog.image %}
                             <figure class="blog-image image-fade">
-                                <a href="{{ blog.url_name }}">
+                                <a href="/blog/{{ blog.url_name }}">
                                     <img src="{{ blog.image }}" alt="{{ blog.title }}">
                                 </a>
                             </figure>
@@ -269,7 +325,7 @@
         </div>
         <footer>
             <div class="footer-links">
-                <a href="/">← Back to my website</a> <a href="/blog/rss.xml">RSS feed</a>
+                <a href="/">← {{ t.footer_back }}</a> <a href="/blog/rss.xml">{{ t.rss_feed }}</a>
             </div>
             <p class="footer-text">&copy; {{ copyright }} dam</p>
         </footer>

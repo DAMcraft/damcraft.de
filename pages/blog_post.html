@@ -1,6 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ blog.language }}">
 <head>
+    {% set translations = {
+        'en': {
+            'back_home': "back home",
+            'back_to_blogs': "back to blogs",
+            'co_authored_by': "Co-authored by",
+            'short': "short",
+            'footer_back': "Back to blog list",
+            'rss_feed': "RSS feed",
+            'available_languages': "Also available in the following languages:",
+        },
+        'de': {
+            'back_home': "zurück zur website",
+            'back_to_blogs': "zurück zur übersicht",
+            'co_authored_by': "Mitverfasst von",
+            'short': "kurz-url",
+            'comments': "Kommentare",
+            'comment_en_only': "Kommentare sind nur auf dem englischen Blog-Post verfügbar",
+            'footer_back': "Zurück zur Übersicht",
+            'rss_feed': "RSS-Feed (englisch)",
+            'available_languages': "Auch verfügbar in den folgenden Sprachen:",
+        }
+    } %}
+    {% set t = translations[blog.language] if blog.language in translations else translations['en'] %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -250,6 +273,32 @@
                 display: none;
             }
         }
+
+
+        .language-switcher {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .language-switcher a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #808080;
+            margin: 0;
+            height: 1em;
+        }
+        .language-switcher a img {
+            width: 30px;
+            height: 1em;
+            object-fit: cover;
+            margin: 0;
+        }
+        .language-switcher .selected {
+            border: 1px solid white;
+        }
     </style>
     <link rel="alternate" type="application/rss+xml" title="RSS feed" href="/blog/rss.xml">
 </head>
@@ -257,11 +306,11 @@
     <div class="top-buttons">
         <a href="/" class="top-button">
             <img src="/assets/home.svg" alt="Home icon">
-            back home
+            {{ t.back_home }}
         </a>
-        <a href="/blog/" class="top-button">
+        <a href="/blogs/{{ blog.language }}" class="top-button">
             <img src="/assets/arrow_left.svg" alt="Back icon">
-            back to blogs
+            {{ t.back_to_blogs }}
         </a>
     </div>
 
@@ -272,7 +321,7 @@
             </header>
 
             {% if blog.co_authors %}
-                <div class="co-authors">Co-authored by
+                <div class="co-authors">{{ t.co_authored_by }}
                     {% for author in blog.co_authors %}
                         {% if loop.length == 1 %}
                             {{ author|safe }}
@@ -299,9 +348,28 @@
                     <p>{{ blog.date }}</p>
                 </div>
                 <div class="short-url">
-                    <p><span class="no-select">short: </span><a href="https://damcraft.de/-{{  blog.hash }}">https://damcraft.de/-{{  blog.hash }}</a></p>
+                    <p><span class="no-select">{{ t.short }}: </span><a href="https://damcraft.de/-{{  blog.hash }}">https://damcraft.de/-{{  blog.hash }}</a></p>
                 </div>
             </div>
+            {% if blog.get_languages()|length > 1 %}
+                <div class="language-switcher">
+                <p>
+                    {{ t.available_languages }}
+                </p>
+                    {% for available_language, url_name in blog.get_languages().items() %}
+                        {% if available_language == blog.language %}
+                            <a href="/blog/{{ url_name }}" class="selected">
+                                <img src="/assets/{{ available_language }}.svg" alt="{{ available_language }}">
+                            </a>
+                        {% else %}
+                            <a href="/blog/{{ url_name }}">
+                                <img src="/assets/{{ available_language }}.svg" alt="{{ available_language }}">
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
             {% if blog.image %}
                 <figure class="blog-image">
                     <img src="{{ blog.image }}" alt="{{ blog.title }}" width="100%">
@@ -311,14 +379,20 @@
             <article class="blog-content">
                 {{ blog.content|safe }}
             </article>
-
-            <div class="comments">
-                {% include 'comments.html' %}
-            </div>
+            {%  if blog.language == 'en' %}
+                <div class="comments">
+                    {% include 'comments.html' %}
+                </div>
+            {% else %}
+                <div class="comments">
+                    <h2>{{ t.comments }}</h2>
+                    <p>{{ t.comment_en_only }}: <a href="/blog/{{ blog.original.url_name }}#comments-section">{{ blog.original.title }}</a></p>
+                </div>
+            {% endif %}
         </div>
         <footer>
             <div class="footer-links">
-                <a href="/blog/">← Back to blogs</a> <a href="/blog/rss.xml">RSS feed</a>
+                <a href="/blog/">← {{ t.footer_back }}</a> <a href="/blog/rss.xml">{{ t.rss_feed }}</a>
             </div>
             <p class="footer-text">&copy; {{ copyright }} dam</p>
         </footer>

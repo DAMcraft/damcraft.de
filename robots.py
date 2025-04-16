@@ -122,6 +122,7 @@ def gen_urllist(app, blogs):
 
     # Add blog URLs
     urls.extend([f"/blog/{blog.url_name}" for blog in blogs])
+    urls.extend([f"/blogs/{lang}" for lang in blogs.languages])
 
     return urls
 
