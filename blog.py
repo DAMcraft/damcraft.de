@@ -8,7 +8,6 @@ from datetime import datetime
 from multiprocessing import Lock
 
 import markdown
-from chardet.metadata import languages
 
 import helpers
 from github import get_user_data_from_request
