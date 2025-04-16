@@ -395,7 +395,7 @@ def get_news_sitemap(blog_posts: [BlogPost]):
             <news:news>
                 <news:publication>
                     <news:name>dam's blog</news:name>
-                    <news:language>en</news:language>
+                    <news:language>{post.language}</news:language>
                 </news:publication>
                 <news:publication_date>{pub_date}</news:publication_date>
                 <news:title>{html.escape(post.title)}</news:title>
