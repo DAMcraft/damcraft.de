@@ -17,7 +17,7 @@
             'welcome': "willkommen in meinem blog! das ist meine kleine plauderecke im internet",
             'footer_back': "Zurück zur Website",
             'back_short': "zurück zur website",
-            'rss_feed': "RSS-Feed (englisch)"
+            'rss_feed': "RSS-Feed (deutsch und englisch)"
         }
     } %}
     {% set t = translations[lang] if lang in translations else translations['en'] %}
@@ -325,7 +325,7 @@
         </div>
         <footer>
             <div class="footer-links">
-                <a href="/">← {{ t.footer_back }}</a> <a href="/blog/rss.xml">{{ t.rss_feed }}</a>
+                <a href="/">← {{ t.footer_back }}</a> <a href="/blog/rss.xml?lang={{ lang or "en" }}">{{ t.rss_feed }}</a>
             </div>
             <p class="footer-text">&copy; {{ copyright }} dam</p>
         </footer>

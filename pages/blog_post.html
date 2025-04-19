@@ -19,7 +19,7 @@
             'comments': "Kommentare",
             'comment_en_only': "Kommentare sind nur auf dem englischen Blog-Post verfügbar",
             'footer_back': "Zurück zur Übersicht",
-            'rss_feed': "RSS-Feed (englisch)",
+            'rss_feed': "RSS-Feed (deutsch und englisch)",
             'available_languages': "Auch verfügbar in den folgenden Sprachen:",
         }
     } %}
@@ -385,7 +385,7 @@
             {% endif %}
 
             <article class="blog-content">
-                {{ blog.content|safe }}
+                {{ blog.content|samufe }}
             </article>
             {%  if blog.language == 'en' %}
                 <div class="comments">
@@ -400,7 +400,7 @@
         </div>
         <footer>
             <div class="footer-links">
-                <a href="/blogs/">← {{ t.footer_back }}</a> <a href="/blog/rss.xml">{{ t.rss_feed }}</a>
+                <a href="/blogs/">← {{ t.footer_back }}</a> <a href="/blog/rss.xml?lang={{ blog.language }}">{{ t.rss_feed }}</a>
             </div>
             <p class="footer-text">&copy; {{ copyright }} dam</p>
         </footer>

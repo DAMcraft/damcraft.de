@@ -346,11 +346,10 @@ def modify_comment(blog_id, comment_id, request_, blogs: [BlogPost]):
     blog.mark_comments_for_update()
 
 
-def get_rss(blog_posts: [BlogPost]):
+def get_rss(blog_posts: [BlogPost], language):
     items = []
     for post in blog_posts:
-        if post.language != "en":
-            # only include english posts
+        if post.language not in (language, "en"):
             continue
         pub_date = datetime.strptime(post.date, "%Y-%m-%d").strftime("%a, %d %b %Y 00:00:00 +0000")
         description = f"""

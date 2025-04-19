@@ -151,7 +151,8 @@ def blog_post_short(blog_hash):
 @app.route('/blog/rss')
 @app.route('/blog/rss.xml')
 def rss():
-    return Response(blog.get_rss(blogs), mimetype="text/xml")
+    lang = request.args.get("lang", "en")
+    return Response(blog.get_rss(blogs, lang), mimetype="text/xml")
 
 
 @app.route('/blog/news_sitemap.xml')
