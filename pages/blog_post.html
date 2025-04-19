@@ -385,7 +385,7 @@
             {% endif %}
 
             <article class="blog-content">
-                {{ blog.content|samufe }}
+                {{ blog.content|safe }}
             </article>
             {%  if blog.language == 'en' %}
                 <div class="comments">
