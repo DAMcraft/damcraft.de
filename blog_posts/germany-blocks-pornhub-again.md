@@ -1,6 +1,6 @@
 Title: German ISPs are apparently forced to block Pornhub (again)
 Summary: After years of nothing, Telekom has just blocked Pornhub's new German domain.
-Date: 2025-04-01 
+Date: 2025-04-02 
 Hash: ph-new
 Image: /assets/blog/fence.jpg 
 -----------------

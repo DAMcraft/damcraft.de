@@ -1,6 +1,6 @@
 Title: Pornhub (wieder) gesperrt? Internetanbieter scheinbar gezwungen.
 Summary: Nach Jahren der Ruhe hat die Telekom gerade Pornhubs neue deutsche Domain gesperrt.
-Date: 2025-04-01 
+Date: 2025-04-02 
 Hash: ph-neu
 Image: /assets/blog/fence.jpg 
 Language: de
