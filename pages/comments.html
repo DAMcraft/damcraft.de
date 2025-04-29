@@ -48,9 +48,23 @@
     .comment-text {
         word-break: break-word;
     }
+    .comment-info {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        column-gap: 5px;
+    }
     .comment-username {
         font-weight: bold;
         color: inherit;
+        align-items: center;
+        display: inline-flex;
+    }
+    .comment-username img {
+        margin-right: 5px;
+        height: 16px;
+        width: 16px;
+        vertical-align: middle;
     }
     .comment-reply {
         background-color: #222;
@@ -87,16 +101,49 @@
         cursor: pointer;
     }
     .login-overlay {
-        background-color: rgba(0, 0, 0, 0.8);
         padding: 20px;
         text-align: center;
     }
-    .github-login {
-        display: inline-block;
-        background-color: #333;
-        color: white;
+    .login-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+    @media (max-width: 600px) {
+        .login-buttons {
+            grid-template-columns: 1fr;
+        }
+    }
+    .login-buttons a {
+        display: inline-flex;
+        gap: 5px;
         padding: 10px 20px;
         text-decoration: none;
+        align-items: center;
+        color: white;
+        justify-content: center;
+    }
+    .login-buttons a img {
+        height: 24px;
+        width: 24px;
+        vertical-align: middle;
+    }
+    .login-buttons a:hover {
+        filter: brightness(0.9);
+    }
+    .github-login {
+        background-color: #333;
+    }
+    .discord-login {
+        background-color: #5865F2;
+    }
+    .mastodon-login {
+        background-color: #563ACC;
+    }
+    .bluesky-login {
+        background-color: #1185fe;
     }
     .no-comments {
         text-align: center;
@@ -199,6 +246,11 @@
         color: #666;
         margin-left: 8px;
     }
+    .logged-in-text {
+        font-size: 14px;
+        color: #808080;
+        margin-left: 10px;
+    }
 </style>
 
 <div id="comments-section">
@@ -207,14 +259,33 @@
     {% if blog.get_comments()|length > 0 %}
         {% for comment in blog.get_comments() %}
             <div class="comment" id="comment-{{ comment.comment_id }}">
-                <a href="https://github.com/{{ comment.user_name }}" target="_blank" class="comment-avatar">
-                    <img src="/github/profile_image/{{ comment.user_id }}" alt="Profile picture" height="50" width="50">
-                </a>
+                {% if comment.platform == "github" %}
+                    <a href="https://github.com/{{ comment.user_name }}" target="_blank" class="comment-avatar">
+                        <img src="/github/profile_image/{{ comment.user_id }}" alt="Profile picture" height="50" width="50">
+                    </a>
+                {% elif comment.platform == "discord" %}
+                    <span class="comment-avatar">
+                        {% if comment.profile_picture %}
+                            <img src="/discord/profile_image/{{ comment.user_id }}/{{ comment.profile_picture }}" alt="Profile picture" height="50" width="50">
+                        {% else %}
+                            <img src="/assets/discord_default.png" alt="Default profile picture" height="50" width="50">
+                        {% endif %}
+                    </span>
+                {% endif %}
                 <div class="comment-content">
                     <div class="comment-header">
                         <div class="comment-info">
-                            <a class="comment-username" href="https://github.com/{{ comment.user_name }}" target="_blank">
-                                {{ comment.user_name }}</a>
+                            {% if comment.platform == "github" %}
+                                <a href="https://github.com/{{ comment.user_name }}" target="_blank" class="comment-username">
+                                    <img src="/assets/github.svg" alt="GitHub" height="16" width="16">
+                                    {{ comment.user_name }}
+                                </a>
+                            {% elif comment.platform == "discord" %}
+                                <span class="comment-username">
+                                    <img src="/assets/discord.svg" alt="Discord" height="16" width="16">
+                                    @{{ comment.user_name }}
+                                </span>
+                            {% endif %}
                             <span class="comment-date">{{ comment.date_str }}</span>
                             {% if comment.edited_timestamp %}
                                 <span class="edited-tag">(edited {{ comment.edited_date_str }})</span>
@@ -224,7 +295,7 @@
                         {% if not comment.is_deleted and user_data %}
                             <div class="comment-actions">
                                 <label for="reply-{{ comment.comment_id }}" class="action-btn reply-label">Reply</label>
-                                {% if comment.user_id == user_data.user_id %}
+                                {% if comment.user_id == user_data.user_id and comment.platform == user_data.platform %}
                                     <label for="edit-{{ comment.comment_id }}" class="action-btn edit-label">Edit</label>
                                     <label for="delete-{{ comment.comment_id }}" class="action-btn delete-label">Delete</label>
                                 {% endif %}
@@ -258,7 +329,7 @@
                             <textarea name="comment" class="comment-input" placeholder="Write your reply here..." required maxlength="1000"></textarea>
                             <button type="submit" class="comment-button">Reply</button>
                         </form>
-                        {% if comment.user_id == user_data.user_id %}
+                        {% if comment.user_id == user_data.user_id and comment.platform == user_data.platform %}
                             {# Edit form #}
                             <input type="checkbox" id="edit-{{ comment.comment_id }}" class="edit-toggle">
                             <form class="edit-form" method="post" action="{{ request.path }}/comments/{{ comment.comment_id }}">
@@ -296,13 +367,35 @@
     {% if user_data %}
         <form class="comment-form" method="post" action="{{ request.path }}/comment">
             <textarea name="comment" class="comment-input" placeholder="Write your comment here..." required maxlength="1000"></textarea>
-            <button type="submit" class="comment-button">Comment</button>
+            <div>
+                <button type="submit" class="comment-button">Comment</button>
+                <span class="logged-in-text">
+                    Logged in as
+                    {% if user_data.platform == "discord" %}
+                        @{{ user_data.user_name }} over Discord
+                    {% elif user_data.platform == "github" %}
+                        {{ user_data.user_name }} over GitHub
+                    {% endif %}
+                </span>
+            </div>
         </form>
     {% else %}
         <div class="login-overlay">
-            <a href="/github/login?return={{ request.path }}#comments-section" class="github-login">
-                Login with GitHub to comment
-            </a>
+            You need to be logged in to comment.
+            <div class="login-buttons">
+                <a href="/github/login?return={{ request.path }}#comments-section" class="github-login">
+                    <img src="/assets/github.svg" alt="GitHub" height="16" width="16"> Login with GitHub
+                </a>
+                <a href="/discord/login?return={{ request.path }}#comments-section" class="discord-login">
+                    <img src="/assets/discord.svg" alt="Discord" height="16" width="16"> Login with Discord
+                </a>
+{#                <a href="/mastodon/login?return={{ request.path }}#comments-section" class="mastodon-login">#}
+{#                    <img src="/assets/mastodon.svg" alt="Mastodon" height="16" width="16"> Login with Mastodon#}
+{#                </a>#}
+{#                <a href="/twitter/login?return={{ request.path }}#comments-section" class="bluesky-login">#}
+{#                    <img src="/assets/bsky.svg" alt="Bluesky" height="16" width="16"> Login with Bluesky#}
+{#                </a>#}
+            </div>
         </div>
     {% endif %}
 </div>

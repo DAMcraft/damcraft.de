@@ -10,7 +10,7 @@ from multiprocessing import Lock
 import markdown
 
 import helpers
-from github import get_user_data_from_request
+from comment_auth import get_user_data_from_request
 
 blog_directory = 'blog_posts'
 
@@ -117,7 +117,9 @@ class BlogPost:
         comments = self.get_comments()
         return next((c for c in comments if c.comment_id == comment_id), None)
 
-    def add_comment(self, user_name: str, user_id: int, comment: str, replies_to: int = None):
+    def add_comment(self,
+                    user_name: str, user_id: int, comment: str, replies_to: int = None,
+                    platform: str = None, profile_picture: str = None):
         with self._comments_lock:
             comment_id = 0
             directory = self._get_comments_directory()
@@ -134,6 +136,8 @@ class BlogPost:
                     'comment': comment,
                     'timestamp': time.time(),
                     'replies_to_id': replies_to,
+                    'platform': platform,
+                    'profile_picture': profile_picture,
                 }
                 f.write(json.dumps(data, indent=4))
 
@@ -179,6 +183,8 @@ class Comment:
             comment_id: int,
             user_name: str,
             user_id: int,
+            platform: str,
+            profile_picture: str,
             comment: str,
             timestamp: int,
             edited_timestamp: int = None,
@@ -188,6 +194,8 @@ class Comment:
         self.comment_id = comment_id
         self.user_name = user_name
         self.user_id = user_id
+        self.platform = platform
+        self.profile_picture = profile_picture
         self.timestamp = timestamp
         self.edited_timestamp = edited_timestamp
         self.is_deleted = is_deleted
@@ -308,6 +316,8 @@ def handle_comment(blog_id, request_, blogs):
         user_name=user_data.user_name,
         user_id=user_data.user_id,
         comment=content,
+        platform=user_data.platform,
+        profile_picture=user_data.profile_picture,
         replies_to=int(replies_to) if replies_to else None
     )
     return comment_id

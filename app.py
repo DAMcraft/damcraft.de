@@ -16,7 +16,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 import blog
 import const
 import cors
-import github
+import comment_auth
 import jammingen
 import robots
 from blog import get_blog_posts
@@ -98,7 +98,7 @@ def blog_post(url_name=None):
     if not blog_:
         return "Not found", 404
 
-    user_data = github.get_user_data_from_request(request)
+    user_data = comment_auth.get_user_data_from_request(request)
 
     date_text = format_iso_date(blog_.date)
     resp = app.make_response(
@@ -209,15 +209,12 @@ def mark_as_read():
 
 @app.route('/github/callback')
 def github_callback():
-    return github.handle_callback()
+    return comment_auth.handle_gh_callback()
 
 
-@app.route('/github/login')
-def github_login():
-    return_url = request.args.get("return")
-    if return_url and not return_url.startswith("/"):
-        return_url = "/"
-    return redirect(github.get_oauth_url(return_url=return_url))
+@app.route('/discord/callback')
+def discord_callback():
+    return comment_auth.handle_discord_callback()
 
 
 @app.route('/github/profile_image/<user_id>')
@@ -228,6 +225,39 @@ def github_profile_image(user_id):
     req = requests.get(f"https://avatars.githubusercontent.com/u/{user_id}?v=4&s=100")
     resp = make_response(req.content)
     resp.headers["Content-Type"] = req.headers["Content-Type"]
+    resp.headers["Cache-Control"] = f"public, max-age={60 * 60 * 24}"
+    return resp
+
+
+@app.route('/github/login')
+def github_login():
+    return_url = request.args.get("return")
+    if return_url and not return_url.startswith("/"):
+        return_url = "/"
+    return redirect(comment_auth.get_gh_oauth_url(return_url=return_url))
+
+
+@app.route('/discord/login')
+def discord_login():
+    return_url = request.args.get("return")
+    if return_url and not return_url.startswith("/"):
+        return_url = "/"
+    return redirect(comment_auth.get_discord_oauth_url(return_url=return_url))
+
+
+@app.route('/discord/profile_image/<user_id>/<avatar_id>')
+@lru_cache(maxsize=30)
+@robots.noindex
+@robots.disallow
+def discord_profile_image(user_id, avatar_id):
+    resp = make_response(send_from_directory("assets", "discord_default.png"))
+    resp.headers["Cache-Control"] = f"public, max-age={60 * 60 * 24}"
+    if avatar_id is None:
+        return resp
+    req = requests.get(f"https://cdn.discordapp.com/avatars/{user_id}/{avatar_id}.png?size=256")
+    if req.status_code == 200:
+        resp = make_response(req.content)
+        resp.headers["Content-Type"] = req.headers["Content-Type"]
     resp.headers["Cache-Control"] = f"public, max-age={60 * 60 * 24}"
     return resp
 
