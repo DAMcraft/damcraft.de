@@ -41,5 +41,14 @@ Letztlich trifft es die "normalen" Leute, und öffnet damit die Tür und Tor fü
 
 *Ich entschuldige mich für mögliche Fehler, das hier war ein schnell getippter Post über eine neue Entwicklung.*
 
+## Update: 2025-04-29
+
+Ich habe mehrere E-Mails an verschiedene KJM-Mitglieder geschickt, die alle ignoriert wurden.
+Daraufhin habe ich eine IFG-Anfrage gestellt und eine Liste der gesperrten Domains angefordert.
+Mir wurde die Sperrung von de.pornhub.org bestätigt[^3], sie versuchen derzeit auch Vodafone zur Sperrung der neuen Domain zu zwingen.[^4]
+
+
 [^1]: [Stern: "XHamster wird in Deutschland gesperrt"](https://www.stern.de/digital/online/-xhamster--wird-in-deutschland-gesperrt---pornos-sind-kein-kinderprogramm--31672550.html)  
 [^2]: [netzpolitik.org: Internet-Provider sollen Pornhub in Deutschland sperren](https://netzpolitik.org/2023/medienaufsicht-internet-provider-sollen-pornhub-in-deutschland-sperren/)
+[^3]: [IFG-Anfrage an LfM NRW, "Liste von gesperrten Domains"](https://fragdenstaat.de/anfrage/liste-von-gesperrten-domains/#nachricht-996263)
+[^4]: [IFG-Anfrage an LfM NRW, "IFG Antrag zur Sperrung von de.pornhub.org"](https://fragdenstaat.de/anfrage/ifg-antrag-zur-sperrung-von-de-pornhub-org/#nachricht-994765)

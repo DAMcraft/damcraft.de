@@ -32,5 +32,13 @@ This was my **entire issue with the CUII** – Germany's internet censorship is 
 
 *I apologize for any errors, this was yet another quickly typed post about a new situation.*
 
+## Update: 2025-04-29
+I sent out multiple emails to different KJM members, which were all ignored.
+I therefore sent out a FOIA request asking for a list of blocked domains.
+They have confirmed the blocking of de.pornhub.org[^3], 
+and are currently trying to force Vodafone to block the new domain as well[^4].
+
 [^1]: [Stern: "XHamster wird in Deutschland gesperrt"](https://www.stern.de/digital/online/-xhamster--wird-in-deutschland-gesperrt---pornos-sind-kein-kinderprogramm--31672550.html)  
 [^2]: [netzpolitik.org: Internet-Provider sollen Pornhub in Deutschland sperren](https://netzpolitik.org/2023/medienaufsicht-internet-provider-sollen-pornhub-in-deutschland-sperren/)
+[^3]: [FOIA request to LfM NRW, "List of blocked domains"](https://fragdenstaat.de/anfrage/liste-von-gesperrten-domains/#nachricht-996263)  
+[^4]: [FOIA request to LfM NRW, "IFG request regarding the blocking of de.pornhub.org"](https://fragdenstaat.de/anfrage/ifg-antrag-zur-sperrung-von-de-pornhub-org/#nachricht-994765)
