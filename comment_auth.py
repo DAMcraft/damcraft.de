@@ -296,6 +296,90 @@ def handle_mastodon_callback(instance):
     return resp
 
 
+def get_reddit_oauth_url(return_url=None):
+    redirect_url = const.URL_BASE + "/reddit/callback"
+    # redirect_url = "https://localpc.damcraft.de/reddit/callback"
+    state = ""
+    if return_url is not None:
+        state = base64.b64encode(return_url.encode()).decode()
+
+    base_url = (
+        "https://www.reddit.com/api/v1/authorize?client_id=" + const.REDDIT_CLIENT_ID +
+        "&scope=identity" +
+        "&redirect_uri=" + urllib.parse.quote(redirect_url) +
+        "&response_type=code" +
+        ("&state=" + state if state else "")
+    )
+    return base_url
+
+
+def get_reddit_access_token(code):
+    data = requests.post(
+        "https://www.reddit.com/api/v1/access_token",
+        data={
+            "grant_type": "authorization_code",
+            "code": code,
+            "redirect_uri": const.URL_BASE + "/reddit/callback",
+            # "redirect_uri": "https://localpc.damcraft.de/reddit/callback"
+        },
+        auth=(const.REDDIT_CLIENT_ID, const.REDDIT_CLIENT_SECRET),
+        headers={"User-Agent": "dam's blog"},
+    )
+    if data.status_code != 200:
+        return None
+    return data.json().get("access_token")
+
+
+def get_reddit_user_data(token):
+    try:
+        data = requests.get(
+            "https://oauth.reddit.com/api/v1/me",
+            headers={"Authorization": "Bearer " + token}
+        )
+        if data.status_code != 200:
+            return None
+        return data.json()
+    except requests.RequestException:
+        return None
+
+
+def handle_reddit_callback():
+    code = request.args.get("code")
+    if code is None:
+        return "No code provided", 400
+    token = get_reddit_access_token(code)
+    if token is None:
+        return "Invalid code or exchange failed", 400
+    user_data = get_reddit_user_data(token)
+
+    if user_data is None:
+        return "Failed to get user data", 500
+    user_name = user_data.get("name")
+    user_id = user_data.get("subreddit", {}).get("display_name_prefixed")
+
+    if user_name is None or user_id is None:
+        return "Incomplete user data", 500
+
+    signed_jwt = jwt.encode(
+        {
+            "user_id": user_id,
+            "user_name": user_name,
+            "platform": "reddit",
+            "iat": int(time.time()),
+            "exp": int(time.time()) + 60 * 60 * 24 * 7
+        },
+        const.JWT_SECRET,
+        algorithm="HS256"
+    )
+    redirect_path = request.args.get("state")
+    redirect_path = base64.b64decode(urllib.parse.unquote(redirect_path)).decode() if redirect_path else None
+    if not redirect_path or not redirect_path.startswith("/"):
+        redirect_path = "/"
+    resp = redirect(redirect_path)
+    resp.set_cookie("account_jwt", signed_jwt, max_age=60 * 60 * 24 * 7, httponly=True, secure=True, samesite="Lax")
+    return resp
+
+
 def is_logged_in(request_):
     return get_user_data_from_request(request_) is not None
 

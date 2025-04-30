@@ -300,6 +300,45 @@ def mastodon_profile_image():
     return resp
 
 
+@app.route('/reddit/login')
+def reddit_login():
+    return_url = request.args.get("return")
+    if return_url and not return_url.startswith("/"):
+        return_url = "/"
+    return redirect(comment_auth.get_reddit_oauth_url(return_url=return_url))
+
+
+@app.route('/reddit/callback')
+def reddit_callback():
+    return comment_auth.handle_reddit_callback()
+
+
+@app.route('/reddit/profile_image/<user_id>')
+@robots.noindex
+@robots.disallow
+def reddit_profile_image(user_id):
+    try:
+        req = requests.get(f"https://www.reddit.com/user/{user_id}/about.json", headers={
+            "User-Agent": "damcraft.de"
+        })
+        if req.status_code == 200:
+            data = req.json()
+            if "icon_img" in data["data"]:
+                icon_url = data["data"]["icon_img"]
+                if icon_url:
+                    req = requests.get(icon_url)
+                    print(req.status_code)
+                    resp = make_response(req.content)
+                    resp.headers["Content-Type"] = req.headers["Content-Type"]
+                    resp.headers["Cache-Control"] = f"public, max-age={60 * 60 * 24}"
+                    return resp
+    except requests.RequestException:
+        pass
+    # If the request fails or the icon is not found, return a default image
+    resp = make_response(send_from_directory("assets", "reddit_default.png"))
+    return resp
+
+
 @app.route("/logout", methods=["POST"])
 def logout():
     # Remove the cookie from the response
