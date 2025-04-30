@@ -116,7 +116,7 @@
             grid-template-columns: 1fr;
         }
     }
-    .login-buttons a {
+    .login-buttons > * {
         display: inline-flex;
         gap: 5px;
         padding: 10px 20px;
@@ -125,13 +125,15 @@
         color: white;
         justify-content: center;
     }
-    .login-buttons a img {
+    .login-buttons > * img {
         height: 24px;
         width: 24px;
         vertical-align: middle;
     }
-    .login-buttons a:hover {
+    .login-buttons > *:hover {
         filter: brightness(0.9);
+        text-decoration: underline;
+        cursor: pointer;
     }
     .github-login {
         background-color: #333;
@@ -251,6 +253,65 @@
         color: #808080;
         margin-left: 10px;
     }
+    .login-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+        z-index: 998;
+    }
+    .login-popup {
+        background: #222;
+        padding: 10px;
+        position: relative;
+        z-index: 1000;
+        min-width: 300px;
+    }
+    .close-login-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 997;
+    }
+    .close-login-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        height: 24px;
+        width: 24px;
+        cursor: pointer;
+    }
+    .login-toggle:checked ~ .login-modal {
+        display: flex;
+    }
+    .login-form {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .instance-field {
+        width: 100%;
+        padding: 10px;
+        background-color: #222;
+        color: white;
+        border: 1px solid #333;
+        font-family: inherit;
+        box-sizing: border-box;
+    }
+    .instance-field:focus {
+        outline: none;
+    }
+    .non-bold {
+        font-weight: normal;
+    }
 </style>
 
 <div id="comments-section">
@@ -271,6 +332,14 @@
                             <img src="/assets/discord_default.png" alt="Default profile picture" height="50" width="50">
                         {% endif %}
                     </span>
+                {% elif comment.platform == "mastodon" %}
+                    <a href="{{ comment.profile_url }}" target="_blank" class="comment-avatar">
+                        {% if comment.profile_picture %}
+                            <img src="/mastodon/profile_image?url={{ comment.profile_picture|urlencode }}" alt="Profile picture" height="50" width="50">
+                        {% else %}
+                            <img src="/assets/mastodon.png" alt="Default profile picture" height="50" width="50">
+                        {% endif %}
+                    </a>
                 {% endif %}
                 <div class="comment-content">
                     <div class="comment-header">
@@ -285,6 +354,12 @@
                                     <img src="/assets/discord.svg" alt="Discord" height="16" width="16">
                                     @{{ comment.user_name }}
                                 </span>
+                            {% elif comment.platform == "mastodon" %}
+                                <a href="{{ comment.profile_url }}" target="_blank" class="comment-username">
+                                    <img src="/assets/mastodon.svg" alt="Mastodon" height="16" width="16">
+                                    {% set user_id_parts = comment.user_id.split("@") %}
+                                    @{{ user_id_parts[1] }}@<span class="non-bold">{{ user_id_parts[2] }}</span>
+                                </a>
                             {% endif %}
                             <span class="comment-date">{{ comment.date_str }}</span>
                             {% if comment.edited_timestamp %}
@@ -375,6 +450,8 @@
                         @{{ user_data.user_name }} over Discord
                     {% elif user_data.platform == "github" %}
                         {{ user_data.user_name }} over GitHub
+                    {% elif user_data.platform == "mastodon" %}
+                        {{ user_data.user_id }} over Mastodon
                     {% endif %}
                 </span>
             </div>
@@ -383,19 +460,34 @@
         <div class="login-overlay">
             You need to be logged in to comment.
             <div class="login-buttons">
-                <a href="/github/login?return={{ request.path }}#comments-section" class="github-login">
+                <a href="/github/login?return={{ (request.path + "#comments-section") | urlencode }}" class="github-login">
                     <img src="/assets/github.svg" alt="GitHub" height="16" width="16"> Login with GitHub
                 </a>
-                <a href="/discord/login?return={{ request.path }}#comments-section" class="discord-login">
+                <a href="/discord/login?return={{ (request.path + "#comments-section") | urlencode }}" class="discord-login">
                     <img src="/assets/discord.svg" alt="Discord" height="16" width="16"> Login with Discord
                 </a>
-{#                <a href="/mastodon/login?return={{ request.path }}#comments-section" class="mastodon-login">#}
-{#                    <img src="/assets/mastodon.svg" alt="Mastodon" height="16" width="16"> Login with Mastodon#}
-{#                </a>#}
+                <label class="mastodon-login" for="mastodon-login">
+                    <img src="/assets/mastodon.svg" alt="Mastodon" height="16" width="16"> Login with Mastodon
+                </label>
 {#                <a href="/twitter/login?return={{ request.path }}#comments-section" class="bluesky-login">#}
 {#                    <img src="/assets/bsky.svg" alt="Bluesky" height="16" width="16"> Login with Bluesky#}
 {#                </a>#}
             </div>
         </div>
     {% endif %}
+</div>
+<input type="checkbox" id="mastodon-login" class="login-toggle" style="display: none;">
+<div class="login-modal">
+    <label for="mastodon-login" class="close-login-bg"></label>
+    <div class="login-popup">
+        <label for="mastodon-login" class="close-login-btn">&times;</label>
+        <p>Login with Mastodon</p>
+        <form method="post" action="/mastodon/login?return={{ (request.path + "#comments-section") | urlencode }}" class="login-form">
+            <input class="instance-field" name="instance" type="text"
+                   placeholder="Mastodon instance (e.g. mastodon.social)" required autocomplete="new-password"
+                   pattern="^(?!-)(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$"
+                   title="Please enter a valid Mastodon instance (e.g. mastodon.social)">
+            <button type="submit" class="comment-button">Login</button>
+        </form>
+    </div>
 </div>

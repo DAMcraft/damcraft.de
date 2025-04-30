@@ -119,7 +119,7 @@ class BlogPost:
 
     def add_comment(self,
                     user_name: str, user_id: int, comment: str, replies_to: int = None,
-                    platform: str = None, profile_picture: str = None):
+                    platform: str = None, profile_picture: str = None, profile_url: str = None):
         with self._comments_lock:
             comment_id = 0
             directory = self._get_comments_directory()
@@ -138,6 +138,7 @@ class BlogPost:
                     'replies_to_id': replies_to,
                     'platform': platform,
                     'profile_picture': profile_picture,
+                    'profile_url': profile_url,
                 }
                 f.write(json.dumps(data, indent=4))
 
@@ -187,6 +188,7 @@ class Comment:
             profile_picture: str,
             comment: str,
             timestamp: int,
+            profile_url: str = None,
             edited_timestamp: int = None,
             is_deleted: bool = False,
             replies_to_id: int = None
@@ -200,6 +202,7 @@ class Comment:
         self.edited_timestamp = edited_timestamp
         self.is_deleted = is_deleted
         self.replies_to_id = replies_to_id
+        self.profile_url = profile_url
         self.replies_to = None
         self._process_comment(comment)
 
@@ -318,6 +321,7 @@ def handle_comment(blog_id, request_, blogs):
         comment=content,
         platform=user_data.platform,
         profile_picture=user_data.profile_picture,
+        profile_url=user_data.profile_url,
         replies_to=int(replies_to) if replies_to else None
     )
     return comment_id

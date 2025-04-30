@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instance Not Found</title>
+    <style>
+        @font-face {
+            font-family: 'Atkinson Hyperlegible';
+            src: url('/assets/fonts/AtkinsonHyperlegible-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Atkinson Hyperlegible';
+            src: url('/assets/fonts/AtkinsonHyperlegible-Italic.ttf') format('truetype');
+            font-weight: normal;
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'Atkinson Hyperlegible';
+            src: url('/assets/fonts/AtkinsonHyperlegible-Bold.ttf') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Atkinson Hyperlegible';
+            src: url('/assets/fonts/AtkinsonHyperlegible-BoldItalic.ttf') format('truetype');
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        body {
+            background-color: black;
+            color: white;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            padding: 0;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: #0066cc;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .error-header {
+            margin-bottom: 20px;
+        }
+
+        .error-header h1 {
+            font-size: 32px;
+            margin: 0;
+        }
+
+        .error-message {
+            margin-bottom: 30px;
+        }
+
+        .instance-name {
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+
+        .go-back-button {
+            background-color: #0066cc;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .go-back-button:hover {
+            background-color: #0055aa;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <header class="error-header">
+                <h1>Instance Not Found</h1>
+            </header>
+
+            <section class="error-message">
+                {% if instance %}
+                    <p>We couldn't find the instance <span class="instance-name">{{ instance }}</span>.</p>
+                {% else %}
+                    <p>Sorry, we couldn't find your mastodon instance.</p>
+                {% endif %}
+                <p>Check if you maybe made a typo, or that your fedi instance supports the mastodon API.</p>
+            </section>
+
+            {% if return_url %}
+                <a href="{{ return_url }}" class="go-back-button">Go back</a>
+            {% else %}
+                <a href="/" class="go-back-button">Back home</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

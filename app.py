@@ -212,11 +212,6 @@ def github_callback():
     return comment_auth.handle_gh_callback()
 
 
-@app.route('/discord/callback')
-def discord_callback():
-    return comment_auth.handle_discord_callback()
-
-
 @app.route('/github/profile_image/<user_id>')
 @lru_cache(maxsize=30)
 @robots.noindex
@@ -245,6 +240,11 @@ def discord_login():
     return redirect(comment_auth.get_discord_oauth_url(return_url=return_url))
 
 
+@app.route('/discord/callback')
+def discord_callback():
+    return comment_auth.handle_discord_callback()
+
+
 @app.route('/discord/profile_image/<user_id>/<avatar_id>')
 @lru_cache(maxsize=30)
 @robots.noindex
@@ -258,6 +258,44 @@ def discord_profile_image(user_id, avatar_id):
     if req.status_code == 200:
         resp = make_response(req.content)
         resp.headers["Content-Type"] = req.headers["Content-Type"]
+    resp.headers["Cache-Control"] = f"public, max-age={60 * 60 * 24}"
+    return resp
+
+
+@app.route('/mastodon/login', methods=["POST"])
+def mastodon_login():
+    instance = request.form.get("instance")
+    return_url = request.args.get("return")
+    if return_url and not return_url.startswith("/"):
+        return_url = "/"
+    return redirect(comment_auth.get_mastodon_oauth_url(instance, return_url=return_url))
+
+
+@app.route('/mastodon/callback/<instance>')
+def mastodon_callback(instance):
+    return comment_auth.handle_mastodon_callback(instance)
+
+
+@app.route('/mastodon/instance_not_found')
+def instance_not_found():
+    return render_template("instance_not_found.html", instance=request.args.get("instance"),
+                           return_url=request.args.get("return"))
+
+
+@app.route('/mastodon/profile_image')
+@lru_cache(maxsize=30)
+@robots.noindex
+@robots.disallow
+def mastodon_profile_image():
+    # Remove the protocol from the URL
+    try:
+        image_url = request.args.get("url")
+        image_url = image_url.removeprefix("https://").removeprefix("http://")
+        req = requests.get(f"https://{image_url}")
+        resp = make_response(req.content)
+        resp.headers["Content-Type"] = req.headers.get("Content-Type", "image/png")
+    except requests.RequestException:
+        resp = make_response(send_from_directory("assets", "mastodon.png"))
     resp.headers["Cache-Control"] = f"public, max-age={60 * 60 * 24}"
     return resp
 
