@@ -79,6 +79,7 @@
         margin-top: 20px;
     }
     .comment-input {
+        flex-grow: 1;
         width: 100%;
         min-height: 100px;
         background-color: #222;
@@ -249,9 +250,20 @@
         margin-left: 8px;
     }
     .logged-in-text {
+        margin-top: 10px;
         font-size: 14px;
         color: #808080;
-        margin-left: 10px;
+    }
+    .logout-form {
+        display: inline;
+    }
+    .logout-form button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-decoration: underline;
+        color: #808080;
+        padding: 0;
     }
     .login-modal {
         display: none;
@@ -440,22 +452,26 @@
     {% endif %}
 
     {% if user_data %}
-        <form class="comment-form" method="post" action="{{ request.path }}/comment">
-            <textarea name="comment" class="comment-input" placeholder="Write your comment here..." required maxlength="1000"></textarea>
-            <div>
+        <div class="comment-bar">
+            <form class="comment-form" method="post" action="{{ request.path }}/comment">
+                <textarea name="comment" class="comment-input" placeholder="Write your comment here..." required maxlength="1000"></textarea>
                 <button type="submit" class="comment-button">Comment</button>
-                <span class="logged-in-text">
-                    Logged in as
-                    {% if user_data.platform == "discord" %}
-                        @{{ user_data.user_name }} over Discord
-                    {% elif user_data.platform == "github" %}
-                        {{ user_data.user_name }} over GitHub
-                    {% elif user_data.platform == "mastodon" %}
-                        {{ user_data.user_id }} over Mastodon
-                    {% endif %}
-                </span>
-            </div>
-        </form>
+            </form>
+             <span class="logged-in-text">
+                Logged in as
+                {% if user_data.platform == "discord" %}
+                    @{{ user_data.user_name }} over Discord.
+                {% elif user_data.platform == "github" %}
+                    {{ user_data.user_name }} over GitHub.
+                {% elif user_data.platform == "mastodon" %}
+                    {{ user_data.user_id }} over Mastodon.
+                {% endif %}
+            </span>
+            <form class="logout-form" method="post" action="/logout">
+                <input type="hidden" name="redirect" value="{{ request.path + "#comments-section" }}">
+                <button type="submit" class="comment-button">Logout</button>
+            </form>
+        </div>
     {% else %}
         <div class="login-overlay">
             You need to be logged in to comment.

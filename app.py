@@ -300,6 +300,17 @@ def mastodon_profile_image():
     return resp
 
 
+@app.route("/logout", methods=["POST"])
+def logout():
+    # Remove the cookie from the response
+    redirect_url = request.form.get("redirect")
+    if not redirect_url or not redirect_url.startswith("/"):
+        redirect_url = "/"
+    resp = app.make_response(redirect(redirect_url))
+    resp.set_cookie("account_jwt", "", expires=0, samesite="Lax", secure=True, httponly=True)
+    return resp
+
+
 @app.route('/pgp')
 def pgp():
     resp = Response(pgp_key, mimetype="text/plain")
