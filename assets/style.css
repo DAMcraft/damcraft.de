@@ -506,13 +506,18 @@ section {
 }
 
 @media (max-width: 500px) {
-    .link-bar {
+    .rss-link {
         display: none;
     }
 
     .wrapper {
         width: 100%;
         max-width: 100%;
+    }
+}
+@media (max-width: 380px) {
+    .left-bar {
+        font-size: 10px;
     }
 }
 
@@ -917,4 +922,35 @@ section {
 #show-btc:checked ~ #btc-popup,
 #show-xmr:checked ~ #xmr-popup {
     display: block;
+}
+
+.hours::before,
+.minutes::before,
+.seconds::before {
+    display: inline-block;
+    text-align: right;
+    content: "00";
+}
+
+.hours::before {
+    animation: until-24 86400s steps(1) infinite;
+}
+
+.minutes::before {
+    animation: until-60 3600s steps(1) infinite;
+}
+
+.seconds::before {
+    animation: until-60 60s steps(1) infinite;
+}
+
+@keyframes until-60 { 0.0000% { content: "00"; } 1.6667% { content: "01"; } 3.3333% { content: "02"; } 5.0000% { content: "03"; } 6.6667% { content: "04"; } 8.3333% { content: "05"; } 10.0000% { content: "06"; } 11.6667% { content: "07"; } 13.3333% { content: "08"; } 15.0000% { content: "09"; } 16.6667% { content: "10"; } 18.3333% { content: "11"; } 20.0000% { content: "12"; } 21.6667% { content: "13"; } 23.3333% { content: "14"; } 25.0000% { content: "15"; } 26.6667% { content: "16"; } 28.3333% { content: "17"; } 30.0000% { content: "18"; } 31.6667% { content: "19"; } 33.3333% { content: "20"; } 35.0000% { content: "21"; } 36.6667% { content: "22"; } 38.3333% { content: "23"; } 40.0000% { content: "24"; } 41.6667% { content: "25"; } 43.3333% { content: "26"; } 45.0000% { content: "27"; } 46.6667% { content: "28"; } 48.3333% { content: "29"; } 50.0000% { content: "30"; } 51.6667% { content: "31"; } 53.3333% { content: "32"; } 55.0000% { content: "33"; } 56.6667% { content: "34"; } 58.3333% { content: "35"; } 60.0000% { content: "36"; } 61.6667% { content: "37"; } 63.3333% { content: "38"; } 65.0000% { content: "39"; } 66.6667% { content: "40"; } 68.3333% { content: "41"; } 70.0000% { content: "42"; } 71.6667% { content: "43"; } 73.3333% { content: "44"; } 75.0000% { content: "45"; } 76.6667% { content: "46"; } 78.3333% { content: "47"; } 80.0000% { content: "48"; } 81.6667% { content: "49"; } 83.3333% { content: "50"; } 85.0000% { content: "51"; } 86.6667% { content: "52"; } 88.3333% { content: "53"; } 90.0000% { content: "54"; } 91.6667% { content: "55"; } 93.3333% { content: "56"; } 95.0000% { content: "57"; } 96.6667% { content: "58"; } 98.3333% { content: "59"; } }
+
+@keyframes until-24 { 0.0000% { content: "00"; } 4.1667% { content: "01"; } 8.3333% { content: "02"; } 12.5000% { content: "03"; } 16.6667% { content: "04"; } 20.8333% { content: "05"; } 25.0000% { content: "06"; } 29.1667% { content: "07"; } 33.3333% { content: "08"; } 37.5000% { content: "09"; } 41.6667% { content: "10"; } 45.8333% { content: "11"; } 50.0000% { content: "12"; } 54.1667% { content: "13"; } 58.3333% { content: "14"; } 62.5000% { content: "15"; } 66.6667% { content: "16"; } 70.8333% { content: "17"; } 75.0000% { content: "18"; } 79.1667% { content: "19"; } 83.3333% { content: "20"; } 87.5000% { content: "21"; } 91.6667% { content: "22"; } 95.8333% { content: "23"; } }
+
+.clock-icon {
+    margin-top: -1px;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
 }

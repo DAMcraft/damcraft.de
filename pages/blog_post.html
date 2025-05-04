@@ -307,6 +307,24 @@
         .language-switcher .selected {
             border: 1px solid white;
         }
+
+        .footnote > ol > li:target {
+            animation: highlight 1s ease-in-out;
+        }
+        @keyframes highlight {
+            0% { background-color: #111; }
+            50% { background-color: #004b98; }
+            100% { background-color: #111; }
+        }
+
+        sup:target > .footnote-ref {
+            animation: highlight-ref 2s ease-in-out;
+        }
+        @keyframes highlight-ref {
+            0% { background-color: #111; }
+            50% { background-color: #eedd00; }
+            100% { background-color: #111; }
+        }
     </style>
     <link rel="alternate" type="application/rss+xml" title="RSS feed" href="/blog/rss.xml">
 </head>

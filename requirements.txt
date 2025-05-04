@@ -10,3 +10,4 @@ user-agents
 Pillow
 gevent
 bs4
+Pygments

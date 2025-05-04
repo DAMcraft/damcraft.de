@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 import random
@@ -5,6 +6,7 @@ import urllib.parse
 from hashlib import sha256
 from threading import Thread
 
+import pytz
 import requests
 from flask import Flask, render_template, Response, send_from_directory, request, redirect, make_response
 from functools import lru_cache
@@ -45,6 +47,11 @@ def index():
     last_blog = show_notification(blogs, request)
 
     theme = "pink" if random.randint(1, 20) == 1 else "blue"
+
+    tz_string = "Europe/Berlin"
+    tz = pytz.timezone(tz_string)
+    now = datetime.datetime.now(tz)
+    midnight = tz.localize(datetime.datetime(now.year, now.month, now.day, 0, 0, 0))
     return render_template(
         'index.html',
         discord_status=discord_status,
@@ -55,7 +62,9 @@ def index():
         is_tor=request.headers.get("Host", "").endswith(".onion"),
         const=const,
         style_hash=style_hash,
-        pgp_key=pgp_key.decode("utf-8")
+        pgp_key=pgp_key.decode("utf-8"),
+        day_seconds=int(now.timestamp() - midnight.timestamp()),
+        tz=tz_string,
     )
 
 

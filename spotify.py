@@ -69,7 +69,8 @@ def build_lyrics_css(lyrics: Lyrics | None, progress: float, duration: float, is
 
 def generate_spotify_totp():
     # thank you https://github.com/KRTirtho/spotube/commit/59f298a935c87077a6abd50656f8a4ead44bd979 <3
-    time_interval = requests.get("https://open.spotify.com/server-time").json()["serverTime"] // 30
+    req = requests.get("https://open.spotify.com/server-time")
+    time_interval = req.json()["serverTime"] // 30
 
     hmac_hash = hmac.new(
         key=b'5507145853487499592248630329347',
