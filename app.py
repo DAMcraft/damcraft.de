@@ -91,7 +91,8 @@ def blogs_page(language=None):
         blogs=blogs.get_by_language(language),
         copyright=random_copyright_year(),
         lang=language,
-        all_languages=blogs.languages
+        all_languages=blogs.languages,
+        style_hash=blog_style_hash,
     )
 
 
@@ -116,7 +117,8 @@ def blog_post(url_name=None):
             blog=blog_,
             date_text=date_text,
             user_data=user_data,
-            copyright=random_copyright_year()
+            copyright=random_copyright_year(),
+            style_hash=blog_style_hash
         )
     )
     if (blog_.original_url or blog_.url_name) == blogs.get_by_language("en")[0].url_name:
@@ -473,6 +475,7 @@ discord_invite = None
 blogs = get_blog_posts()
 
 style_hash = sha256(open("assets/style.css", "rb").read()).hexdigest()[:8]
+blog_style_hash = sha256(open("assets/blog.css", "rb").read()).hexdigest()[:8]
 button_hash = sha256(open("assets/88x31/dam.gif", "rb").read()).hexdigest()
 pgp_key = open('pgp', 'rb').read()
 
