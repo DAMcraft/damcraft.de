@@ -301,6 +301,7 @@ def mastodon_profile_image():
         image_url = request.args.get("url")
         image_url = image_url.removeprefix("https://").removeprefix("http://")
         req = requests.get(f"https://{image_url}")
+        req.raise_for_status()
         resp = make_response(req.content)
         resp.headers["Content-Type"] = req.headers.get("Content-Type", "image/png")
     except requests.RequestException:

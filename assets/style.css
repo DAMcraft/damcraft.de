@@ -516,8 +516,8 @@ section {
     }
 }
 @media (max-width: 380px) {
-    .left-bar {
-        font-size: 10px;
+    .tz {
+        display: none;
     }
 }
 

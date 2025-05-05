@@ -101,7 +101,7 @@
         padding: 8px 16px;
         cursor: pointer;
     }
-    .login-overlay {
+    #login-overlay {
         padding: 20px;
         text-align: center;
     }
@@ -480,24 +480,24 @@
                 {% endif %}
             </span>
             <form class="logout-form" method="post" action="/logout">
-                <input type="hidden" name="redirect" value="{{ request.path + "#comments-section" }}">
+                <input type="hidden" name="redirect" value="{{ request.path + "#login-overlay" }}">
                 <button type="submit" class="comment-button">Logout</button>
             </form>
         </div>
     {% else %}
-        <div class="login-overlay">
+        <div id="login-overlay">
             You need to be logged in to comment.
             <div class="login-buttons">
-                <a href="/github/login?return={{ (request.path + "#comments-section") | urlencode }}" class="github-login">
+                <a href="/github/login?return={{ (request.path + "#login-overlay") | urlencode }}" class="github-login">
                     <img src="/assets/github.svg" alt="GitHub" height="16" width="16"> Login with GitHub
                 </a>
-                <a href="/discord/login?return={{ (request.path + "#comments-section") | urlencode }}" class="discord-login">
+                <a href="/discord/login?return={{ (request.path + "#login-overlay") | urlencode }}" class="discord-login">
                     <img src="/assets/discord.svg" alt="Discord" height="16" width="16"> Login with Discord
                 </a>
                 <label class="mastodon-login" for="mastodon-login">
                     <img src="/assets/mastodon.svg" alt="Mastodon" height="16" width="16"> Login with Mastodon
                 </label>
-                <a href="/reddit/login?return={{ (request.path + "#comments-section") | urlencode }}" class="reddit-login">
+                <a href="/reddit/login?return={{ (request.path + "#login-overlay") | urlencode }}" class="reddit-login">
                     <img src="/assets/reddit.svg" alt="Reddit" height="16" width="16"> Login with Reddit
                 </a>
             </div>
@@ -510,9 +510,10 @@
     <div class="login-popup">
         <label for="mastodon-login" class="close-login-btn">&times;</label>
         <p>Login with Mastodon</p>
-        <form method="post" action="/mastodon/login?return={{ (request.path + "#comments-section") | urlencode }}" class="login-form">
+        <form method="post" action="/mastodon/login?return={{ (request.path + "#login-overlay") | urlencode }}" class="login-form">
             <input class="instance-field" name="instance" type="text"
                    placeholder="Mastodon instance (e.g. mastodon.social)" required autocomplete="new-password"
+                   autocorrect="off" autocapitalize="none" spellcheck="false"
                    pattern="^(?!-)(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$"
                    title="Please enter a valid Mastodon instance (e.g. mastodon.social)">
             <button type="submit" class="comment-button">Login</button>

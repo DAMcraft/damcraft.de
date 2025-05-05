@@ -240,10 +240,24 @@
         }
         @media (max-width: 1100px) {
             .top-buttons {
-                display: none;
+                display: grid;
+                position: relative;
+                align-items: center;
+                justify-content: center;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                max-width: 760px;
+                margin: 10px auto 0;
+                padding: 0 20px;
+            }
+            .top-button {
+                border: 1px solid white;
+                align-items: center;
+                justify-content: center;
+            }
+            .content {
+                padding: 5px 20px;
             }
         }
-
 
         .language-switcher {
             display: flex;
