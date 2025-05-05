@@ -775,3 +775,6 @@ video {
 .non-bold {
     font-weight: normal;
 }
+.dark-light-img {
+    user-select: none;
+}
