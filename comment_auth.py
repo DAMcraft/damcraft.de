@@ -326,6 +326,7 @@ def get_reddit_access_token(code):
         headers={"User-Agent": "dam's blog"},
     )
     if data.status_code != 200:
+        print("Failed to get reddit access token:", data.status_code, data.text)
         return None
     return data.json().get("access_token")
 
@@ -334,7 +335,10 @@ def get_reddit_user_data(token):
     try:
         data = requests.get(
             "https://oauth.reddit.com/api/v1/me",
-            headers={"Authorization": "Bearer " + token}
+            headers={
+                "Authorization": "Bearer " + token,
+                "User-Agent": "dam's blog"
+            }
         )
         if data.status_code != 200:
             return None
