@@ -27,9 +27,6 @@ from helpers import get_discord_status, get_discord_invite, get_age, show_notifi
     format_iso_date, get_handlers, fishlogic, random_copyright_year
 from spotify import spotify_status_updater, event_reader, last_event
 
-for handler in get_handlers():
-    logging.getLogger().addHandler(handler)
-
 app = Flask(__name__, template_folder='pages')
 if os.getenv("FLASK_DEBUG") != "1":
     app.wsgi_app = ProxyFix(app.wsgi_app)
@@ -85,7 +82,7 @@ def blogs_page(language=None):
         return redirect("/blogs/", code=301)
     language = language or "en"
     if language not in blogs.languages:
-        return "Not found", 404
+        return "Language not found", 404
     return render_template(
         'blogs_list.html',
         blogs=blogs.get_by_language(language),
@@ -106,7 +103,7 @@ def blog_post(url_name=None):
         return redirect("/blogs/", code=301)
     blog_ = blogs.get_by_url_name(urllib.parse.unquote(url_name))
     if not blog_:
-        return "Not found", 404
+        return "Blog post not found", 404
 
     user_data = comment_auth.get_user_data_from_request(request)
 
@@ -156,7 +153,7 @@ def blog_post_short(blog_hash):
     post = blogs.get_by_hash(urllib.parse.unquote(blog_hash))
     if post:
         return redirect(f"/blog/{post.url_name}", code=301)
-    return "Not found", 404
+    return "Blog post not found", 404
 
 
 @app.route('/blog/rss')
@@ -290,7 +287,7 @@ def mastodon_callback(instance):
 @app.route('/mastodon/instance_not_found')
 def instance_not_found():
     return render_template("instance_not_found.html", instance=request.args.get("instance"),
-                           return_url=request.args.get("return"))
+                           return_url=request.args.get("return")), 404
 
 
 @app.route('/mastodon/profile_image')
@@ -331,7 +328,7 @@ def reddit_callback():
 def reddit_profile_image(user_id):
     try:
         req = requests.get(f"https://www.reddit.com/user/{user_id}/about.json", headers={
-            "User-Agent": "damcraft.de"
+            "User-Agent": "dam's blog"
         })
         if req.status_code == 200:
             data = req.json()
