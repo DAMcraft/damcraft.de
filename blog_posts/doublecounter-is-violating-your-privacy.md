@@ -32,6 +32,17 @@ the parent company, Tellter, is based in France[^privacy-policy], **all** users 
 Particularly unsettling are the "Doogle" and "Lens" features, which turn the private data it collects into
 publicly searchable information, effectively doxing tools.
 
+A quick overview on two of DoubleCounter's features:  
+
+* **Doogle**: A "search" engine. Put in a Discord user, get back a list of other Discord accounts that DoubleCounter thinks are
+  alts, often based on shared IPs or browser cookies from that verification click.
+  Free users get three lifetime searches; paying subscribers can use this tool as much as they want.
+  
+* **Lens**: A subscription service showing a user's history across different servers using DoubleCounter – things like
+  bans, kicks, or other moderation actions.  
+
+These tools have massive privacy issues, which we'll discuss in detail later.
+
 ### "All data is automatically processed, encrypted, and never viewed by humans. We do not sell or share your data".
 This is the promise made in the very first paragraph of their privacy policy[^privacy-policy], the policy under
 which tens of millions of users clicked "verify"[^40m-users]. It's what everyone immediately saw, *if* they even bothered to read the
@@ -42,7 +53,7 @@ It is not accurate based on their actual practices:
 * **Data *is* shared**: User data, specifically the links between your main account and any suspected alts (including
   Discord IDs and usernames), is routinely shared with server moderators via logs when an alt is detected trying to
   join. Critically, it's also shared (or rather, made publicly searchable) through the "Doogle"
-  and "Lens" features. Both of these tools will be explained in detail later.
+  and "Lens" features. The massive issue with these tools will be explained in detail later.
   There is a documented case of it having sent a direct message to a user revealing the identity (username and ID) 
   of a household member flagged as an alt simply because they shared an IP
   address. This exposed a private, sensitive account owned by that housemate to someone else in their home, which lead to
@@ -152,13 +163,6 @@ But here are a few issues with that:
 
 Let's be clear about Doogle and Lens. These aren't just background tools for mods. These are doxing tools, publishing
 your sensitive data to paying subscribers.
-
-* **Doogle**: A "search" engine. Put in a Discord user, get back a list of other Discord accounts that DoubleCounter thinks are
-  alts, often based on shared IPs or browser cookies from that verification click.
-  Free users get three lifetime searches; paying subscribers can use this tool as much as they want.
-  
-* **Lens**: A subscription service showing a user's history across different servers using DoubleCounter – things like
-  bans, kicks, or other moderation actions.
 
 The concerning part? DoubleCounter rolled out these features and used them with data collected before
 these tools existed, meaning that the private accounts of *everyone* prior to the tools' launch were made public.
