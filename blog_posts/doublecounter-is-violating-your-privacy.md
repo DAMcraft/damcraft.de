@@ -7,15 +7,17 @@ Hash: dcounter
 <div class="subtext">This is a satirical modification of the DoubleCounter logo. Original logo owned by Tellter SAS.</div>  
 
 ### TL;DR
-DoubleCounter sells access to your account-links and enables doxing, whilst claiming the exact opposite. Of course, without consent.
-If you verified with DoubleCounter, your data was collected under misleading terms and alt account data was made available 
-via tools like Doogle and Lens for potential public exposure **without** your proper consent.
-If this concerns you, please go to <a href="https://dcounter.damcraft.de/" target="_blank">https://dcounter.damcraft.de/</a>.
-We're collecting complaints from users to file a complaint with the French Data Protection Authority ("CNIL") against DoubleCounter.  
-If you are a server owner, please consider removing DoubleCounter from your server. Discord added many raid-protection features
-already, and automatically stops banned users from joining on alts if they detect it as one. Stopping very few users by
-exposing the private data of all other users is not a good trade-off. On top of this, DoubleCounter detects
-an incredibly high number of false positives, which users cannot even appeal against.
+DoubleCounter, a popular Discord bot claiming to protect against alt accounts, has been collecting and exposing user
+data in ways that violate privacy laws (specifically the GDPR). Despite promising not to share or sell data, it links accounts
+using IPs and browser data, then sells access to these links via tools like Doogle. These features are
+documented to have revealed private accounts without consent or notice.
+
+If you ever verified through DoubleCounter, your data may have been exposed or monetized without your informed consent.
+If you are a server owner, please consider removing DoubleCounter from your server: Discord now includes its own
+built-in alt detection and raid protection features. 
+Stopping very few users by exposing the private data of all other users is not a good trade-off.
+
+You can join a collective GDPR complaint here: [https://dcounter.damcraft.de/](https://dcounter.damcraft.de/)
 
 ### What is DoubleCounter?
 
@@ -134,8 +136,8 @@ But here are a few issues with that:
    trying to join a server it was banned from, and preventing it from joining. But DoubleCounter goes further. They created Doogle and Lens, tools that
    essentially publish these private links to potentially anyone.
    How does letting random users (or paying subscribers) look up who might own what alt account prevent fraud in a
-   specific server? It seems primarily to expose private information. Sharing or selling data collected like this is basically
-   impossible to justify under legitimate interest. Their *new* privacy policy even tries to claim sharing via Doogle is covered by
+   specific server? It seems primarily to expose private information. Based on established GDPR rulings, 
+   this would be basically impossible to justify. Their *new* privacy policy even tries to claim sharing via Doogle is covered by
    legitimate interest, which is just absolutely fundamentally flawed.
 
 2. **Exposing *very* personal accounts**: As mentioned before, in their support server, I stumbled across the private 18+ account of a 
@@ -151,7 +153,7 @@ But here are a few issues with that:
    showing the linked accounts DoubleCounter knew it had[^emails], the explanation given was that the bot
    performing the checks doesn't have direct access to that stored link data. If the bot doing the "fraud prevention" 
    doesn't even use or need the stored links you refuse to delete, then how can it be necessary
-   to keep them under legitimate interest? None of their claims make any sense.
+   to keep them under legitimate interest? These claims appear very inconsistent.
 
 4. **Not deleting data correctly**: GDPR gives you the right to say, "I object to you using my data for this 'legitimate
    interest' reason in my specific situation" (Article 21). The company then has to prove they have compelling
