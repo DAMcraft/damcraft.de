@@ -100,11 +100,11 @@ def timestamp_to_relative(timestamp: int):
     if delta < 60:
         return "just now"
     if delta < 60 * 60:
-        return f"{int(delta / 60)} minutes ago"
+        return f"{int(delta / 60)} minute{'s' if delta // 60 > 1 else ''} ago"
     if delta < 60 * 60 * 24:
-        return f"{int(delta / 60 / 60)} hours ago"
+        return f"{int(delta / 60 / 60)} hour{'s' if delta / 60 // 60 > 1 else ''} ago"
     if delta < 60 * 60 * 24 * 7:
-        return f"{int(delta / 60 / 60 / 24)} days ago"
+        return f"{int(delta / 60 / 60 / 24)} day{'s' if delta / 60 / 60 // 24 > 1 else ''} ago"
 
     return datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d")
 
