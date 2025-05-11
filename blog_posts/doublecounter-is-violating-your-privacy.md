@@ -28,8 +28,8 @@ through ads placed on that verification page and selling premium features[^premi
 
 This "anti-fraud" system systematically seems to operate in direct conflict with user privacy and
 the most fundamental rights guaranteed under the EU's General Data Protection Regulation ("GDPR"). Because
-the parent company, Tellter, is based in France[^privacy-policy], **all** users are protected by the GDPR (even if they are not EU citizens)[^gdpr-3-1].
-Particularly unsettling are the "Doogle" and "Lens" 
+the parent company, Tellter, is based in France[^privacy-policy], **all** users are protected by the GDPR (even if they are not EU citizens)[^gdpr-3-1].  
+
 A quick overview on two of DoubleCounter's features:  
 
 * **Doogle**: A "search" engine. Put in a Discord user, get back a list of other Discord accounts that DoubleCounter thinks are
