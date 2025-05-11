@@ -12,7 +12,6 @@ from flask import Flask, render_template, Response, send_from_directory, request
 from functools import lru_cache
 import time
 import dotenv
-import logging
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 import blog
@@ -24,8 +23,8 @@ import robots
 from blog import get_blog_posts
 from dino import dino_game
 from helpers import get_discord_status, get_discord_invite, get_age, show_notification, \
-    format_iso_date, get_handlers, fishlogic, random_copyright_year
-from spotify import spotify_status_updater, event_reader, last_event
+    format_iso_date, fishlogic, random_copyright_year
+from spotify import spotify_status_updater, event_reader
 
 app = Flask(__name__, template_folder='pages')
 if os.getenv("FLASK_DEBUG") != "1":

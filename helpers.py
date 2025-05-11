@@ -82,22 +82,6 @@ def show_notification(blogs, request):
     return blog
 
 
-def get_handlers() -> [logging.StreamHandler]:
-    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S")
-
-    # Create a handler for the console
-    console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.DEBUG)
-    console_handler.setFormatter(formatter)
-
-    # Create a handler for the file
-    file_handler = logging.FileHandler("app.log")
-    file_handler.setLevel(logging.DEBUG)
-    file_handler.setFormatter(formatter)
-
-    return console_handler, file_handler
-
-
 def css_escape(s):
     s = s.replace("\0", "\uFFFD")  # replacement character
 

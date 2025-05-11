@@ -338,6 +338,8 @@ p {
 
 .footnote p {
     text-align: start;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 .no-select {

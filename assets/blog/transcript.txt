@@ -1,0 +1,665 @@
+==============================================================
+Guild: Double Counter Community
+Channel: GDPR Requests / 46-lina_x86
+Topic: Ticket #46 - Type:  - Created by: <@1330523957430063181>
+==============================================================
+
+[20.04.2025 10:56] Overwatch#4680 (pinned)
+
+
+{Embed}
+GDPR Request
+This ticket has been opened on your behalf due to your request to remove your PII from the Double Counter database. 
+
+To begin, please copy and paste the following:
+```Delete my data```
+A new message will be presented to you. Please be sure to read all of the information and follow the instructions.
+© 2025 Tellter SAS. All rights reserved.
+
+
+[20.04.2025 10:56] Overwatch#4680
+Pinned a message.
+
+
+[20.04.2025 10:56] lina_x86
+i would not only like to delete my data, but also file an objection based on article 21 gdpr
+
+
+[20.04.2025 10:56] Sentinel#0834
+@lina
+
+{Embed}
+# :notice: __MUST READ__ :notice:
+In order to give you some time to ensure the information below is being read, the buttons below will be made available automatically after one minute of this notice being posted.
+## Please confirm your request
+What happens when your data is deleted:
+ - All personally identifiable information (PII) stored in our database, such as your IP address, will be removed.
+ - This deletion will result in the loss of your verified status in any servers where you were previously verified.
+ - Associated account details (e.g., Discord user IDs) are not considered PII under GDPR and will remain in the database.
+ - The actions of Lens and/or Doogle are not affected by this deletion, as the data they handle does not qualify as PII under GDPR.
+  - To opt-out of Lens/Doogle, use the `/privacy` slash command in this ticket and select the OPT-IN/OUT option.
+
+-# **Confirmation Deadline** - Under Article 19, if you do not confirm or rescind this request within 30 days from today (Tuesday, May 20 , 2025) your request will be considered forfeited due to noncompliance.
+
+
+[20.04.2025 10:57] lina_x86
+"Associated account details (e.g., Discord user IDs) are not considered PII under GDPR and will remain in the database" okay this is utter bs 😭 
+i "see" your argument of legimiate interest in the privacy policy though
+
+
+[20.04.2025 10:57] lina_x86
+please give me two hours, gonna be back soon.
+
+
+[20.04.2025 12:22] Sentinel#0834
+## @lina
+## Please confirm your GDPR Article 17 Request.
+If you don't confirm or rescind your request by using the buttons provided above, your request will be forfeited due to noncompliance on the aforementioned date.
+
+
+[20.04.2025 12:30] lina_x86
+hello, i want to declare that i will do this process over email to gdpr@doublecounter.gg for documentation purposes, as i genuinely think this is quite egregious what's happening here, especially this mention here
+
+i want to mention that the email address  `me@lina.sh` belongs to me, this informal declaration should be enough of a verification for the email address to be linked to me.
+
+
+[20.04.2025 12:31] lina_x86
+i would request this channel to be kept open so that i can document this correctly.
+
+
+[20.04.2025 12:38] papa.no
+This channel's sole purpose is to handle your in-discord GDPR request. I don't see why you'd want this open if you intend on doing this all via email. Every ticket generates a transcript after closing.
+
+
+[20.04.2025 13:04] lina_x86
+if this ticket gets closed, can i re-open it?
+
+
+[20.04.2025 13:06] papa.no
+This ticket will automatically close unless you make a decision above. If you decide on deleting your data, we can finish the process in about 24 hours. If you click "nevermind" the ticket will be closed sooner.
+
+
+[20.04.2025 13:09] lina_x86
+yeah again, this isn't just about my data. claiming that discord ids aren't pii is just plain wrong, i would like to argue that this is *potentially* done on purpose, as your privacy policy tries to argue that you can save it thanks to article 6 (1)(f), which shows that you do see it as pii. nevertheless, definitely an article 12 violation.
+but again, i will type a more formal message later. it's easter time and i am spending time with my family, and i completely understand if y'all don't have time for this either at the moment.
+
+
+[20.04.2025 13:10] Sentinel#0834
+@lina
+
+{Embed}
+## [GDPR Key Concepts](<https://www.gdpreu.org/the-regulation/key-concepts/legitimate-interest/>)
+While we don't consider IP addresses to be covered by GDPR Legitimate Interest (`Article 6(1)(f)`) and hence allow you to request its deletion, **we will not delete the list of alt accounts associated with your main account on deletion request**. 
+Indeed, that list is fully covered by GDPR's special clauses about __Legitimate Interests__ and does not allow for your direct identification. Otherwise, you could request its deletion whenever you're detected as an alternate account, which would defeat the entire purpose of Double Counter.
+
+For more information, as stated in the web page above:
+- GDPR says that examples of legitimate interests include (but are not restricted to):
+  - Use of client or employee data
+  - Fraud prevention
+  - Intra-group transfers
+  - IT security
+- These three questions can help determine legitimate interests for data collection and use:
+  - Purpose: why do you want the data? - For the main purpose of Double Counter, detecting alternate accounts.
+  - Necessity: is the data processing necessary for the primary purpose? Absolutely, per construction.
+  - Balancing: do the individual’s interests outweigh the legitimate interest? As it does not allow for direct identification and does not constitute sensitive personal data, it does not outweigh to the service's core purpose by definition.
+The data processing must be targeted and a balanced way of achieving the overall purpose. Legitimate interests can’t be relied on as the legal reason for data processing if there is another less intrusive way to achieve the same end. Which, in the case of Double Counter, doesn't exist, as the very existence of our system relies on that list of alternate accounts.
+Which entirely applies, specifically and only to the list of alts tied to your Discord account in the case of our service. We remind you that you can request the permanent deletion of all other PII.
+
+
+[20.04.2025 13:13] lina_x86
+yeah uhh i would love to mention that in this message you are very clearly  mentioning that discord user ids aren't pii
+
+
+[20.04.2025 13:14] papa.no
+the string of numbers aren't, no
+
+
+[20.04.2025 13:16] lina_x86
+just for the statement: you are aware that it can be resolved to a discord username, profile picture, their connections and otherwise, right? yes or no?
+i mean of course you know it's yes
+
+
+[20.04.2025 13:16] papa.no
+The numbers that define your user ID can only ever display information you willingly provide to the public through your discord profile. We only store the user ID and IP
+
+
+[20.04.2025 13:16] papa.no
+We don't store `discord username, profile picture, their connections and otherwise`
+
+
+[20.04.2025 13:16] papa.no
+For that you'd have to open a GDPR request to Discord directly, and not us.
+
+
+[20.04.2025 13:18] papa.no
+By you simply chatting in this server you're leaving your user ID attached to every message you send, which in turn includes all the information you're describing above. Double Counter storing the ID does not equate Double Counter storing this informtation
+
+
+[20.04.2025 13:22] lina_x86
+wait i'm sorry, i might be misunderstanding something, does chatting in this discord server expose what alt accounts i own?? i can't see any discord api endpoint anywhere that turns my discord id into an alt account list
+
+
+[20.04.2025 13:22] papa.no
+No
+
+
+[20.04.2025 13:23] lina_x86
+okay thank you
+
+
+[20.04.2025 13:24] lina_x86
+and to clarify, this is what you do save about me, right?
+an identifier (that is what id stands for!!!) that can associate this account username/connections/whatever pii with another account username/connections/whatever pii
+
+
+[20.04.2025 14:20] papa.no
+You were automodded for sending a link.
+
+
+[20.04.2025 14:21] lina_x86
+hi, thanks for letting me back in
+
+
+[20.04.2025 14:21] lina_x86
+oh and the chat history is gone, exactly my issue was lmao
+
+
+[20.04.2025 14:23] lina_x86
+i just sent y'all an email, here is a copy of it just so y'all can't claim you haven't received it:
+```
+Hi,
+
+I'm writing to notify you of a GDPR Article 12 violation in how you present and explain data protection rights to users.
+Your Discord bot displays the message:
+
+    "Associated account details (e.g., Discord user IDs) are not considered PII under GDPR and will remain in the database."
+
+That statement is utterly wrong. Discord user IDs are personal data under the GDPR. Even if you only store the numeric ID, it can be easily linked (via the public Discord API) to usernames, avatars, mutual servers, and often connected accounts like YouTube or Instagram. That makes the data identifiable, and thus clearly personal under the GDPR.
+
+Your privacy policy isn't much better. It says:
+
+    "Alt account associations (linked to your Discord ID) are not deleted, as they are retained under GDPR Article 6(1)(f) for fraud prevention. They are pseudonymized and do not directly identify you."
+
+This is misleading. According to EDPB Guidelines on pseudonymisation (01/2025 Paragraph 22), even data that doesn't directly identify someone but can be linked to them using information reasonably accessible to a third party still qualifies as personal data:
+
+
+    "Pseudonymised data, which could be attributed to a natural person by the use of additional information, is to be considered information on an identifiable natural person […] even if pseudonymised data and additional information are not in the hands of the same person. If pseudonymised data and additional information could be combined having regard to the means reasonably likely to be used by the controller or by another person, then the pseudonymised data is personal"
+```
+
+
+[20.04.2025 14:23] lina_x86
+```
+So yes, the Discord ID qualifies,  because linking it to a person is trivial for anyone with access to Discord's public API. The fact that your policy describes these associations as "not directly identifying" creates the false impression that this data falls outside the scope of the GDPR for PII, when it doesn't.
+
+That's a clear GDPR Article 12 issue: users are not being accurately informed about their data rights or what personal data you retain.
+
+I'm giving you until April 27th, 2025 to correct both the false claim made by your bot and the misleading statement in your privacy policy. If these aren't updated by then, I'll report this to the appropriate data protection authority.
+
+I consider you now to be officially aware of this fact, so there's no excuse to continue spreading misinformation.
+
+Sincerely,
+Lina
+```
+
+
+[20.04.2025 14:23] lina_x86
+thanks. all further conversations will be held over email by me, i just got banned/kicked from your server and lost the chat history
+
+
+[20.04.2025 14:24] papa.no
+All the chat logs are still available above, I suggest refreshing your client
+
+
+[20.04.2025 14:25] lina_x86
+oh yeah you are right, now it's back, at first it had a message that i couldn't access the history (when i sent this at least)
+
+
+[20.04.2025 14:25] papa.no
+Also, since you're threatening legal action
+
+
+[20.04.2025 14:25] lina_x86
+anyway, i like to have control over my data, which is my exact issue with double counter
+
+
+[20.04.2025 14:25] Sentinel#0834
+## @lina - Threatening Legal Action
+Since you have requested or threatened legal action against Tellter, our Staff and Support teams are prohibited from communicating with you any further. 
+Any and all communication will have to be directed to `gdpr@doublecounter.gg`. 
+
+These above restrictions cover your current account, as well as any accounts we deem an alt account of yours. You will not be able to chat in this server anymore. 
+-# Any attempts to DM the server staff or any other server members will result in an immediate ban.
+
+
+[20.04.2025 14:25] lina_x86
+that is crazy lmao, a 30 day timeout lmaoo
+
+
+[20.04.2025 14:26] lina_x86
+okay yeah the data protection officer will love this
+
+
+[20.04.2025 14:27] lina_x86
+also, i would like to mention the following:
+mentioning that i will contact the DPA is NOT a legal threat
+as a matter of fact, you need to mention this in your privacy policy that i have the right to do exactly this
+
+
+[22.04.2025 19:51] lina_x86
+> You noted that a mute was issued in our Discord server following a reference to contacting a supervisory authority. We sincerely apologize. You are correct that under GDPR, users have the right to lodge a complaint at any time, and no action should prevent or discourage the exercise of that right. We are reviewing this moderation action internally.
+we stay silly :P
+
+
+[23.04.2025 01:00] lina_x86
+so hey, i would appreciate to be unmuted then ^^
+
+
+[25.04.2025 12:27] lina_x86
+hey, i just realized that according to doogle, i no longer have any alt accounts ^^ 
+
+i.imgur.com/o3Hcn3D.png (i can't send images here even after voting sadly)
+
+could you just quickly confirm if this is the case, or if doogle is having issues?
+i suppose my Article 21 objection was successful otherwise
+thanks! 
+
+(please treat this as a transparency request under article 12 of the GDPR; if you insisist i will send another email to have this confirmed, just inform me in that case that i am meant to do that)
+
+
+[25.04.2025 12:45] meeseeks240
+Confirmed. There are no known associations in Doogle.
+
+{Attachments}
+https://cdn.discordapp.com/attachments/1363438091104157778/1365277454150795344/image.png?ex=681004f6&is=680eb376&hm=4168d0952144f4961b98123b9508ea0645807f136fae487dbfa2815708938797&
+
+
+[25.04.2025 16:27] lina_x86
+hi, i just checked out your new privacy policy (docs.doublecounter.gg/double-counter-en/legal), and i still have some issues with it
+
+
+[25.04.2025 16:27] lina_x86
+>All data is automatically processed, encrypted, and never viewed by humans
+this is not true. humans see a lot of personal data at many points.
+
+
+[25.04.2025 16:27] meeseeks240
+The stored data (inside the bot)
+
+
+[25.04.2025 16:28] meeseeks240
+Which is referenced as internally
+
+
+[25.04.2025 16:28] lina_x86
+
+
+
+[25.04.2025 16:28] lina_x86
+i am talking about messages like these
+
+
+[25.04.2025 16:28] lina_x86
+which humans can indeed see.
+
+
+[25.04.2025 16:29] lina_x86
+>We do not sell or share your data
+this is sounds rather misleading. you sell access to lens/doogle (if someone wants to do more than three searches a day)
+if someone pays money, they get access. sounds pretty much like "selling data".
+
+
+[25.04.2025 16:30] lina_x86
+under the "What Data We Collect" section you say "Not linked to PII such as usernames, IPs, or emails." in relation to lens
+we have made clear at this point that your user id *is* PII and should be treated just like a username
+if you link this data to a discord ID, then this is untrue.
+
+
+[25.04.2025 16:31] lina_x86
+and the "What Data We Collect" doesn't seem to mention the main PII that you collect: linking alternative accounts together.
+
+
+[25.04.2025 16:32] meeseeks240
+I will adjust and update the policy to include the following, so that we can be as transparent as possible:
+> When a user attempts to verify through a server using the Double Counter bot, the system may determine that the account is associated with one or more previously flagged or verified accounts. In these cases, a log message is sent to the server via the Discord API to inform moderators of the result. This message includes the Discord usernames and user IDs of both the user attempting to verify and the account(s) they are associated with. These identifiers are retrieved from our internal database, decrypted, and transmitted securely to the server where the verification attempt occurred. This data is shared only with the server using the bot at the time of the verification request and is not disclosed outside that context. It is intended solely for the legitimate purpose of assisting moderators and Administrators in enforcing server-specific verification rules and preventing abuse. This processing is based on our legitimate interest in supporting community moderation (Article 6(1)(f), GDPR), and the data is only shared to the extent necessary to fulfill that purpose.
+
+
+[25.04.2025 16:33] lina_x86
+that is not true. i have sent you an email showing how the personal account of someone in the same household got exposed because of doublecounter.
+
+
+[25.04.2025 16:33] lina_x86
+so it's not just being shared with the discord server
+
+
+[25.04.2025 16:33] lina_x86
+it's rather being shared with anyone that you suspect might have anything to do with this
+
+
+[25.04.2025 16:34] lina_x86
+also i would completel remove stuff like
+> none of these data points stored within the bot are visible to human personnel at any time
+from the "how we use your data section"
+
+
+[25.04.2025 16:34] lina_x86
+i am pretty sure that is not true
+
+
+[25.04.2025 16:34] meeseeks240
+From within the bot, we cannot see the data points.
+
+
+[25.04.2025 16:35] lina_x86
+> While we encrypt your ID internally to protect it during processing, we cannot restrict its visibility or accessibility on Discord’s platform, nor can we encrypt it in the context of Discord's services
+what exactly do you mean by this? through lens, doogle or joining your discord server you share this data.
+
+
+[25.04.2025 16:36] meeseeks240
+While we encrypt your Discord user ID internally to protect it during processing and storage, we cannot control its visibility on Discord itself. When your verification result is sent to a server (e.g., via log messages, Lens, or Doogle), your Discord ID and username may be visible to server moderators, as permitted by Discord’s API and community moderation practices. This visibility is necessary to fulfill the bot’s function and does not represent uncontrolled sharing.
+
+
+[25.04.2025 16:37] lina_x86
+that is rather misleading then
+i would have *never* guessed that
+
+you can't really state this if you can view the data at any point,  it actually doesn't really matter how specifically the discord bot stores it if you can view it at any other point
+
+
+[25.04.2025 16:38] lina_x86
+except it's not just visisible to server moderators?
+
+
+[25.04.2025 16:38] lina_x86
+like i mentioned, you shout this data out to anyone who you suspect to be connected
+this effectively exposes accounts to people in the same household
+
+
+[25.04.2025 16:39] lina_x86
+and you also claim:
+> We Do Not Share Your Data With Anyone
+
+
+[25.04.2025 16:40] lina_x86
+again, you share this data with so many people, especially to anyone who is paying (for doogle or lens)
+
+
+[25.04.2025 16:40] meeseeks240
+I will make the proper adjustments to make it publicly known that the user ID may be shared via the Discord API, however, IP addresses are not.
+
+
+[25.04.2025 16:41] lina_x86
+i personally think the 24 month data retention time is fair ^^
+
+
+[25.04.2025 16:43] lina_x86
+the user id is not only shared over the discord api hah
+it's shared *by you*
+
+according to the edpb guideline on pseudonymity, the user id has to be treated *like a username* or any other data that you can easily retrieve over the discord api
+so if you share the user id, you effectively share usernames, profile pictures, and much more. this has to be treated as such.
+and you are not just doing that, you are specifically linking them to other accounts that a person owns
+you are directly linking one username to another
+if one account is meant to be anonymous/not public, you expose this one as being owned by a person.
+
+
+[25.04.2025 16:45] lina_x86
+> We do not sell or share your data with third parties.
+falls under this just as much
+you share the data with many third parties
+anyone, who uses lens or doogle, and who isn't me or you, is a third party.
+and since you sell access to both, you are selling *and* sharing the data with third parties.
+
+
+[25.04.2025 16:46] lina_x86
+on top of this, whilst you *now* mention what rights a user has in privacy policy, this doesn't seem to be the case in your discord server really; you/your moderators rather seem to confuseusers about their rights
+
+
+[25.04.2025 16:50] lina_x86
+also, could we quickly clarify that the
+> Right to Rectification (Article 16)
+is literally about correcting wrong information stored about users, right?
+if you connect random people from their household to users, or random people from the same ISP because they use CGNAT and share the same IP adress, that is wrong information stored about users
+meaning they should be easily able to correct this information if they tell you that it's wrong.
+
+
+[25.04.2025 16:53] lina_x86
+you are quite aware that the legitimate interest is something *very* thin and fragile, you can't just do anything and associate any data because you want to (or for the "integrity" of your system)
+
+
+[25.04.2025 16:53] lina_x86
+so please let users correct false information that you store about them.
+
+
+[25.04.2025 16:57] Overwatch#4680
+@lina left the server, what do you want to do?
+
+
+[25.04.2025 17:15] meeseeks240
+Added back to your ticket. It looks like you triggered one of the automod filters
+
+
+[25.04.2025 17:15] lina_x86
+oops thanks for adding me back ^^
+
+
+[25.04.2025 17:15] lina_x86
+alright so you saw my text in the logs most likely
+
+
+[25.04.2025 17:15] meeseeks240
+Doesn't show
+
+
+[25.04.2025 17:15] lina_x86
+heh okay
+
+
+[25.04.2025 17:16] meeseeks240
+
+
+{Attachments}
+https://cdn.discordapp.com/attachments/1363438091104157778/1365345630888661143/image.png?ex=68104475&is=680ef2f5&hm=828e2e8f3eb51ead04c5d2ce772b97d0c914feb8d8284c2fb52bfc14039697a5&
+
+
+[25.04.2025 17:16] lina_x86
+no worries, all good ^^
+
+
+[25.04.2025 17:16] meeseeks240
+It was the markdown in the message
+
+
+[25.04.2025 17:16] lina_x86
+ah okay i forwarded a message of the bot
+
+
+[25.04.2025 17:17] lina_x86
+the GDPR is designed in a way that is meant to be easy to use for everyone
+you don't need to know article x, y and z as a user
+it is enough for a user to just state what they want, and what intentions they have
+they do not need to mention "as per article 16 of the gdpr" to correct data
+
+
+[25.04.2025 17:18] lina_x86
+so, if a user goes here, and mentions something, i have seen it rather often that you/your moderators try to play stuff down
+
+
+[25.04.2025 17:18] lina_x86
+or whatever you want to call that
+
+
+[25.04.2025 17:20] meeseeks240
+Which I have taken measures rather recently to correct this. It has been mandated by me that all members of staff read up on, and understand, the Privacy Policy and what it contains.
+
+
+[25.04.2025 17:20] meeseeks240
+15 minutes ago, to be exact
+
+
+[25.04.2025 17:21] lina_x86
+thanks! appreciate that!
+
+
+[25.04.2025 17:22] lina_x86
+specifically, i meant stuff like claiming that changing specific data can't be done or is impossible
+it is rather your obligation to do quite the opposite, you should inform users at that point that they can object to this data being stored or that they have a right to modify wrong data that you store
+
+
+[25.04.2025 18:17] lina_x86
+i feel like i should clarify a few things here:
+i *do* understand the need for alt detections
+but what i have sent you in the second to last email is something that could quite well happen to me as well
+my brother uses discord for example, and if he finds out that i have this account, i can almost assure you that i am getting kicked out of our home.
+not everyone uses alt accounts maliciously, some people have good reasons for privacy. which the GDPR is there to protect.
+do you think that 99% of users even click the privacy policy button when they join a server? do you think they are aware of lens/doogle? that anyone can just see this data? that they have to/can opt out? the answer is *no*.
+lens and doogle only work because most users are *not* aware of this. which is *not* how data protection or the GDPR works, the GDPR is meant to be transparent to users on how data is used. do you think doogle/lens would  still work if every time an alt is detected, the user gets the message "hey, we are making that this account belongs to you public, click *here* to opt out" (with a button that immediately removes them)?
+i would rather argue that users being not aware of this data collection is what allows this to work properly
+
+having alts, second identities, more privacy is NOT something soley used by people with ill intentions.
+people might have their own 18+ account or whatever, it's their own business and nothing that is meant to be public. i do not want my account to be linked to my real identity at all, i would be cooked if anyone irl knew of this account, could link it back to me. 
+in the end, none of this is meant to be public to anyone.
+
+
+[25.04.2025 18:19] lina_x86
+your legitimate interest *can* be argued for preventing fraud in discord servers 
+but it should not make information about users public for this to work (and as a fact, it doesn't need this)
+
+
+[25.04.2025 18:20] lina_x86
+double counter should effectively prevent harmful fraud whilst infringing on the privacy of "normal" users with no bad intentions as little as possible
+
+
+[25.04.2025 18:20] lina_x86
+which is just... not happening here.
+
+
+[25.04.2025 18:21] lina_x86
+my issue isn't that double counter blocks people from using alts
+it's rather that all actual complaints are (or at least were) immediately denied, on normal users, with no ill intentions
+that you make way too much private information public
+you do not need that data of almost all people that come in here with an issue to prevent fraud, you do not need to make any of their data public in any way.
+
+
+[25.04.2025 18:27] lina_x86
+could i also know a single reason for why the `/privacy` command only works in servers? if a server doesn't allow using commands in their channels, users need to join your support server or whatever.
+make the /privacy command work everywhere. the gdpr is meant to be easy, and there is literally *no need* for this extra hurdle.
+
+please update that.
+
+
+[25.04.2025 19:32] lina_x86
+can i please just get a confirmation on this little part? else i will send another email for protocol reasons.
+
+
+[25.04.2025 19:37] lina_x86
+
+
+
+[25.04.2025 19:37] lina_x86
+this is definitely a case where you have to inform a user that they can correct the data
+i genuinely don't get the reasoning behind making life difficult for random people
+
+
+[25.04.2025 19:38] lina_x86
+this isn't even about alts like i ranted here
+it's just absolutely useless this time.
+
+
+[26.04.2025 01:11] lina_x86
+
+
+
+[26.04.2025 01:11] lina_x86
+or this, you should have informed their user of their right to have their data corrected
+
+
+[26.04.2025 13:58] lina_x86
+i mean let's call it what it is:
+using the fact that 99.9% of users are not aware that they can opt out and that their data is being shared, and that /doogle and /lens only work because users aren't aware of this...
+...it's basically a glorified doxxing tool
+*no* data has to be shared with *anyone* for fraud prevention (your "legitimate interest")
+
+i guess doublecounter is a company that needs to make as much money as possible
+is the ad revenue from the website that everyone has to go through that low? 
+that you have to sell user data? abusing that users are unaware of how their data is being used? 
+is the operation of doogle and lens (glorified doxxing tools) required for running doublecounter?
+
+
+[26.04.2025 15:47] lina_x86
+i.imgur.com/cZRLQfG.png
+and what is this even
+i tried opening the settings for managing my cookies and it pops up something in the background that i can't access without accpting the cookies 😭
+
+
+[26.04.2025 15:48] lina_x86
+it's an incognito window without extensions
+
+
+[26.04.2025 15:49] lina_x86
+the entire cookie banner is absolutely horrendous
+
+
+[26.04.2025 15:49] lina_x86
+oh god
+
+
+[26.04.2025 18:41] lina_x86
+okay, i just sent it out over email to clearly put it on record.
+
+
+[26.04.2025 21:14] lina_x86
+i think your privacy policy updated again? not too sure anymore at this point
+
+
+[26.04.2025 21:16] lina_x86
+> Doogle Search System
+> [...]
+> All data provided through Doogle is derived from Double Counter’s existing verification and detection processes. We do not display sensitive data such as IP addresses, device fingerprints, or user messages—only public Discord user IDs and the associated match likelihood. The results are only accessible to Doogle subscribers and are intended for legitimate moderation purposes. This processing is based on our legitimate interest under GDPR Article 6(1)(f) in supporting moderation tools and fraud prevention.
+
+you *cannot* claim to collect data under legitimate interest if you just sell the data to everyone 😭 
+please correct this
+
+
+[26.04.2025 21:16] lina_x86
+sharing data is under basically no circumstance allowed when collecting it under legitimate interest
+
+
+[26.04.2025 21:17] lina_x86
+also your entire legitimate interest assesment is horrendous
+
+
+[26.04.2025 21:17] lina_x86
+"Only authorized staff can access the alt account database" 😭 not true
+
+
+[26.04.2025 21:18] lina_x86
+are we really just straight up lying now???
+
+
+[26.04.2025 21:18] lina_x86
+okay you wanna know what, this is genuinely enough
+
+
+[26.04.2025 21:26] lina_x86
+i am contacting the DPA **by the end of the month** if i am not promised that this will be fixed, **including notifying users better of /doogle and /lens**. i *will* make a very detailed report by asking users in a fair and unbiased way if they were aware on how their data is being publicly exposed.
+
+according to tellter.com, doublecounter makes 400.000$ in yearly profits and violated the privacy of over 40 million people (yes, your privacy policy was by far not enough all this time, you violated the rights of all 40 million individuals)
+
+
+[26.04.2025 21:26] lina_x86
+@Nathan @Meeseeks i am aware that neither of you like being pinged. but i really want to bring this to your attention.
+
+
+[28.04.2025 09:56] lina_x86
+when you opt out of lens/doogle, users are still being lied to by the way
+
+
+[28.04.2025 09:56] lina_x86
+> You have opted out of Double Counter Lens data collection. As a reminder, Lens does not collect PII, but we understand your choice! Moderators can no longer see your global record, and no further data will be collected.
+
+> You have opted out of Double Counter Doogle searches. As a reminder, Doogle does not display PII, but we understand your choice! You can no longer be searched on Doogle.
+
+
+==============================================================
+Exported 121 message(s)
+==============================================================

@@ -1,0 +1,465 @@
+### First email from us:
+Hi,
+
+I am reaching out to request clarification on some inconsistencies I've encountered with your system regarding my data.
+I've been testing your verification process and encountered the following issues:
+
+When I tried joining the same server with my alt account on the same network, I received a message saying that I already had an account on the server, which implies that the system is associating my alt account with my main account, despite the fact that I’m using different accounts.
+When attempting to join via a different IP (using a fresh Mullvad Browser session, which contains anti fingerprinting methods), I still received the message that I am an alt account trying to join the same server. This implies that your system is somehow tracking my accounts beyond just the IP address.
+
+However, when I try to access my data using the /privacy command on discord, I receive a message stating:
+"There is no data about your account stored in our database."
+
+Because of this, I would like to ask the following questions based on Article 15 of the GDPR:
+
+    How is your system identifying me as an alt account across different IPs and browsers if there is supposedly no data stored about either account?
+
+    If there is no data stored, why does your system still associate my accounts and prevent me from accessing the server?
+
+Please provide me with a detailed response, along with a full copy of the data of my main account (Discord ID: 1330523957430063181), including any records of my account associations, server joins, or other information your system might have (this does include anything associated with my Discord ID as I have clarified in my last email).
+
+Sincerely,
+Lina
+
+---
+
+### Second email from us (before they answered)
+Hi,
+
+I'm writing to notify you of a GDPR Article 12 violation in how you present and explain data protection rights to users.
+Your Discord bot displays the message:
+
+    "Associated account details (e.g., Discord user IDs) are not considered PII under GDPR and will remain in the database."
+
+That statement is utterly wrong. Discord user IDs are personal data under the GDPR. Even if you only store the numeric ID, it can be easily linked (via the public Discord API) to usernames, avatars, mutual servers, and often connected accounts like YouTube or Instagram. That makes the data identifiable, and thus clearly personal under the GDPR.
+
+Your privacy policy isn't much better. It says:
+
+    "Alt account associations (linked to your Discord ID) are not deleted, as they are retained under GDPR Article 6(1)(f) for fraud prevention. They are pseudonymized and do not directly identify you."
+
+This is misleading. According to EDPB Guidelines on pseudonymisation (01/2025 Paragraph 22), even data that doesn't directly identify someone but can be linked to them using information reasonably accessible to a third party still qualifies as personal data:
+
+    "Pseudonymised data, which could be attributed to a natural person by the use of additional information, is to be considered information on an identifiable natural person […] even if pseudonymised data and additional information are not in the hands of the same person. If pseudonymised data and additional information could be combined having regard to the means reasonably likely to be used by the controller or by another person, then the pseudonymised data is personal"
+
+So yes, the Discord ID qualifies,  because linking it to a person is trivial for anyone with access to Discord's public API. The fact that your policy describes these associations as "not directly identifying" creates the false impression that this data falls outside the scope of the GDPR for PII, when it doesn't.
+
+That's a clear GDPR Article 12 issue: users are not being accurately informed about their data rights or what personal data you retain.
+
+I'm giving you until April 27th, 2025 to correct both the false claim made by your bot and the misleading statement in your privacy policy. If these aren't updated by then, I'll report this to the appropriate data protection authority.
+
+I consider you now to be officially aware of this fact, so there's no excuse to continue spreading misinformation.
+
+Sincerely,
+Lina
+
+---
+
+# Answer from them for both emails:
+ Dear Lina,
+Thank you for your detailed messages and for raising your concerns regarding our data handling practices and GDPR compliance. We value transparency and take privacy matters seriously.
+
+1. Clarification Regarding Discord User IDs
+You're absolutely correct that Discord User IDs are considered personal data under the General Data Protection Regulation (GDPR), as they can be used—particularly via the Discord API—to identify users indirectly. We appreciate you referencing the EDPB’s guidance on pseudonymization, which aligns with our internal position.
+We have reviewed and updated our documentation and bot messaging to clearly state that:
+
+    “Discord User IDs are personal data under GDPR and are processed under Article 6(1)(f) for fraud detection. They are retained in a pseudonymized format and safeguarded through encryption, access control, and data minimization principles.”
+
+The outdated language you referenced no longer reflects our current privacy practices, and we’ve removed it from circulation.
+
+2. Article 15 – Access to Personal Data
+You requested access to personal data associated with Discord ID: 1330523957430063181. Based on our system records, the following data is or has been processed in association with your account:
+
+    Discord User ID: 1330523957430063181
+    Associated alternate account links: 1007915957236281404
+    IP address(es): Automatically processed by the bot and is not accessible by humans. As provided by the bot when utilizing the /privacy command, there is no stored IP address for this account
+    Browser fingerprint (derived, not stored): Used transiently in real-time verification for risk scoring but not retained
+
+
+3. Right to Erasure and Processing Objection
+You may request:
+
+    Deletion of your IP address 
+    Review of an objection to processing under Article 21 GDPR
+
+However, we do not remove alternate account associations retained under GDPR Article 6(1)(f) and Article 17(3)(b). These associations are:
+
+    Pseudonymized personal data
+    Not shared externally
+    Retained strictly to support our core function: preventing evasion of moderation systems and protecting Discord communities from abuse
+
+Deleting this data would undermine the integrity of our fraud prevention system and introduce an exploitation vector, which is why it is excluded from automated deletion.
+
+4. Next Steps and Support
+If you would like to:
+
+    Confirm deletion of any IP addresses associated with your account
+    Submit a formal objection to our legitimate interest basis
+    Ask additional questions or receive assistance with data controls
+
+Please reply to this email. All requests will be handled in line with GDPR timeframes and with full transparency.
+You also retain the right to lodge a complaint with your local Data Protection Authority if you believe your rights have not been respected.
+Regards,
+Meeseeks240
+Executive Administrator, Double Counter
+Chief of Staff, Tellter SAS
+
+---
+
+### Our follow up email:
+Hey,
+
+
+Thanks a lot, I really appreciate your detailed response!
+
+Just one quick question: your privacy policy mentions that users can request their data via the Discord bot, but it didn't seem to provide a full copy. Could you clarify why that is?
+
+
+Thanks in advance!
+
+
+Lina
+
+---
+
+### Another follow up email:
+Hey,
+
+
+I just noticed that your response seems to have been AI-generated (things like the em dashes, random bold text, writing out "General Data Protection Regulation (GDPR)" with a link as if it's the first time I'm hearing about it, and the large amountof bullet points). I don't really mind at all, I honestly really appreciate the fast response time (under two hours on Easter Sunday!) and the message itself really comes across as genuinely well-intentioned.
+
+I would just ask you to to please double-check that all the information provided is accurate. For example, the link to the EDPB's guidance on pseudonymization is a 404. AI hallucinates non-existent resources or legal decisions insanely often, so please just check that everything holds up.
+
+I want to clarify that I put real effort into my research, I dig into the actual laws and regulations and make sure they're cited properly. This isn't meant as criticism, just a small heads-up to double check if the laws and regulations mentioned are actually real. I really do appreciate the quick and well meant response.
+
+No idea if in this case the updated documentation just isn't live yet on the site yet, but I still see the old privacy policy. Your email mentioned that it's been updated, no clue if it takes time to update or if this is such a case of the AI getting ahead of itself haha.
+
+Again, I genuinely appreciate the reply and your time.
+
+
+Thanks,
+Lina
+
+---
+
+### Their answer:
+ Hi Lina,
+
+The Privacy Policy does in fact state that users can retrieve a copy of their data via the bot, directly through the slash command /privacy. As the only PII that is directly stored by the bot is the IP address, this would be the information that can be retrieved. In one of your last correspondence, it showed that there is not an IP address currently associated with your account.
+
+I hope this clears things up.
+
+Regards,
+Meeseeks240
+Executive Administrator, Double Counter
+Chief of Staff, Tellter SAS
+
+
+Another Reply from them:
+ Hello again,
+
+In my regular exchanges with individuals, I have a tendency to use utilize the em-dash, and even have a hotkey on my keyboard to do so. 
+
+Regarding the bad link provided in the mentioned email, I apologize for the link. It would appear as though I had missed the .pdf extension at the end. I have included the corrected link urls:
+
+    EDPB's guidance on pseudonymization
+
+
+We appreciate your candor and research regarding our policies and conditions. 
+Regards,
+Meeseeks240
+Executive Administrator, Double Counter
+Chief of Staff, Tellter SAS
+
+---
+
+### Our next email:
+
+Hey, 
+
+
+Thanks again for your reply!
+I'm still a bit confused though, your privacy policy says that users can request all of their data via the /privacy command and that it would be sent to an email address of our choice
+
+     "Use the /privacy command in any server using our bot and select Receive My Data. A copy of your data will be sent to an email address of your choice."
+
+I tried using the command and got told "There is no data about your account stored in our database". The bot claims there's no data (including alternate account associations and identifiers), even though you've sent me a copy of my data.
+On top of this, claiming that the discord bot doesn't story any other information seems false, as the discord bot knew that I already had an alt account in a server.
+Nevertheless the bot isn't actually returning all the data you store, which would be a violation of your own stated policy and GDPR Article 15.
+And if, as you claim, this data is not accessible to the bot, then I don't see how you can justify storing it under the legitimate interest of "fraud prevention", given that the bot apparently does't use or need it.
+
+    "Alt account associations (linked to your Discord ID) are not deleted, as they are retained under GDPR Article 6(1)(f) for fraud prevention. They are pseudonymized and do not directly identify you."
+
+According to your own argument, the discord bot does not seem to have access to/require this information. I do not see any reason to infringe on a personal users privacy in that case.
+
+So I'm not sure if the bot is broken or if it's just not actually sending all data like the policy says. Could you clarify what's going on there? And if this is a bug, please fix it to return any data stored on a user.
+
+Thanks in advance!
+Lina 
+
+---
+
+### Another email from us:
+Hey,
+
+
+I have just realized that in this message you mention that you have updated the bot to align with the following:
+
+    "Discord User IDs are personal data under GDPR and are processed under Article 6(1)(f) for fraud detection. They are retained in a pseudonymized format and safeguarded through encryption, access control, and data minimization principles."
+
+You specifically mention that they are now saved in a "pseudonymized" format, which Discord IDs aren't (as I have explained in my very first email, and which you agreed in this reply).  So you no longer store Discord user IDs, or anything that can be linked to a Discord user ID, right?(As Discord user IDs are PII like you just agreed with me)?
+
+You also said that you "updated our documentation and bot messaging to clearly state that", I cannot find this change anywhere yet. When can I expect this change to be pushed to production?
+
+Thanks again for valuation users privacy. May I ask in what way you are storing this data so that the Discord User IDs in the pseudonymized format cannot be turned back into real Discord user IDs?
+
+
+Sincerely,
+Lina
+
+---
+
+### Answer from them:
+ Thank you again for your follow-up. I appreciate your close review of our privacy practices and welcome the opportunity to clarify the areas you highlighted.
+
+The /privacy command is currently designed to return stored and structured records, such as IP addresses, to the requesting user to the email of their choice. This is in place so that only the physical owner of the account can retrieve the PII.
+
+You are correct that raw Discord user IDs are considered personal data under the GDPR. When we refer to storing data in a pseudonymized format, we mean that identifiers are processed into internal representations that do not directly expose the user’s Discord ID. Personal Data has always been psuedonmyized, albiet under slightly different vernacular. This is directly referenced in our Privacy Policy:
+
+    All personal data is automatically processed and encrypted using AES-128 CBC symmetric encryption.
+
+The previously mentioned corrections were in regard to the "Key Concepts" message you received in your ticket. The command that was used to send that specific embedded message has been corrected and updated to reflect the accurate message. While I am not exactly sure of the origins of the error (as I have stated before that it was entirely incorrect), the correction is in place. No other qualifying documentation were updated.
+
+Regards,
+Meeseeks240
+Executive Administrator, Double Counter
+Chief of Staff, Tellter SAS
+
+---
+### Another email from us:
+Hey,
+
+
+in the last 24 hours the following happened:
+
+- Mentioning in your Discord server that I will contact the local Data Protection Authority if my request won't be followed got me muted for 30 days from the main chat, despite you having to inform me that I have the right to do that at any point (which your privacy policy is missing)
+
+- I sent an E-Mail explaining in detail to you that Discord IDs are PII under the GDPR, and that both your bot and privacy policy claim the same thing.
+
+- I received an answer saying that you will no longer store Discord IDs, and that both the message in your bot, and the privacy policy, have been updated.
+
+- Neither the privacy policy nor the discord bot were updated at this point.
+
+- The privacy policy mentions to use the Discord bot to receive a full copy of your data. I did exactly that. The Discord bot claimed that there is no data on me.
+
+- Upon a request per email I am told that you actually have data on me (meaning your privacy policy lied).
+
+- When I asked why the bot didn't return this data, you claimed the bot doesn't have direct access to this data. Because of this, you cannot argue that you have a legimitate interest as per Article 6(1)(f) of the GDPR (nevetheless, your privacy policy lied).
+
+- You just claimed again that the message in the Discord bot has been already updated. This is a lie. A friend just tested it, and she got the same exact message.
+
+
+Your privacy policy has the following issues on top of this:
+
+- Claiming that Discord IDs aren't PII.
+
+- Claiming humans cannot view PII (they can, you can all see my Discord ID).
+
+- You claim you do not share user data with any third party, only to explain that you have an advertising software on your website that collects user data.
+
+- No actual retention periods ("IP addresses and user-agents are retained only as long as necessary for verification and fraud prevention, after which they are automatically deleted"), what is "as long as necessary"? Days? Months?
+
+- The term "pseudonymized" is misused multiple times. Discord IDs are NOT pseudonymized.
+
+- No mention of the right to lodge a complaint with a supervisory authority (Article 13).
+
+- No mention of the right to restrict data processing (Article 18).
+
+- No mention of the right to object to processing (Article 21, this especially applies if you claim legitimate interest, which you do).
+- No mention of the right to not be subject to automated decision making (Article 22).
+
+- You mention that a user can request their data over the Discord bot, without actually sending them their data (as explained earlier).
+
+
+This has to be, hands down, the most privacy infringing Discord bot I have ever seen.
+
+I would honestly contact the French Data Protection Authority (CNIL) and my local DPA right now if I wouldn't believe this can be solved peacefully. But I am assuring you that I will contact them if this cannot be solved that way.
+
+Please correct your privacy policy and message in your Discord bot until 28.04.2025.
+
+Please fix your Discord bot to actually return all data on users until 12.05.2025.
+
+
+On top of this, I would like a detailed explanation why I was told in my first email that DoubleCounter no longer stores Discord IDs.
+
+
+Furthermore, I would like to have all data linked to my in any way deleted from your systems (User ID: 1330523957430063181).
+This includes "Alt account associations (linked to your Discord ID)", where you claim a legitimate interest under Article 6 (1)(f).
+I would like to object to this under Article 21 (this means you have to evaluate this on a case by case basis, as per the EDPB Guidelines on legitimate interests, every user is different):
+- You claim that the data you store is pseudonymized - this is not the case. Discord IDs are PII. Linking two together based on your algorithms severly infringes on my personal rights. There is a minimal risk to server admins, retaining this data is a disproportionate measure. 
+
+- Linking two accounts does not meaningfully prevent fraud. A single alt poses minimal risk (you could literally just ask a friend to complete a task).
+
+- Please justify in this specific case, why this specific data is necessary for fraud prevention. I have no history of abuse, retaining alt links is just speculative and overly broad.
+
+
+I believe that my rights overweight your "legitimate interest" in this case by far. If you have any objections to this, please remember that they have to be specifically about this case, not a general statement about DoubleCounter.
+
+Otherwise, please delete all of my data.
+
+
+I expect a confirmation that you plan on updating the Discord bot and privacy policy to include all of this by 28.04.2025. Otherwise, I will forward this GDPR violation to the DPA.
+
+I expect to have the rest of my GDPR request solved by 21.05.2025 (30 days), and have all data about me deleted, unless you state compelling legitimate grounds for this specific case (as required under Article 21).
+
+
+I am clearly more familiar with the GDPR than your team has demonstrated to be. I strongly advise against sending another evasive response or one containing straight up lies. This will not look good if it ends up being forwarded to the DPA.
+
+I expect full compliance with the GDPR, or I will proceed with my complaint to the DPA.
+
+
+Sincerely,
+Lina
+
+---
+### Their answer:
+ Hello,
+Thank you for your detailed message. We acknowledge receipt of your request under the General Data Protection Regulation (GDPR) and are treating your correspondence as a formal invocation of your rights under Articles 15, 17, and 21. We take all such matters seriously and are committed to full compliance with GDPR and applicable supervisory authority guidance.
+You have objected to our processing of alternate account association data under Article 21 GDPR, specifically disputing the application of legitimate interest as a lawful basis under Article 6(1)(f). We acknowledge your request and confirm that we are initiating a case-by-case assessment of the specific circumstances associated with your Discord account. This will include an evaluation of the data retained, its risk impact, and its actual necessity for fraud prevention in your case. We will provide a reasoned decision on whether we will proceed with deletion or maintain processing based on compelling legitimate grounds no later than 20 May 2025, in accordance with GDPR timelines.
+Your request for deletion includes both directly stored identifiers (such as IP address) and internally associated alternate account metadata. If our assessment under Article 21 results in the conclusion that the processing of your data is no longer justified by legitimate interest, we will delete all data related to your account. If we determine compelling grounds to retain the data under GDPR Article 21(1), you will be informed of the justification in writing, with specific reference to your case. All other personal data not subject to retention requirements or overriding interests (such as IP addresse) will be deleted as part of your request. You will receive confirmation when that deletion is complete.
+We acknowledge the /privacy command’s output. The command currently returns only directly stored personal data (user ID and IP address). When a user uses the /privacy command, the bot checks against the database in relation to the ID of the user. If the bot is unable to locate the stored data (due to it not existing), the bot will return a message stating there is no data available. If data is found, the returned information is the ID of the user and the users stored IP address.
+
+We agree that Discord User IDs constitute personal data under GDPR, even when used without usernames. In previous materials, the term “pseudonymized” was used to describe internal data handling practices where identifiers were stored in hashed or tokenized form, in the same manner that IPs are stored, and not visible to third parties However, we recognize that this terminology may have led to confusion and we are revising all uses of this term in our documentation to ensure consistency with the GDPR’s formal definition in Article 4(5). To be clear: we store Discord User IDs and IPs in a format internally that enables identification for legitimate fraud prevention purposes. They are treated as personal data and are subject to all GDPR requirements.
+
+You have pointed out that one of the bots messages failed to update. Upon further investigation, it was discovered that of the two possible methods used by users to begin their Right to Erasure, only one method was properly updated. We can now confirm that both methods are correct and meet GDPR requirements. We will continue reviewing public-facing information to ensure that only correct and legitimate information is provided.
+
+You have identified several omissions in our current privacy policy, including:
+
+    No mention of the right to lodge a complaint with a supervisory authority (Article 13)
+    No mention of the right to restrict processing (Article 18)
+    No mention of the right to object to processing (Article 21)
+    No mention of the right not to be subject to automated decision-making (Article 22)
+    No defined retention periods
+
+We accept these points and confirm that our privacy policy will be updated no later than 28 April 2025 to include all required data subject rights, clear lawful basis disclosures, clarification of third-party data use (including cookies and tracking technologies), and defined retention periods where applicable.
+
+You noted that a mute was issued in our Discord server following a reference to contacting a supervisory authority. We sincerely apologize. You are correct that under GDPR, users have the right to lodge a complaint at any time, and no action should prevent or discourage the exercise of that right. We are reviewing this moderation action internally.
+
+We remain committed to resolving this matter without escalation and to meeting all GDPR obligations. If you have any further questions or concerns in the meantime, please do not hesitate to contact us.
+
+Regards,
+Meeseeks240
+Executive Administrator, Double Counter
+Chief of Staff, Tellter SAS
+
+---
+### Answer from us:
+Hi,
+
+Thanks! There's just one small point I'd like to follow up on:
+In your message, you noted that the /privacy command currently returns directly stored personal data, including user IDs and IP addresses. However, when I used the command, it returned that there was no data available, even though we've confirmed earlier that two user IDs were indeed linked.
+Would you mind double-checking whether there might be a programming issue in the check the bot performs? It seems like the command may not be detecting data that is actually present in some cases. I completely understand that bugs happen, I just wanted to flag this in case it hasn't yet been noticed internally.
+
+Thanks again for the clarification! I really appreciate the detailed answer.
+
+Best regards,
+
+Lina
+
+---
+### Another email by us:
+Hey,
+
+
+as another follow-up: Please inform your Discord staff of all of this as well, so that they don't continue spreading misinformation.
+
+
+Sincerely,
+Lina
+
+
+---
+### Another email by us:
+Hello,
+
+
+I'm writing because something quite disturbing happened that shows again how badly your system handles user data.
+
+A user tried to join a Discord server protected by your bot. They got banned because you thought they had an "alt account", because someone from the same household had already joined.
+That alone would already be a problem (as you do not offer data rectification as per Article 16 of the GDPR), but it gets way worse:
+Your bot sent a DM to the new user and exposed the username of the person in their household who had already joined the server. Without any consent, without any verification. Just because they were on the same IP.
+
+Because of that, the exposed user got (arguably) harassed, and their very private profile publicly exposed and shared by your bot.
+
+
+
+
+This is a massive violation of privacy. It's completely unacceptable that your system gives away user data like this to strangers.
+
+It's even worse that you keep these "account links" even after a user requests deletion of their data. You claim "legitimate interest" for this, but after seeing what happens in reality, it’s clear:
+Exposing information like this cannot be justified under Article 6(1)(f) GDPR anymore (unlike storing it for fraud prevention). It's impossible. Period.
+
+I already have a deletion request running (see our earlier conversation). I expect everything I mentioned there to be counted towards my Article 21 objection.
+Having my private accounts exposed to people in my household is genuinely violating my rights badly.
+
+If any of my data is exposed to other people after my data deletion request, I will immediately file a complaint with a data protection authority. Storing for fraud prevention is not the same as sharing.
+The way your system currently works is a disaster for user privacy and completely illegal.
+
+Please confirm that you will delete all of my data.
+
+
+Sincerely,
+Lina
+
+---
+### Another email from us:
+Hey,
+
+
+after just Doogling myself, I had the information returned that there was no alt account associated to me.
+
+
+
+Could you just quickly confirm if this is the case, or if doogle is having issues? 
+
+I suppose my Article 21 objection was successful?
+
+In case that my alt account associations were already removed, you can ignore the last paragraph of this my last email.
+In that case, please just confirm quickly in accordance with transparency regulations (Article 12 GDPR) if my data has been deleted.
+
+
+Thanks!
+Lina
+
+---
+
+### Another email from us:
+Hello,
+
+I'm writing over email again because you stopped responding to my messages on Discord.
+
+I want to put a few things clearly on record:
+It is your obligation under the GDPR to inform users that they can correct or delete data about them (Article 16 and Article 17 GDPR). Saying something like "this can't be changed" is not how any of it works. You must help users exercise their rights under the GDPR, not make it harder.
+Most users don't know that data like account links are publicly exposed over DoubleCounter (over Lens and Doogle), or that they can opt out of that. These tools rely on users not knowing how their data is being used. If a user would receive a message upon alt identification that says "Hello, we think that the account <account name> belongs to you, we are making this information public, click here to opt-out" these tools would definitely not work, as no one would want this data to be shared. They rely on the fact that 99% of users don't read the privacy policy. Your tools (like /doogle and /lens) allow users to search for private data about others. This data is made public without proper awareness. This is not "fraud prevention" (which you claim as your legitimate interest under Article 6 (1)(f)), it's effectively a glorified doxxing tool.
+Preventing fraud doesn't mean you can expose users private connections without their knowledge.
+Storing account links for fraud prevention is one thing. Sharing them with random Discord users is something completely different, and absolutely impossible to justify under Article 6(1)(f) GDPR. There is no "legitimate interest" that allows publishing private user data like that.
+
+Because of this, I ask you to do the following:
+When a user asks to delete all of their data, ensure (!) that no one else is able to see data that you keep under legitimate interest. Server admins in logs, doogle, lens (even if users don't opt out!), as well as users getting DMs with their suspected alts.
+Right now, there is a real possibiliy that other users find accounts of people in the same household because they share the same IP address (as stated in the email that I am replying to). So, after a user requests a deletion, please ensure that no one gets to see account links and that they are soley used for your legitimate interest ("fraud prevention"). Please inform users of this data being stored under your legitimate interest, and that they can object to it under Article 21.
+
+
+On top of this:
+
+- Users must be able to access their privacy settings on your website easily. The /privacy command only working inside servers is another useless barrier. Please make it work everywhere.
+
+- Users don't need to mention specific paragraphs of the GDPR to use their rights, that is not how the GDPR works. If users mention that data is wrong, or that they want to delete all data, inform them of their rights to have it corrected or to object to some data being kept. I have repeatedly seen your moderators do the exact opposite.
+
+- Your cookie banner is a complete mess. You can't open cookie settings properly without accepting cookies first, however this appears to be a programming error, please fix it.
+
+
+I would also like to point out that both Lens and Doogle are likely violating the GDPR, as they prey on the fact that people are not aware of their data being collected and shared.
+I will get in contact serveral server owners of big servers that use DoubleCounter and conduct surveys there to determine that though. I will get back to you.
+
+
+Sincerely,
+Lina
