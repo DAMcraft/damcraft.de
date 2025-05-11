@@ -452,7 +452,7 @@ def after_request(response):
         path = urllib.parse.quote(request.path)
         query = f"?{request.query_string.decode()}" if request.query_string else ""
         canonical = f'<{const.URL_BASE}{path}{query}>; rel="canonical"'
-        if response.headers.get("Link"):
+        if response.headers.get("Link") and canonical not in response.headers["Link"]:
             response.headers["Link"] += f", {canonical}"
         else:
             response.headers["Link"] = canonical
@@ -486,7 +486,6 @@ def stats_updater():
 
 
 robots.robot_friendly(app, blogs, extra_sitemaps=["blog/rss.xml", "blog/news_sitemap.xml"])
-
 
 # Check if Flask is in debug mode
 if os.environ.get("FLASK_DEBUG") != "1":
