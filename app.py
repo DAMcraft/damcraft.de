@@ -444,7 +444,6 @@ def before_request():
         return redirect("https://damcraft.de" + request.path, code=301)
 
 
-# Add the Onion-Location header to the response
 @app.after_request
 def after_request(response):
     response.headers["Onion-Location"] = "http://" + const.TOR_HOSTNAME + request.path  # noqa
