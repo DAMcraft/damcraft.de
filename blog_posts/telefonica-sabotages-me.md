@@ -1,4 +1,4 @@
-Title: A German ISP tampered with their DNS — specifically to sabotage my website
+Title: A German ISP tampered with their DNS - specifically to sabotage my website
 Summary: One of Germany's biggest ISPs changed how their DNS works, right after I exposed an organization that they’re part of.
 Date: 2025-02-26
 Image: /assets/blog/sabotage.png 

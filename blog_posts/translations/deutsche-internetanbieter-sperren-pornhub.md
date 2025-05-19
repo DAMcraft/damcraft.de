@@ -14,7 +14,7 @@ einer Untergruppe der Landesmedienanstalten, dazu gezwungen, xHamster zu blockie
 Gegen November herum wurde dann auch die Sperrung von Pornhub angeordnet, wegen "unzureichendem Jugendschutz".  
 Aber im Gegensatz zu xHamster hat das bei Pornhub irgendwie kaum jemand mitbekommen. 
 Es gab fast *null* Berichterstattung über die Sperrung. 
-(Zumindest finde ich nichts dazu – deshalb ist es auch so schwer, ein genaues Datum zu nennen. Netzpolitik hatte mal einen Artikel über die *mögliche* Sperrung[^2]).  
+(Zumindest finde ich nichts dazu - deshalb ist es auch so schwer, ein genaues Datum zu nennen. Netzpolitik hatte mal einen Artikel über die *mögliche* Sperrung[^2]).  
 Warum es fast keine Berichte gab? Die Sperre hielt vermutlich nicht mal einen Tag.  
 Kurz danach hat pornhub.com deutsche Nutzer nicht mehr auf de.pornhub**.com** umgeleitet, sondern auf de.pornhub**.org**, welche nicht blockiert war. 
 Und das blieb so... bis jetzt.  
@@ -25,18 +25,18 @@ Und wieder: **keiner redet darüber.**
 ## Geht das jetzt ewig so weiter?
 
 Werden die Behörden jetzt einfach Domain für Domain jagen? 
-Immer mehr blockieren? Es gibt kaum Transparenz, keine "öffentliche Liste" der gesperrten Domains – 
+Immer mehr blockieren? Es gibt kaum Transparenz, keine "öffentliche Liste" der gesperrten Domains - 
 und Journalisten können nicht mal nachsehen, was auf einer Seite steht, weil sie immerhin ja **gesperrt** ist.  
 
 Ich habe von jemandem tatsächlich folgendes Argument gehört:
 *"Journalisten können ja einfach einen VPN oder anderen DNS benutzen, die Sperren sind ja einfach zu umgehen."*
 
-Aber wenn das die Lösung ist – **sollte das dann nicht für alle gelten?** 
+Aber wenn das die Lösung ist - **sollte das dann nicht für alle gelten?** 
 Nur um nachzusehen, warum der Staat gerade etwas blockiert? 
 Und wenn **alle** es umgehen... was bringt die Sperre dann überhaupt?  
 
 Am Ende geht es bei diesen Sperren nicht um Jugendschutz. 
-Jedes Kind kann einfach "porn" bei Google eintippen — die komplette Domain einzugeben ist da schon die größere Hürde.  
+Jedes Kind kann einfach "porn" bei Google eintippen - die komplette Domain einzugeben ist da schon die größere Hürde.  
 Letztlich trifft es die "normalen" Leute, und öffnet damit die Tür und Tor für immer mehr Zensur.
 
 *Ich entschuldige mich für mögliche Fehler, das hier war ein schnell getippter Post über eine neue Entwicklung.*

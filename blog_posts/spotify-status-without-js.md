@@ -7,7 +7,7 @@ Hash: spotify
 ## The challenge
 
 Typically, when you want real-time updates (like displaying the song you're listening to on Spotify), 
-you'd use JavaScript. It makes sense — JavaScript is the go-to for dynamic content. 
+you'd use JavaScript. It makes sense - JavaScript is the go-to for dynamic content. 
 But well, my website *was* written fully without JavaScript, and I didn't want to just "throw that away" for adding a Spotify status.
 I wanted to **avoid JavaScript** completely and still keep the status updated **automatically and dynamically**.
 
@@ -21,7 +21,7 @@ I can now send `<style>` tags every time the status changes, these tags contain 
 
 ## No JavaScript, just HTML and CSS in the frontend
 Instead of changing the actual HTML structure or DOM (which is what JavaScript would normally do), I simply update the CSS. 
-Yep, all the dynamic changes — like song title, progress, album art — are handled by changing the styles.
+Yep, all the dynamic changes - like song title, progress, album art - are handled by changing the styles.
 
 Here's how I do it:
 <ul>

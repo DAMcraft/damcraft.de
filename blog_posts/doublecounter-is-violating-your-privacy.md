@@ -1,5 +1,5 @@
 Title: DoubleCounter is a glorified doxing tool.
-Summary: How DoubleCounter brutally violates the privacy rights of over 40 million users — while making nearly half a million USD in revenue (2022).
+Summary: How DoubleCounter brutally violates the privacy rights of over 40 million users - while making nearly half a million USD in revenue (2022).
 Date: 2025-05-11
 Image: /assets/blog/doxing-users.png
 Hash: dcounter
@@ -38,7 +38,7 @@ A quick overview on two of DoubleCounter's features:
   alts, often based on shared IPs or browser cookies from that verification click.
   Free users get three lifetime searches; paying subscribers can use this tool as much as they want.
   
-* **Lens**: A subscription service showing a user's history across different servers using DoubleCounter – things like
+* **Lens**: A subscription service showing a user's history across different servers using DoubleCounter - things like
   bans, kicks, or other moderation actions.  
 
 These tools have massive privacy issues, which we'll discuss in detail later.
@@ -90,9 +90,9 @@ even if you're not an expert.
 #### Discord IDs are personal data. Linking two together is linking stuff to *you*.
 
 For years, DoubleCounter claimed (in bot messages[^bot-not-pii], its privacy policy[^privacy-policy], and direct user
-communications) that Discord User IDs – a string of numbers that uniquely identifies Discord accounts – are not "Personally Identifiable
+communications) that Discord User IDs - a string of numbers that uniquely identifies Discord accounts - are not "Personally Identifiable
 Information (PII)" under the GDPR. They incorrectly used this U.S.-centric term ("PII") to justify refusing deletion
-requests for linked account data, sharing this data around publicly, and whatnot – which is not how it works under the GDPR[^gdpr-4-1].
+requests for linked account data, sharing this data around publicly, and whatnot - which is not how it works under the GDPR[^gdpr-4-1].
 
 This argument fails because GDPR does not rely on the narrow concept of "PII". Under GDPR, any information that
 relates to an identifiable person qualifies as personal data[^gdpr-4-1].
@@ -102,7 +102,7 @@ A Discord User ID is personal data because:
 - It directly identifies a specific account on Discord.
 - Using Discord’s API[^discord-api-id] or public tools like [discord.id](https://discord.id), anyone can instantly
   retrieve the username, profile picture, and public connections tied to that ID.
-- GDPR explicitly covers pseudonymised data (e.g., IDs) if it can be linked to a person using additional information –
+- GDPR explicitly covers pseudonymised data (e.g., IDs) if it can be linked to a person using additional information -
   even if that information is held by third parties[^edpb-pseudonyms].
 
 DoubleCounter's flawed reasoning hinges on claiming that linking accounts (e.g., associating two Discord IDs) does not
@@ -114,7 +114,7 @@ tie data to *you*. This is absurd:
 - The links themselves are non-public personal data, as they reveal associations only DoubleCounter has created and
   stored.
 
-By linking IDs, DoubleCounter processes personal data – full stop. GDPR compliance requires lawful justification (for example
+By linking IDs, DoubleCounter processes personal data - full stop. GDPR compliance requires lawful justification (for example
 consent or legitimate interest, we'll come to that in a second!) for this practice.
 
 ![](/assets/blog/attached-id.png)
@@ -145,7 +145,7 @@ But here are a few issues with that:
    it was the bot oversharing data based on a shared IP. 
    How can *any* balancing test conclude that the "interest" in potentially stopping one person from joining a server outweighs the actual harm and
    privacy violation of outing someone's private account to their family?!?
-   Many people use alts for perfectly valid privacy reasons — separating stuff from personal life or 
+   Many people use alts for perfectly valid privacy reasons - separating stuff from personal life or 
    keeping sensitive interests separate from their main identity. Which is totally fine.
    DoubleCounter infringes on this need for privacy.
 
@@ -300,7 +300,7 @@ This can lead to:
 
 * Allowing harassment by revealing connections someone deliberately kept separate.
 
-They use information obtained outside Discord to do this verification — this isn't "public Discord information" 
+They use information obtained outside Discord to do this verification - this isn't "public Discord information" 
 if they get the data from outside sources. (As a matter of fact, Discord even actively tries to prevent IP leaks and fingerprinting by proxying 
 literally everything through their own servers, even wiping metadata on images).
 The link between those IDs is the sensitive, non-public information they are exposing and selling access to. 

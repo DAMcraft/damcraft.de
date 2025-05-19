@@ -1,5 +1,5 @@
 Title: Exposing the CUII
-Summary: A private organization controlling what websites to block in Germany—without courts, without transparency.
+Summary: A private organization controlling what websites to block in Germany-without courts, without transparency.
 Date: 2024-12-18
 Image: /assets/blog/cuii.png
 Hash: cuii
@@ -74,7 +74,7 @@ Despite this, it remained blocked until I raised the issue with the CUII.
 While they never responded, the domain was quietly unblocked soon after.  
 
 This was not an isolated case. 
-Upon reviewing the blocked domains, I found that 41 out of 122 were wrongfully blocked—over one-third!  
+Upon reviewing the blocked domains, I found that 41 out of 122 were wrongfully blocked-over one-third!  
 News outlets like Netzpolitik.org reported on this[^11], forcing the CUII to lift many wrongful blocks[^12].
 
 ---
