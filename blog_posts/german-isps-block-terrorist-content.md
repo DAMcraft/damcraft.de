@@ -1,5 +1,5 @@
 Title: First major internet block in Germany for terrorist propaganda  
-Summary: German ISPs now block websites for spreading unconstitutional content, a change in internet censorship here.  
+Summary: German ISPs now block websites for spreading "unconstitutional content"  
 Date: 2024-12-20  
 Image: /assets/blog/terrorist-block.jpg  
 Hash: almanar  
