@@ -8,6 +8,7 @@ from datetime import datetime
 from multiprocessing import Lock
 
 import markdown
+import bs4
 
 import helpers
 from comment_auth import get_user_data_from_request
@@ -65,7 +66,25 @@ class BlogPost:
         return self.languages
 
     def _render_markdown(self):
-        return markdown.markdown(self._content_md, extensions=['fenced_code', 'codehilite', 'extra'])
+        content_html = markdown.markdown(self._content_md, extensions=['fenced_code', 'codehilite', 'extra'])
+        soup = bs4.BeautifulSoup(content_html, 'html.parser')
+
+        for img in soup.find_all('img'):
+            # skip images that have the 'no-open' class
+            if 'no-open' in img.get('class', []):
+                continue
+                
+            src = img.get('src')
+            if src is None:
+                continue
+
+            a_wrapper = soup.new_tag('a',
+                                     href=src,
+                                     target='_blank',
+                                     style='cursor: zoom-in;')
+            img.wrap(a_wrapper)
+
+        return str(soup)
 
     def _get_comments_directory(self):
         return os.path.join(blog_directory, 'comments', self.url_name)

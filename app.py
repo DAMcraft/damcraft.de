@@ -367,7 +367,7 @@ def pgp():
 
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory(".", "favicon.ico")
+    return send_from_directory("assets", "favicon.ico")
 
 
 @app.route('/assets/<path:filename>')

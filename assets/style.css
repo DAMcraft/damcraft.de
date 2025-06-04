@@ -201,6 +201,8 @@ a:hover {
     float: left;
     height: auto;
     width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
     max-width: 200px;
     margin-right: 1rem;
     margin-top: 0.5rem;
@@ -215,11 +217,7 @@ a:hover {
 }
 
 .about-image-topbar {
-    /* float above the image */
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 2px 2px 0;
+    padding: 4px 8px 0;
     width: 100%;
     display: flex;
     justify-content: space-between;
