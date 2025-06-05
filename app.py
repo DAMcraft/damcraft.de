@@ -42,7 +42,7 @@ def index():
 
     last_blog = show_notification(blogs, request)
 
-    theme = "pink" if random.randint(1, 20) == 1 else "blue"
+    # theme = "pink" if random.randint(1, 20) == 1 else "blue"
 
     tz_string = "Europe/Berlin"
     tz = pytz.timezone(tz_string)
@@ -53,7 +53,7 @@ def index():
         discord_status=discord_status,
         discord_invite=discord_invite,
         age=get_age(),
-        theme=theme,
+        # theme=theme,
         blog=last_blog,
         is_tor=request.headers.get("Host", "").endswith(".onion"),
         const=const,

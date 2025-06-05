@@ -11,24 +11,16 @@
     <meta content="DAMcraft.de" property="og:title" />
     <meta content="Hey! Welcome to my website!" property="og:description" />
     <meta content="https://damcraft.de/" property="og:url" />
-    <meta content="https://damcraft.de/assets/dam.png" property="og:image" />
-    <meta content="#00BEFF" data-react-helmet="true" name="theme-color" />
+    <meta content="https://damcraft.de/assets/lina_noshade_transparent.png" property="og:image" />
+    <meta content="#FF93B7" data-react-helmet="true" name="theme-color" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="alternate" type="application/rss+xml" title="RSS feed" href="/blog/rss.xml">
     <link rel="stylesheet" href="/assets/style.css?hash={{ style_hash }}">
     <style>
         :root {
-            {% if theme == "pink" %}
-                --links: #ff1f64;
-                --links-hover: #ff4e87;
-                --selection: #ff1f64;
-                --highlight: #e5195a;
-            {% elif theme == "blue" %}
-                --links: #00BEFF;
-                --links-hover: #00d4ff;
-                --selection: #00BEFF;
-                --highlight: #00a6d4;
-            {% endif %}
+              --links: #FFA8C0;
+              --links-hover: #fd8ab0;
+              --highlight: #FF93B7;
         }
 
         .seconds::before, .hours::before, .minutes::before {
@@ -147,7 +139,7 @@ You can find my PGP key just below this section.<br>
                     <tr>
                         <td><img src="/assets/mail.svg" alt="Email logo" width="19" height="19"></td>
                         <td>
-                            <iframe src="/email.svg?theme={{ theme }}" style="border:none; width: 100%; height: 1em;vertical-align: middle;"></iframe>
+                            <iframe src="/email.svg" style="border:none; width: 100%; height: 1em;vertical-align: middle;"></iframe>
                         </td>
                     </tr>
                     <tr>
@@ -197,11 +189,7 @@ You can find my PGP key just below this section.<br>
     </div>
     <section id="badges">
 <!--        Frens and cool 88x31's go here-->
-        {% if theme == "blue" %}
-            <a href="/"><img src="/assets/88x31/dam.gif" alt="My badge"></a>
-        {% else %}
-            <a href="/"><img src="/assets/88x31/dam-pink.gif" alt="My badge"></a>
-        {% endif %}
+        <a href="/"><img src="/assets/88x31/dam.gif" alt="My badge"></a>
         {% if is_tor %}
             <a href="https://www.torproject.org/"><img src="/assets/88x31/tor.png" alt="Tor"></a>
         {% else %}
