@@ -395,7 +395,11 @@ def makeafish():
 @app.route('/.well-known/<path:filename>')
 @cors.allow_origin("*")
 def security_txt(filename):
-    return send_from_directory("well-known", filename)
+    request_host = request.headers.get("Host", "").lower()
+    # check if there is well-known/{host}/{filename}, else return the default well-known/default/{filename}
+    if os.path.exists(os.path.join("well-known", request_host, filename)):
+        return send_from_directory(os.path.join("well-known", request_host), filename)
+    return send_from_directory(os.path.join("well-known", "default"), filename)
 
 
 @app.route('/.well-known/button.json')
