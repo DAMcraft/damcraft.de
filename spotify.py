@@ -68,23 +68,26 @@ def build_lyrics_css(lyrics: Lyrics | None, progress: float, duration: float, is
 
 
 def generate_spotify_totp():
-    # thank you https://github.com/KRTirtho/spotube/commit/59f298a935c87077a6abd50656f8a4ead44bd979 <3
-    req = requests.get("https://open.spotify.com/server-time")
-    time_interval = req.json()["serverTime"] // 30
+    try:
+        # thank you https://github.com/KRTirtho/spotube/commit/59f298a935c87077a6abd50656f8a4ead44bd979 <3
+        req = requests.get("https://open.spotify.com/server-time")
+        time_interval = req.json()["serverTime"] // 30
 
-    hmac_hash = hmac.new(
-        key=b'5507145853487499592248630329347',
-        msg=time_interval.to_bytes(8, "big"),
-        digestmod=hashlib.sha1
-    ).digest()
+        hmac_hash = hmac.new(
+            key=b'5507145853487499592248630329347',
+            msg=time_interval.to_bytes(8, "big"),
+            digestmod=hashlib.sha1
+        ).digest()
 
-    offset = hmac_hash[-1] & 0xF
-    code = ((hmac_hash[offset] & 0x7F) << 24 |
-            (hmac_hash[offset + 1] & 0xFF) << 16 |
-            (hmac_hash[offset + 2] & 0xFF) << 8 |
-            (hmac_hash[offset + 3] & 0xFF))
+        offset = hmac_hash[-1] & 0xF
+        code = ((hmac_hash[offset] & 0x7F) << 24 |
+                (hmac_hash[offset + 1] & 0xFF) << 16 |
+                (hmac_hash[offset + 2] & 0xFF) << 8 |
+                (hmac_hash[offset + 3] & 0xFF))
 
-    return str(code % 10 ** 6).zfill(6)
+        return str(code % 10 ** 6).zfill(6)
+    except (requests.exceptions.RequestException, ValueError):
+        return "000000"
 
 
 def get_access_token(current_token):
