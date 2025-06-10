@@ -70,8 +70,9 @@ def build_lyrics_css(lyrics: Lyrics | None, progress: float, duration: float, is
 def generate_spotify_totp():
     try:
         # thank you https://github.com/KRTirtho/spotube/commit/59f298a935c87077a6abd50656f8a4ead44bd979 <3
-        req = requests.get("https://open.spotify.com/server-time")
-        time_interval = req.json()["serverTime"] // 30
+        # req = requests.get("https://open.spotify.com/server-time")
+        # time_interval = req.json()["serverTime"] // 30
+        time_interval = int(time.time() // 30)
 
         hmac_hash = hmac.new(
             key=b'5507145853487499592248630329347',
@@ -117,17 +118,22 @@ def get_access_token(current_token):
 
 
 def get_account_bearer() -> (str, int) or None:
+    otp = generate_spotify_totp()
     req = requests.get(
-        "https://open.spotify.com/get_access_token",
+        "https://open.spotify.com/api/token",
         cookies={
             "sp_dc": const.SPOTIFY_ACCOUNT_DC
         },
         params={
             "reason": "init",
             "productType": "web-player",
+            "totp": otp,
+            "totpServer": otp,
             "totpVer": 5,
-            "ts": int(time.time()) * 1000,
-            "totp": generate_spotify_totp()
+            "sTime": int(time.time() - 1000),
+            "cTime": int(time.time() * 1000),
+            "buildVer": "web-player_2025-06-10_1749555566666_4039f38",
+            "buildDate": "2025-06-10"
         }
     )
     if req.status_code == 200:
