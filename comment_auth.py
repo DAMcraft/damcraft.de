@@ -192,7 +192,7 @@ def get_mastodon_oauth_url(instance, return_url):
             req = requests.post(
                 f"https://{instance}/api/v1/apps",
                 data={
-                    "client_name": "dam's blog",
+                    "client_name": "lina's blog",
                     "redirect_uris": const.URL_BASE + "/mastodon/callback/" + instance,
                     # "redirect_uris": "https://localpc.damcraft.de/mastodon/callback/" + instance,
                     "scopes": scope
@@ -323,7 +323,7 @@ def get_reddit_access_token(code):
             # "redirect_uri": "https://localpc.damcraft.de/reddit/callback"
         },
         auth=(const.REDDIT_CLIENT_ID, const.REDDIT_CLIENT_SECRET),
-        headers={"User-Agent": "dam's blog"},
+        headers={"User-Agent": "lina's blog"},
     )
     if data.status_code != 200:
         print("Failed to get reddit access token:", data.status_code, data.text)
@@ -337,7 +337,7 @@ def get_reddit_user_data(token):
             "https://oauth.reddit.com/api/v1/me",
             headers={
                 "Authorization": "Bearer " + token,
-                "User-Agent": "dam's blog"
+                "User-Agent": "lina's blog"
             }
         )
         if data.status_code != 200:

@@ -1,13 +1,7 @@
-# damcraft.de
+# lina.sh
 
 My webbed site. Everything works without any JavaScript.  
-Check it out here: https://damcraft.de/. 
-
-### hopefully cool stuff
-- Silly dino game, try `curl damcraft.de`
-- Silly 88x31 that leaks your IP
-- Discord status that updates with two iframes and a <meta> tag (No JS!)
-- Some random stuff I added because I was bored
+Check it out here: https://lina.sh/. 
 
 
 ![img.png](/assets/atrocity.png)

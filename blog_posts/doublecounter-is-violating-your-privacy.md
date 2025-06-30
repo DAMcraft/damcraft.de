@@ -368,12 +368,12 @@ We are preparing a report for the Data Protection Authority regarding DoubleCoun
 have been infringed in any way, please use this form to submit your information: <a href="https://dcounter.damcraft.de/" target="_blank">https://dcounter.damcraft.de/</a>.
 
 If there is anything else, you can get in contact with me by sending an email to <a href="mailto:dcounter@damcraft.de">dcounter@damcraft.de</a> 
-or contacting me on Discord (`@damcraft.de`). I also have a Discord server if you want to stay updated and chat with others about this:
+or contacting me on Discord (`@lina.sh`). I also have a Discord server if you want to stay updated and chat with others about this:
 <a href="https://discord.gg/mrKTxwHxv7" target="_blank">https://discord.gg/mrKTxwHxv7</a>.
 
 ## Thank you
 
-This research took quite some time and effort. I spent way over two week on this, and I want to thank the following people for their help:  
+This research took quite some time and effort. I spent way over two weeks on this, and I want to thank the following people for their help:  
 
 * [tufo](https://tufo.dev)  
 

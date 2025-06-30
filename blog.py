@@ -388,15 +388,15 @@ def get_rss(blog_posts: [BlogPost], language):
         description = f"""
             <h2>{html.escape(post.title)}</h2>
             <p><i>{html.escape(post.summary)}</i></p>
-            {f'<img src="https://damcraft.de{post.image}" alt="{html.escape(post.title)}">' if post.image else ''}
+            {f'<img src="https://lina.sh{post.image}" alt="{html.escape(post.title)}">' if post.image else ''}
             {post.content}
         """.replace("[", "&#91;").replace("]", "&#93;")
 
         item = f"""
         <item>
             <title>{post.title}</title>
-            <link>https://damcraft.de/blog/{post.url_name}</link>
-            <guid isPermaLink="true">https://damcraft.de/blog/{post.url_name}</guid>
+            <link>https://lina.sh/blog/{post.url_name}</link>
+            <guid isPermaLink="true">https://lina.sh/blog/{post.url_name}</guid>
             <pubDate>{pub_date}</pubDate>
             <description><![CDATA[
                 {description}
@@ -407,8 +407,8 @@ def get_rss(blog_posts: [BlogPost], language):
     data = f"""<?xml version="1.0" encoding="UTF-8"?>
     <rss version="2.0">
     <channel>
-        <title>dam's blog</title>
-        <link>https://damcraft.de</link>
+        <title>lina's blog</title>
+        <link>https://lina.sh</link>
         <description>My little place to ramble and rant on the internet</description>
         {"".join(items)}
     </channel>
@@ -423,10 +423,10 @@ def get_news_sitemap(blog_posts: [BlogPost]):
 
         url = f"""
         <url>
-            <loc>https://damcraft.de/blog/{post.url_name}</loc>
+            <loc>https://lina.sh/blog/{post.url_name}</loc>
             <news:news>
                 <news:publication>
-                    <news:name>dam's blog</news:name>
+                    <news:name>lina's blog</news:name>
                     <news:language>{post.language}</news:language>
                 </news:publication>
                 <news:publication_date>{pub_date}</news:publication_date>

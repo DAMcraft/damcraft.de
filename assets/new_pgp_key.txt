@@ -1,0 +1,18 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+i have a new PGP key for the email address "me@lina.sh", that is my new key, its fingerprint is A1BD21CC945D5BC742E24A6D5B055006B2318C78
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAEBCAAdFiEEIJDWMsJdsVDjds8isn1gG9UZ/wwFAmhihMwACgkQsn1gG9UZ
+/wyogwwAum+dpHPR0C5KNbHp5ku73T1HLMlUTlqjEK6wgJBNHjLYci33AylhffPy
+ACrvrrvNPaV3bzz0AcCNaonee9pKdLwos0c1N1B2cQ0jERlydRXmSsut+J39A1gb
+lWpEUfBUjlxYcZeRtKeqN5rKk+pnd+Zm1lFPpWc6OYoJuCe37ofSS4fhnIZXGBuZ
+gHIGW/G0qNnu4qe4SsbrK3PGCwCyv2aACbK2FtcF785aa1Kpn436icMeBk2G58He
+i7efHIulykKWKb6DMYLidmQUhdZcU+479gSfwKXut8R7wmX/5GM5F+4kAoFf2v+x
+AKYfYPRYhoi7boPshlr6XG4qmnuCoImMf/yieCOFNKuaozQcBVvD5kdRMukWKxwI
+uumCHl4mOy3bjxt12E1v+uFsRju5E1W72e19pah21agI73ANScJwUa682MqSU90d
+gb/k/GicBiv2o11DMHPbaXS8Ciz5Pmo6XnpRT+egx0EYuqIEH6e8nTaNXf5mnHXH
+H8yl8Kia
+=J0yl
+-----END PGP SIGNATURE-----

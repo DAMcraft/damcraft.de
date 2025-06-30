@@ -327,7 +327,7 @@ def reddit_callback():
 def reddit_profile_image(user_id):
     try:
         req = requests.get(f"https://www.reddit.com/user/{user_id}/about.json", headers={
-            "User-Agent": "dam's blog"
+            "User-Agent": "lina's blog"
         })
         if req.status_code == 200:
             data = req.json()
@@ -361,7 +361,7 @@ def logout():
 @app.route('/pgp')
 def pgp():
     resp = Response(pgp_key, mimetype="text/plain")
-    resp.headers["Content-Disposition"] = "inline; filename=damcraft_public.asc"
+    resp.headers["Content-Disposition"] = "inline; filename=lina_public.asc"
     return resp
 
 
@@ -392,6 +392,11 @@ def makeafish():
     return fishlogic()
 
 
+@app.route('/assets/88x31/dam.gif')
+def redirect_new_button():
+    return redirect("/assets/88x31/lina.gif", code=301)
+
+
 @app.route('/.well-known/<path:filename>')
 @cors.allow_origin("*")
 def security_txt(filename):
@@ -412,10 +417,10 @@ def button():
         "buttons": [
             {
                 "id": const.MAIN_DOMAIN,
-                "uri": "https://damcraft.de/assets/88x31/dam.gif",
-                "link": "https://damcraft.de",
+                "uri": "https://lina.sh/assets/88x31/lina.gif",
+                "link": "https://lina.sh/",
                 "sha256": button_hash,
-                "alt": "Damian / damcraft.de"
+                "alt": "Lina / lina.sh"
             }
         ]
     }, indent=4), mimetype="application/json")
@@ -443,9 +448,9 @@ def spotify_image_proxy(image_id):
 def before_request():
     # Redirect to HTTPS
     if (request.headers.get("X-Forwarded-Proto") == "http" and
-            request.headers.get("Host") == "damcraft.de" and
+            request.headers.get("Host") == "lina.sh" and
             "curl" not in str(request.headers.get("User-Agent")).lower()):
-        return redirect("https://damcraft.de" + request.path, code=301)
+        return redirect("https://lina.sh" + request.path, code=301)
 
 
 @app.after_request
@@ -475,7 +480,7 @@ blogs = get_blog_posts()
 
 style_hash = sha256(open("assets/style.css", "rb").read()).hexdigest()[:8]
 blog_style_hash = sha256(open("assets/blog.css", "rb").read()).hexdigest()[:8]
-button_hash = sha256(open("assets/88x31/dam.gif", "rb").read()).hexdigest()
+button_hash = sha256(open("assets/88x31/lina.gif", "rb").read()).hexdigest()
 pgp_key = open('pgp', 'rb').read()
 
 

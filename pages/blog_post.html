@@ -29,7 +29,7 @@
 
     {# SEO meta tags #}
     <meta name="description" content="{{ blog.summary }}">
-    <meta name="author" content="dam">
+    <meta name="author" content="lina">
 
     {# Open Graph meta tags #}
     <meta name="og:title" content="{{ blog.title }}">
@@ -37,9 +37,9 @@
     {% if blog.image %}
         <meta name="og:image" content="{{ blog.image }}">
     {% endif %}
-    <meta name="og:url" content="https://damcraft.de/blog/{{ blog.url_name }}">
+    <meta name="og:url" content="https://lina.sh/blog/{{ blog.url_name }}">
     <meta name="og:type" content="article">
-    <meta name="og:site_name" content="dam's blog">
+    <meta name="og:site_name" content="lina's blog">
 
     {# Twitter meta tags #}
     {% if blog.image %}
@@ -50,7 +50,7 @@
     {% endif %}
     <meta name="twitter:title" content="{{ blog.title }}">
     <meta name="twitter:description" content="{{ blog.summary }}">
-    <meta name="twitter:site" content="@dams_blog">
+    <meta name="twitter:site" content="@linas_blog">
 
     {# Additional meta tags #}
     <meta name="theme-color" content="#00BEFF">
@@ -68,7 +68,7 @@
 
     <link rel="stylesheet" href="/assets/blog.css?hash={{ style_hash }}">
 
-    <title>{{ blog.title }} - dam's blog</title>
+    <title>{{ blog.title }} - lina's blog</title>
     <link rel="alternate" type="application/rss+xml" title="RSS feed" href="/blog/rss.xml">
 </head>
 <body>
@@ -117,7 +117,7 @@
                     <p>{{ blog.date }}</p>
                 </div>
                 <div class="short-url">
-                    <p><span class="no-select">{{ t.short }}: </span><a href="https://damcraft.de/-{{  blog.hash }}">https://damcraft.de/-{{  blog.hash }}</a></p>
+                    <p><span class="no-select">{{ t.short }}: </span><a href="https://lina.sh/-{{  blog.hash }}">https://lina.sh/-{{  blog.hash }}</a></p>
                 </div>
             </div>
             {% if blog.get_languages()|length > 1 %}
@@ -163,7 +163,7 @@
             <div class="footer-links">
                 <a href="/blogs/">← {{ t.footer_back }}</a> <a href="/blog/rss.xml?lang={{ blog.language }}">{{ t.rss_feed }}</a>
             </div>
-            <p class="footer-text">&copy; {{ copyright }} dam</p>
+            <p class="footer-text">&copy; {{ copyright }} lina</p>
         </footer>
     </div>
 </body>

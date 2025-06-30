@@ -258,12 +258,9 @@ a:hover {
 
 #pgp {
     display: none;
-    /* make double click to select everything work */
-    user-select: all;
     /* Smaller font size */
     font-size: 0.8em;
 }
-
 #showPgp:checked ~ #pgp {
     display: block;
 }

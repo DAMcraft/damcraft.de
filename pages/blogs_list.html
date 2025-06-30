@@ -4,16 +4,16 @@
     {#  translation map  #}
     {% set translations = {
         'en': {
-            'title': "Blogs Overview - dam's blog",
-            'header': "dam's blog",
+            'title': "Blogs Overview - lina's blog",
+            'header': "lina's blog",
             'welcome': "welcome to my blog! this is my little place to ramble and rant on the internet",
             'footer_back': "Back to my website",
             'back_short': "back home",
             'rss_feed': "RSS feed"
         },
         'de': {
-            'title': "Blog-Übersicht - dam's blog",
-            'header': "dam's blog",
+            'title': "Blog-Übersicht - lina's blog",
+            'header': "lina's blog",
             'welcome': "willkommen in meinem blog! das ist meine kleine plauderecke im internet",
             'footer_back': "Zurück zur Website",
             'back_short': "zurück zur website",
@@ -27,7 +27,7 @@
 
     {# SEO meta tags #}
     <meta name="description" content="{{ t.header }}">
-    <meta name="author" content="dam">
+    <meta name="author" content="lina">
 
     {# Open Graph meta tags #}
     <meta name="og:title" content="{{ t.header }}">
@@ -39,7 +39,7 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{{ t.header }}">
     <meta name="twitter:description" content="{{ t.welcome }}">
-    <meta name="twitter:site" content="@dams_blog">
+    <meta name="twitter:site" content="@linas_blog">
 
     {# Additional meta tags #}
     <meta name="theme-color" content="#00BEFF">
@@ -108,7 +108,7 @@
             <div class="footer-links">
                 <a href="/">← {{ t.footer_back }}</a> <a href="/blog/rss.xml?lang={{ lang or "en" }}">{{ t.rss_feed }}</a>
             </div>
-            <p class="footer-text">&copy; {{ copyright }} dam</p>
+            <p class="footer-text">&copy; {{ copyright }} lina</p>
         </footer>
     </div>
 </body>
