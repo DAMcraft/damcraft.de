@@ -129,13 +129,16 @@ def get_account_bearer() -> (str, int) or None:
             "productType": "web-player",
             "totp": otp,
             "totpServer": otp,
-            "totpVer": 5,
-            "sTime": int(time.time() - 1000),
-            "cTime": int(time.time() * 1000),
-            "buildVer": "web-player_2025-06-10_1749555566666_4039f38",
-            "buildDate": "2025-06-10"
+            "totpVer": 8
+        },
+        headers={
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_8) AppleWebKit/531.32 (KHTML, like Gecko) Chrome/88.0.4491.76 Safari/535.32",
+            "Accept": "*/*",
+            "Host": "open.spotify.com",
         }
     )
+    print(req.text)
+    print(otp)
     if req.status_code == 200:
         account_bearer_ = req.json().get("accessToken")
         account_bearer_expires_ = req.json().get("accessTokenExpirationTimestampMs")
