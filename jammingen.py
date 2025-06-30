@@ -36,7 +36,7 @@ def render():
     if ip == "127.0.0.1":
         return b""
     if ":" in ip:
-        return redirect("https://4.damcraft.de" + request.path, code=302)
+        return redirect("https://4.lina.sh" + request.path, code=302)
 
     # Parse the useragent
     useragent = request.headers.get("User-Agent")
