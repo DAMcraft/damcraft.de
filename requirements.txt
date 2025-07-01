@@ -11,3 +11,4 @@ Pillow
 gevent
 bs4
 Pygments
+playwright

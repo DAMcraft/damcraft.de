@@ -2,6 +2,7 @@ import base64
 import hashlib
 import hmac
 import json
+import threading
 import time
 from datetime import datetime
 from json import JSONDecodeError
@@ -10,9 +11,9 @@ import requests
 from gevent import queue, lock
 import traceback
 from typing import Literal
-
 import bs4
 from gevent.timeout import Timeout
+from playwright.sync_api import sync_playwright
 
 import const
 from helpers import css_escape
@@ -118,32 +119,45 @@ def get_access_token(current_token):
 
 
 def get_account_bearer() -> (str, int) or None:
-    otp = generate_spotify_totp()
-    req = requests.get(
-        "https://open.spotify.com/api/token",
-        cookies={
-            "sp_dc": const.SPOTIFY_ACCOUNT_DC
-        },
-        params={
-            "reason": "init",
-            "productType": "web-player",
-            "totp": otp,
-            "totpServer": otp,
-            "totpVer": 8
-        },
-        headers={
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_8) AppleWebKit/531.32 (KHTML, like Gecko) Chrome/88.0.4491.76 Safari/535.32",
-            "Accept": "*/*",
-            "Host": "open.spotify.com",
-        }
-    )
-    print(req.text)
-    print(otp)
-    if req.status_code == 200:
-        account_bearer_ = req.json().get("accessToken")
-        account_bearer_expires_ = req.json().get("accessTokenExpirationTimestampMs")
-        return account_bearer_, account_bearer_expires_
-    return None, 0
+    try:
+        result = {"token": None, "expires": None}
+        done_event = threading.Event()
+
+        def callback(response):
+            if response.url.startswith("https://open.spotify.com/api/token?"):
+                if response.status == 200:
+                    json_data = response.json()
+                    result["token"] = json_data.get("accessToken")
+                    result["expires"] = json_data.get("accessTokenExpirationTimestampMs") / 1000
+                    done_event.set()
+                else:
+                    print(f"failed to get account bearer: {response.status} {response.text()}")
+
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            context = browser.new_context()
+            context.add_cookies([{
+                "name": "sp_dc",
+                "value": const.SPOTIFY_ACCOUNT_DC,
+                "domain": ".spotify.com",
+                "path": "/",
+                "httpOnly": True,
+                "secure": True,
+                "sameSite": "Lax"
+            }])
+            page = context.new_page()
+            page.on("response", callback)
+            page.goto("https://open.spotify.com/intl-de/")
+
+            done_event.wait(timeout=10)
+            browser.close()
+
+        if result["token"] and result["expires"]:
+            return result["token"], result["expires"]
+        return None, 0
+    except Exception as e:
+        print(f"Error getting account bearer: {e}")
+        return None, 0
 
 
 def update_lyrics(track_id, retried=False) -> Lyrics | None:
@@ -445,7 +459,7 @@ def spotify_status_updater():
 
 
 access_token, expires_on = get_access_token("main")
-account_bearer, account_bearer_expires = get_account_bearer()
+account_bearer, account_bearer_expires = None, 0
 current_token: Literal["main", "fallback"] = "main"
 last_event = ""
 current_lyrics: Lyrics | None = None
