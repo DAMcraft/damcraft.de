@@ -96,7 +96,7 @@ The code for this can be found on my GitHub:
 [https://github.com/DAMcraft/damcraft.de](https://github.com/DAMcraft/damcraft.de)
 
 <div class="listening-wrapper" id="status">
-    <iframe loading="lazy" class="listening-to" src="/listening_to?refresh=1"></iframe>
+    <iframe loading="lazy" class="listening-to" src="/listening_to?refresh=1" allowtransparency="true"></iframe>
 </div>
 
 <style>
