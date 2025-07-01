@@ -122,8 +122,11 @@ def get_account_bearer() -> (str, int) or None:
     try:
         result = {"token": None, "expires": None}
         done_event = threading.Event()
+        closing = False
 
         def callback(response):
+            if closing:
+                return
             if response.url.startswith("https://open.spotify.com/api/token?"):
                 if response.status == 200:
                     json_data = response.json()
@@ -150,6 +153,7 @@ def get_account_bearer() -> (str, int) or None:
             page.goto("https://open.spotify.com/intl-de/")
 
             done_event.wait(timeout=10)
+            closing = True
             browser.close()
 
         if result["token"] and result["expires"]:
