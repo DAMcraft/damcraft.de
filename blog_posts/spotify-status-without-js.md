@@ -95,8 +95,8 @@ Yes, it would've been way easier with JavaScript, and I spent way too many hours
 The code for this can be found on my GitHub:
 [https://github.com/DAMcraft/damcraft.de](https://github.com/DAMcraft/damcraft.de)
 
-<div class="listening-wrapper">
-    <iframe loading="lazy" class="listening-to" src="/listening_to"></iframe>
+<div class="listening-wrapper" id="status">
+    <iframe loading="lazy" class="listening-to" src="/listening_to?refresh=1"></iframe>
 </div>
 
 <style>
