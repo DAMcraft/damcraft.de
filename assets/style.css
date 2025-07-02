@@ -949,3 +949,8 @@ section {
     height: 14px;
     vertical-align: middle;
 }
+
+.discordInv {
+    margin: 5px 0 10px 0;
+    max-width: 350px;
+}

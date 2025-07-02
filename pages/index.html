@@ -69,7 +69,7 @@
                 </span>
                 <span class="command">cat about_me.txt</span>
                 <div class="content-wrapper">
-                    <img src="/assets/lina_shade_transparent_smoller.png" alt="my profile picture" class="about-image-separate" width="2048" height="2048">
+                    <img src="/assets/lina_shade_transparent_smoller.png" alt="my profile picture" class="about-image-separate" width="1024" height="1024">
                     <div class="text-content">
                         <input type="checkbox" id="showImage" style="display: none;" autocomplete="off">
                         <div class="about-image-inline">
@@ -77,7 +77,7 @@
                                 <span>pfp by <a href="https://ivymoths.carrd.co/" target="_blank">ari</a></span>
                                 <label for="showImage" class="close"></label>
                             </div>
-                            <img src="/assets/lina_shade_transparent_smoller.png" alt="my profile picture" width="2048" height="2048">
+                            <img src="/assets/lina_shade_transparent_smoller.png" alt="my profile picture" width="1024" height="1024">
                         </div>
                         Hi! I'm Lina, a {{age}}-year-old developer from Germany!<br>
                         You might know me from <a href="https://cuiiliste.de/">CUII-Liste</a>, a project that publishes a secret list of domains blocked by
@@ -85,28 +85,17 @@
                         If you're curious to find out more, there's English articles from <b>TorrentFreak</b> (<a href="https://torrentfreak.com/17-year-old-student-exposes-germanys-secret-pirate-site-blocklist-240822/">1</a>)(<a href="https://torrentfreak.com/homebrew-transparency-portal-reveals-needlessly-blocked-pirate-sites-240928/">2</a>),
                         or German ones from <b>Heise</b> (<a href="https://heise.de/-9847202">1</a> [<a href="https://heise.de/-9847399">en</a>])(<a href="https://heise.de/-9959663">2</a> [<a href="https://heise.de/-9960346">en</a>]) and
                         <b>Netzpolitik</b> (<a href="https://netzpolitik.org/2024/cuii-liste-diese-websites-sperren-provider-freiwillig/">1</a>)(<a href="https://netzpolitik.org/2024/cuii-viele-netzsperren-wirken-laenger-als-erlaubt/">2</a>)(<a href="https://netzpolitik.org/2024/cuii-liste-internetprovider-heben-39-netzsperren-auf/">3</a>).
-                        There's more articles from Golem, Tarnkappe.info, winfuture and others, but I can't list them all here.<br>
-                        You may have also heard of ServerSeeker, which scanned the <b>entire</b> IPv4 address space for Minecraft servers.
-                        When I sold it, the discord server had more than 14k members and the bot was in over 9k discord guilds.<br>
-                        {% if discord_invite != None %}
-                            Development <b>discord server</b> for my projects: <a id="discordInv" href="{{discord_invite}}">{{discord_invite}}</a><br>
-                        {% endif %}
+                        There's more articles from Golem, Tarnkappe.info, winfuture and others, but I can't list them all here. I also worked on some Minecraft related projects in the past!<br>
                         I <b>love</b> programming in Python, Java, JavaScript and Rust.<br>
                         (Ok, that JavaScript part was a lie, this website is made entirely without JS.<span id="that_one_linebreak"><br></span>
-                        &nbsp;And yes, my discord and <a href="/blog/spotify-status-without-js">spotify status</a> <i>do</i> update dynamically <b>without</b> JS)
+                        &nbsp;And yes, my discord and <a href="/blog/spotify-status-without-js">spotify status</a> <i>do</i> update dynamically <b>without</b> JS)<br>
                     </div>
                 </div>
             </section>
             <section id="socials">
                 <span class="prefix">
                         <span style="color: #747f8d;">root@<span class="servername">lina.sh</span><span class="shortServername">lina</span></span>:~<span style="color: #747f8d;">$ </span></span>
-                    <span class="command">./socials.sh</span>
-                <div>
-Do you want to contact me?<br>
-You can find all my socials below!<br>
-I will probably respond the fastest on Discord.<br>
-You can find my PGP key just below this section.<br>
-</div>
+                <span class="command">./socials.sh</span>
             <table>
                 <tbody>
                     <tr>
@@ -148,6 +137,9 @@ You can find my PGP key just below this section.<br>
                     </tr>
                 </tbody>
             </table>
+            <div class="discordInv">
+                {% include 'partials/discord_invite.html' %}
+            </div>
         </section>
         <section id="donations" class="nomargin">
             <span class="prefix">

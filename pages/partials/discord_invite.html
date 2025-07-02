@@ -1,0 +1,145 @@
+<style>
+    .discord-invite-widget {
+        {#background-color: #242429;#}
+        background-color: rgba(36, 36, 41, 0.1);
+        padding: 8px;
+        width: calc(100% - 16px);
+        display: flex;
+        align-items: stretch;
+        color: #dcddde;
+        border: 1px solid #ffffff;
+        box-shadow: 0 2px 8px 0 rgba(0,0,0,0.15);
+        overflow: hidden;
+    }
+
+    .discord-invite-icon {
+        width: 60px;
+        height: 60px;
+        margin-right: 12px;
+        flex-shrink: 0;
+        object-fit: cover;
+    }
+
+    .discord-invite-details {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .discord-invite-server-name {
+        font-size: 14px;
+        font-weight: bold;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 3px;
+    }
+
+    .discord-invite-status {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        font-size: 14px;
+        color: #b9bbbe;
+    }
+
+    .discord-invite-status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+
+    .discord-invite-status-dot.online {
+        background-color: #43a25a;
+    }
+
+    .discord-invite-status-dot.offline {
+        background-color: #82838b;
+    }
+
+    .discord-invite-member-count {
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+    }
+     .discord-invite-member-count:last-child {
+        margin-right: 0;
+    }
+
+
+    .discord-invite-join-button-container {
+        margin-left: auto;
+        align-self: stretch;
+        display: flex;
+        align-items: flex-end;
+        padding-left: 8px;
+    }
+
+    .discord-invite-join-button {
+        color: #3aa070;
+        border: 1px solid #3aa070;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 8px 16px;
+        text-decoration: none;
+        text-align: center;
+        white-space: nowrap;
+        transition: color 0.2s, background-color 0.2s;
+    }
+
+    .discord-invite-join-button:hover {
+        background-color: #3aa070;
+        color: #ffffff;
+    }
+
+    .discord-invite-main-content {
+        display: flex;
+        justify-content: flex-start;
+        flex-grow: 1;
+    }
+
+    .dc-inline-logo {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        vertical-align: middle;
+        margin-top: -1px;
+    }
+
+    @media (max-width: 360px) {
+        .dc-inline-logo {
+            display: none;
+        }
+    }
+    @media (max-width: 320px) {
+        .discord-invite-join-button {
+            padding: 6px 8px;
+        }
+    }
+
+</style>
+
+<div class="discord-invite-widget">
+    <img src="{{ discord_server_info.get("icon") | default("/assets/me.png") }}" alt="{{ discord_server_info.get("name") }} Icon" class="discord-invite-icon">
+    <div class="discord-invite-main-content">
+        <div class="discord-invite-details">
+            <div class="discord-invite-server-name"><img src="/assets/discord.svg" alt="Discord Logo" class="dc-inline-logo">
+                {{ discord_server_info.get("name") | default("dam's projects") }}</div>
+            <div class="discord-invite-status">
+                <div class="discord-invite-member-count">
+                    <span class="discord-invite-status-dot online"></span>
+                    <span>{{ discord_server_info.get("online") | default('0') }} Online</span>
+                </div>
+                <div class="discord-invite-member-count">
+                    <span class="discord-invite-status-dot offline"></span>
+                    <span>{{ discord_server_info.get("members") | default('0') }} Members</span>
+                </div>
+            </div>
+        </div>
+        <div class="discord-invite-join-button-container">
+            <a href="{{ discord_invite_url | default('#') }}" class="discord-invite-join-button" target="_blank" rel="noopener">Join</a>
+        </div>
+    </div>
+</div>

@@ -1,3 +1,4 @@
+import base64
 import json
 import logging
 import random
@@ -20,6 +21,29 @@ def get_discord_status():
         req = requests.get("https://api.lanyard.rest/v1/users/" + str(const.DISCORD_ID)).json()
         return req.get("data", {}).get("discord_status", "")
     except requests.exceptions.RequestException:
+        return None
+
+
+def get_server_status(server_invite: str):
+    try:
+        # extract the invite code from the URL
+        match = server_invite.split("/")[-1]
+        req = requests.get(f"https://discord.com/api/v9/invites/{match}", timeout=5)
+        req.raise_for_status()
+        resp = req.json()
+        icon_hash = resp.get("profile", {}).get("icon_hash", "")
+        try:
+            icon_bytes = requests.get(f"https://cdn.discordapp.com/icons/{const.SERVER_ID}/{icon_hash}.png").content
+            icon = f"data:image/png;base64,{base64.b64encode(icon_bytes).decode('utf-8')}"
+        except requests.exceptions.RequestException:
+            icon = None
+        return {
+            "name": resp.get("profile", {}).get("name", ""),
+            "icon": icon,
+            "members": resp.get("profile", {}).get("member_count", 0),
+            "online": resp.get("profile", {}).get("online_count", 0),
+        }
+    except (requests.exceptions.RequestException, json.JSONDecodeError, KeyError):
         return None
 
 
