@@ -398,6 +398,17 @@ def redirect_new_button():
     return redirect("/assets/88x31/lina.gif", code=301)
 
 
+@app.route('/assets/discord_icon.png')
+@robots.noindex
+def discord_icon():
+    icon_bytes = discord_server_info.get("icon_bytes")
+    if icon_bytes:
+        resp = make_response(icon_bytes)
+        resp.headers["Content-Type"] = "image/png"
+        resp.headers["Cache-Control"] = "public, max-age=86400"
+        return resp
+
+
 @app.route('/.well-known/<path:filename>')
 @cors.allow_origin("*")
 def security_txt(filename):

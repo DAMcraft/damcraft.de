@@ -34,12 +34,11 @@ def get_server_status(server_invite: str):
         icon_hash = resp.get("profile", {}).get("icon_hash", "")
         try:
             icon_bytes = requests.get(f"https://cdn.discordapp.com/icons/{const.SERVER_ID}/{icon_hash}.png").content
-            icon = f"data:image/png;base64,{base64.b64encode(icon_bytes).decode('utf-8')}"
         except requests.exceptions.RequestException:
-            icon = None
+            icon_bytes = None
         return {
             "name": resp.get("profile", {}).get("name", ""),
-            "icon": icon,
+            "icon_bytes": icon_bytes,
             "members": resp.get("profile", {}).get("member_count", 0),
             "online": resp.get("profile", {}).get("online_count", 0),
         }
