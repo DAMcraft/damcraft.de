@@ -69,7 +69,7 @@ def index():
 @robots.noindex
 def discord_status_route():
     refresh_every = request.args.get("refresh_every", 10)
-    return render_template("discord_status.html", discord_status=discord_status, refresh_every=refresh_every)
+    return render_template("partials/discord_status.html", discord_status=discord_status, refresh_every=refresh_every)
 
 
 @app.route('/blogs/')
@@ -172,7 +172,7 @@ def news_sitemap():
 @robots.noindex
 def notification():
     newest_blog = show_notification(blogs, request)
-    return render_template("notification.html", blog=newest_blog)
+    return render_template("partials/notification.html", blog=newest_blog)
 
 
 @app.route("/email.svg")
@@ -180,7 +180,7 @@ def notification():
 @robots.disallow
 def email_svg():
     return Response(
-        render_template("email.svg", email=const.EMAIL),
+        render_template("partials/email.svg", email=const.EMAIL),
         mimetype="image/svg+xml"
     )
 
@@ -190,7 +190,7 @@ def email_svg():
 def listening_to():
     refresh = request.args.get("refresh")
 
-    resp = render_template("listening_to.html", refresh=refresh)
+    resp = render_template("partials/listening_to.html", refresh=refresh)
     if refresh:
         return event_reader(resp, skip_rest=True), 200, {
             "Cache-Control": "no-cache",
