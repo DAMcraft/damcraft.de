@@ -310,7 +310,7 @@ def spotify_status_updater():
 
                 print(f"We are being rate limited, retrying after {retry_after} seconds")
 
-            if status is None or "error" in status:
+            if status is None or "error" in status or status["item"] is None:
                 data = f"""
                 <div class="overwrite-div"></div>
                 <style>
